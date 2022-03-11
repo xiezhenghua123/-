@@ -1,0 +1,69 @@
+.container{
+	.top{
+		display: flex;
+		height: 160rpx;
+		align-items: center;
+		justify-content: space-between;
+		margin-left: 40rpx;
+		.message{
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			.m_right{
+				margin-left: 10rpx;
+			}
+			.message_name{
+				font-size: 18px;
+				font-weight: bold;
+				margin-bottom: 10rpx;
+			}
+			.message_identity{
+				font-size: $uni-font-size-base;
+			}
+		}
+		.change-identity{
+			display: flex;
+			align-items: center;
+			margin-right: 50rpx;
+			font-size: $uni-font-size-lg;
+			.text{
+				margin-left: 5rpx;
+			}
+			&:hover{
+				color: #0000FF;
+			}
+		}
+	}
+	.divider{
+		margin-top: 0;
+	}
+	.content{
+		&_every{
+			&:active{
+				background-color: $uni-bg-color-hover;
+			}
+		}
+		.feature{
+			display: flex;
+			height: 80rpx;
+			align-items: center;
+			justify-content: space-between;
+			margin: 0 40rpx;
+			.left{
+				display: flex;
+				align-items: center;
+			}
+		    &_logo{
+				margin-right: 15rpx;
+			}
+			&_name{
+				font-size: $uni-font-size-lg;
+				font-weight: bold;
+			}
+		}
+	
+	}
+}
+.f-bold{
+	font-weight: bold;
+}

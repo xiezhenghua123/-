@@ -3,14 +3,122 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "职位(人才)广场"
+			}
+		},
+		{
+			"path": "pages/job-fair/index",
+			"style": {
+				"navigationBarTitleText": "宣讲会"
+			}
+		},
+		{
+			"path": "pages/release/index",
+			"style": {
+				"navigationBarTitleText": "发布"
+			}
+		},
+		{
+			"path": "pages/message-center/index",
+			"style": {
+				"navigationBarTitleText": "消息中心"
+			}
+		},
+		{
+			"path": "pages/person-center/index",
+			"style": {
+				"navigationBarTitleText": "个人中心"
+			}
+		},
+		{
+			"path": "pages/suggestion/index",
+			"style": {
+				"navigationBarTitleText": "意见反馈"
+			}
+		},
+		{
+			"path": "pages/complain-manage/index",
+			"style": {
+				"navigationBarTitleText": "投诉管理"
+			}
+		},
+		{
+			"path": "pages/enterprise-information/index",
+			"style": {
+				"navigationBarTitleText": "企业信息"
+			}
+		},
+		{
+			"path": "pages/my-favorite/index",
+			"style": {
+				"navigationBarTitleText": "我的收藏"
+			}
+		},
+		{
+			"path": "pages/my-release/index",
+			"style": {
+				"navigationBarTitleText": "我的发布"
+			}
+		},
+		{
+			"path": "pages/my-resume/index",
+			"style": {
+				"navigationBarTitleText": "我的简历"
+			}
+		},
+		{
+			"path": "pages/order-manage/index",
+			"style": {
+				"navigationBarTitleText": "订单管理"
 			}
 		}
-	],
+		],	
+	"tabBar":{
+		"color": "#7A7E83",
+		"selectedColor": "#3cc51f",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list":[
+			{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/tabBar-icon/jobSquare.png",
+				"selectedIconPath": "static/tabBar-icon/jobSquare-on.png",
+				"text": "人职广场"
+			},
+			{
+				"pagePath": "pages/job-fair/index",
+				"iconPath": "static/tabBar-icon/jobFair.png",
+				"selectedIconPath": "static/tabBar-icon/jobFair-on.png",
+				"text": "宣讲会"
+			},
+			{
+				"pagePath": "pages/release/index",
+				"iconPath": "static/tabBar-icon/release.png",
+				"selectedIconPath": "static/tabBar-icon/release-on.png",
+				"text": "发布职位"
+			},
+			{
+				"pagePath": "pages/message-center/index",
+				"iconPath": "static/tabBar-icon/message.png",
+				"selectedIconPath": "static/tabBar-icon/message-on.png",
+				"text": "消息中心"
+			},
+			{
+				"pagePath": "pages/person-center/index",
+				"iconPath": "static/tabBar-icon/person.png",
+				"selectedIconPath": "static/tabBar-icon/person-on.png",
+				"text": "个人中心"
+			}
+		]
+	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"backgroundColor": "#F8F8F8",
+		"rpxCalcBaseDeviceWidth": 750
+	},
+	"easycom": {
+			"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
 	}
 }
