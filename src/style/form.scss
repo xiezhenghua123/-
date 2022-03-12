@@ -1,0 +1,25 @@
+.content-box {
+  margin: 20px 10px;
+  .headline {
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    margin-bottom: 8px;
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 5px;
+      margin-right: 5px;
+      border-radius: 5px;
+      background-color: aqua;
+    }
+  }
+  .every {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    margin: 0 15px;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+  }
+}

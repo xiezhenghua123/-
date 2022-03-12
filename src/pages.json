@@ -4,7 +4,7 @@
     {
       "path": "pages/index/index",
       "style": {
-        "navigationBarTitleText": "职位(人才)广场"
+        "navigationBarTitleText": "职位广场"
       }
     },
     {
@@ -84,7 +84,7 @@
         "pagePath": "pages/index/index",
         "iconPath": "static/tabBar-icon/jobSquare.png",
         "selectedIconPath": "static/tabBar-icon/jobSquare-on.png",
-        "text": "人职广场"
+        "text": "职人广场"
       },
       {
         "pagePath": "pages/job-fair/index",

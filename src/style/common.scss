@@ -1,5 +1,18 @@
-body{
-	font-size: $uni-font-size-base;
-	color: $uni-text-color;
-	background-color: $uni-bg-color-grey;
+body {
+  font-size: $uni-font-size-base;
+  color: $uni-text-color;
+  background-color: $uni-bg-color-grey;
+}
+.size16 {
+  font-size: $uni-font-size-lg;
+}
+.size18 {
+  font-size: 18px;
+}
+.button-bottom {
+  position: fixed;
+  bottom: 30rpx;
+  width: 80%;
+  left: 50%;
+  transform: translateX(-50%);
 }
