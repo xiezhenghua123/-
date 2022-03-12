@@ -9,10 +9,16 @@ body {
 .size18 {
   font-size: 18px;
 }
+.size14 {
+  font-size: 14px;
+}
 .button-bottom {
   position: fixed;
   bottom: 30rpx;
   width: 80%;
   left: 50%;
   transform: translateX(-50%);
+}
+.ml-10 {
+  margin-left: 10px;
 }

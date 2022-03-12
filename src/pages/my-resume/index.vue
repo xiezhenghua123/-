@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-12 15:00:46
+ * @LastEditTime: 2022-03-12 22:06:41
 -->
 <template>
   <view>
@@ -32,6 +32,57 @@
         </view>
       </template>
     </view>
+    <view class="content-box size16">
+      <view class="headline">教育经历</view>
+      <template v-for="item in resumeData.educations">
+        <view class="mq border-b" :key="item.key">
+          <view class="top">
+            <view class="top_name">{{ item.schoolName }}</view>
+            <view class="top_time">{{ item.start + '-' + item.end }}</view>
+          </view>
+          <view class="size14">
+            <text>{{ item.rank }}</text>
+            <text class="ml-10">{{ item.major }}</text>
+          </view>
+        </view>
+      </template>
+    </view>
+    <view class="content-box size16">
+      <view class="headline">实习经历</view>
+      <template v-for="item in resumeData.internshipExperience">
+        <view class="mq border-b" :key="item.key">
+          <view class="top">
+            <view class="top_name">{{ item.companyName }}</view>
+            <view class="top_time">{{ item.start + '-' + item.end }}</view>
+          </view>
+          <view class="size14">
+            <text>{{ item.job }}</text>
+          </view>
+          <text space="nbsp">{{ item.details }}</text>
+        </view>
+      </template>
+    </view>
+    <view class="content-box size16">
+      <view class="headline">项目经历</view>
+      <template v-for="item in resumeData.projectExperience">
+        <view class="mq border-b" :key="item.key">
+          <view class="top">
+            <view class="top_name">{{ item.projectName }}</view>
+            <view class="top_time">{{ item.start + '-' + item.end }}</view>
+          </view>
+          <view class="size14">
+            <text>{{ item.job }}</text>
+          </view>
+          <text space="nbsp">{{ item.details }}</text>
+        </view>
+      </template>
+    </view>
+    <view class="content-box size16">
+      <view class="headline">项目经历</view>
+      <view class="every size14">
+        <text space="nbsp">{{ resumeData.selfEvaluation }}</text>
+      </view>
+    </view>
   </view>
 </template>
 
@@ -48,4 +99,19 @@ export default {
 
 <style lang="scss" scoped>
 @import 'style/form.scss';
+
+.mq {
+  padding: 8px;
+  margin: 0 15px;
+}
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  &_name {
+    font-size: 16px;
+    font-weight: bold;
+  }
+}
 </style>

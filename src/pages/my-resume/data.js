@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-12 13:40:50
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-12 14:32:38
+ * @LastEditTime: 2022-03-12 22:03:38
  */
 const resumeData = {
   basic: [
@@ -71,12 +71,13 @@ const resumeData = {
       job: '前端开发',
       start: '2021.5',
       end: '2022.2',
-      details: 'xxxxxxxxxxxxxxxxxxxxx',
+      details:
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxx\n   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
     },
   ],
   projectExperience: [
     {
-      companyName: '大学生兼职平台',
+      projectName: '大学生兼职平台',
       job: '前端开发',
       start: '2021.5',
       end: '2022.2',
