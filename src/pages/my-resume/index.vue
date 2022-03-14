@@ -4,14 +4,20 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-12 22:06:41
+ * @LastEditTime: 2022-03-13 18:56:22
 -->
 <template>
-  <view>
+  <view class="mb-10">
+    <fixed-button
+      type="primary"
+      text="编辑"
+      shape="circle"
+      @click="clickEdit"
+    ></fixed-button>
     <view class="content-box size16">
       <view class="headline">基本信息</view>
       <template v-for="item in resumeData.basic">
-        <view class="every" v-if="item.key === 'headPhoto'">
+        <view class="every" v-if="item.key === 'headPhoto'" :key="item.key">
           <view class="every_title">{{ item.title }} </view>
           <view class="every_content"
             ><u-avatar :src="item.content"></u-avatar
@@ -78,7 +84,7 @@
       </template>
     </view>
     <view class="content-box size16">
-      <view class="headline">项目经历</view>
+      <view class="headline">自我评价</view>
       <view class="every size14">
         <text space="nbsp">{{ resumeData.selfEvaluation }}</text>
       </view>
@@ -93,6 +99,13 @@ export default {
     return {
       resumeData: resumeData,
     }
+  },
+  methods: {
+    clickEdit() {
+      uni.navigateTo({
+        url: '/pages/my-resume/resume-edit/index',
+      })
+    },
   },
 }
 </script>

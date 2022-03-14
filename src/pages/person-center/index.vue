@@ -57,8 +57,8 @@
         >认证，是否进行认证？
       </view>
     </u-modal>
-    <company :companyShow="companyShow"></company>
-    <student :studentShow="studentShow"></student>
+    <company :companyShow.sync="companyShow"></company>
+    <student :studentShow.sync="studentShow"></student>
   </view>
 </template>
 
