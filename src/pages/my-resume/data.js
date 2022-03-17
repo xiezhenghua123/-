@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-12 13:40:50
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-12 22:03:38
+ * @LastEditTime: 2022-03-17 22:31:04
  */
 const resumeData = {
   basic: [
@@ -59,23 +59,32 @@ const resumeData = {
   educations: [
     {
       schoolName: '湘潭大学',
-      start: '2018',
-      end: '2022',
+      start: '2018-09',
+      end: '2022-06',
       rank: '本科',
       major: '信息管理与信息系统',
+      details: 'xxxxxxx',
+    },
+    {
+      schoolName: '湘潭大学',
+      start: '2018-09',
+      end: '2024-06',
+      rank: '本科',
+      major: '信息管理与信息系统',
+      details: 'xxxxxxx',
     },
   ],
-  internshipExperience: [
+  internshipExperiences: [
     {
       companyName: '上海合合科技',
       job: '前端开发',
-      start: '2021.5',
-      end: '2022.2',
+      start: '2021-05',
+      end: '2022-02',
       details:
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxx\n   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
     },
   ],
-  projectExperience: [
+  projectExperiences: [
     {
       projectName: '大学生兼职平台',
       job: '前端开发',

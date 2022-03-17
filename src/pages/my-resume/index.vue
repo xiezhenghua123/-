@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-13 18:56:22
+ * @LastEditTime: 2022-03-17 15:53:24
 -->
 <template>
   <view class="mb-10">
@@ -50,12 +50,13 @@
             <text>{{ item.rank }}</text>
             <text class="ml-10">{{ item.major }}</text>
           </view>
+          <text space="nbsp">{{ item.details }}</text>
         </view>
       </template>
     </view>
     <view class="content-box size16">
       <view class="headline">实习经历</view>
-      <template v-for="item in resumeData.internshipExperience">
+      <template v-for="item in resumeData.internshipExperiences">
         <view class="mq border-b" :key="item.key">
           <view class="top">
             <view class="top_name">{{ item.companyName }}</view>
@@ -70,7 +71,7 @@
     </view>
     <view class="content-box size16">
       <view class="headline">项目经历</view>
-      <template v-for="item in resumeData.projectExperience">
+      <template v-for="item in resumeData.projectExperiences">
         <view class="mq border-b" :key="item.key">
           <view class="top">
             <view class="top_name">{{ item.projectName }}</view>

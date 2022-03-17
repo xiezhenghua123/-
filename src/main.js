@@ -4,10 +4,11 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:34:01
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-13 18:49:31
+ * @LastEditTime: 2022-03-16 20:21:52
  */
 import App from './App'
 import store from '@/store/index.js'
+import utils from './utils/index.js'
 
 import uView from 'uview-ui'
 Vue.use(uView)
@@ -16,10 +17,12 @@ Vue.use(uView)
 import Vue from 'vue'
 Vue.config.productionTip = false
 Vue.prototype.$store = store
+Vue.use(utils)
 App.mpType = 'app'
 const app = new Vue({
   ...App,
   store,
+  utils,
 })
 app.$mount()
 // #endif
