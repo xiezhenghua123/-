@@ -4,15 +4,28 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-17 15:24:44
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-17 23:09:41
+ * @LastEditTime: 2022-03-21 14:55:50
  */
-import { name, tel } from '@/data/rules.js'
+import { name, tel } from 'data/rules.js'
 import data from '../data.js'
 export default {
   data() {
     return {
       internshipExperience: {
         companyName: '',
+        start: {
+          show: false,
+          time: '',
+        },
+        end: {
+          show: false,
+          time: '',
+        },
+        job: '',
+        details: '',
+      },
+      projectExperience: {
+        projectName: '',
         start: {
           show: false,
           time: '',
@@ -44,7 +57,7 @@ export default {
       educationsRules: {
         schoolName: {
           type: 'string',
-          require: true,
+          required: true,
           message: '请输入学校名称',
           trigger: ['change', 'blur'],
         },
@@ -72,14 +85,14 @@ export default {
         major: {
           type: 'string',
           message: '请输入就读专业',
-          require: true,
+          required: true,
           trigger: ['change', 'blur'],
         },
       },
       internshipExperiencesRules: {
         companyName: {
           type: 'string',
-          require: true,
+          required: true,
           message: '请输入企业名称',
           trigger: ['change', 'blur'],
         },
@@ -101,7 +114,7 @@ export default {
         job: {
           type: 'string',
           message: '请输入实习岗位',
-          require: true,
+          required: true,
           trigger: ['change', 'blur'],
         },
       },
@@ -111,6 +124,7 @@ export default {
           required: true,
           message: '请上传头像',
           validator: (rule, value, callback) => {
+            console.log(value)
             return !!value.length
           },
           trigger: ['blur', 'change'],
@@ -151,7 +165,14 @@ export default {
     }
   },
   onLoad() {
-    const { basic, jobExpectations, educations, internshipExperiences } = data
+    const {
+      basic,
+      jobExpectations,
+      educations,
+      internshipExperiences,
+      projectExperiences,
+      selfEvaluation,
+    } = data
     basic.forEach(item => {
       if (item.key === 'headPhoto') {
         this.$set(this.basic, item.key, [{ url: item.content }])
@@ -177,14 +198,28 @@ export default {
         end: { show: false, time: item.end },
       }
     })
+    this.projectExperiences = projectExperiences.map(item => {
+      return {
+        ...item,
+        start: { show: false, time: item.start },
+        end: { show: false, time: item.end },
+      }
+    })
+    this.selfEvaluation = selfEvaluation
   },
   onReady() {
     this.$refs.basicRef.setRules(this.basicRules)
+
     this.educations.forEach((item, index) => {
-      this.$refs[`educationsRef${index}`][0].setRules(this.educationsRules)
+      this.$refs[`educationRef${index}`][0].setRules(this.educationsRules)
     })
     this.internshipExperiences.forEach((item, index) => {
       this.$refs[`internshipExperienceRef${index}`][0].setRules(
+        this.internshipExperiencesRules
+      )
+    })
+    this.projectExperiences.forEach((item, index) => {
+      this.$refs[`projectExperienceRef${index}`][0].setRules(
         this.internshipExperiencesRules
       )
     })
@@ -216,10 +251,27 @@ export default {
       }
       item[type].time = e
     },
-    clickConfirm() {},
+    clickConfirm() {
+      console.log(
+        this.$refs.basicRef,
+        this.$refs.basicRef.validate().then(item => {
+          console.log(item)
+        })
+      )
+      this.$refs.basicRef.validate()
+
+      this.educations.forEach((item, index) => {
+        this.$refs[`educationRef${index}`][0].validate()
+      })
+      this.internshipExperiences.forEach((item, index) => {
+        this.$refs[`internshipExperienceRef${index}`][0].validate()
+      })
+      this.projectExperiences.forEach((item, index) => {
+        this.$refs[`projectExperienceRef${index}`][0].validate()
+      })
+    },
     //选择器默认值函数
     sexSelect(index) {
-      // this[`${value}`] = false
       this.basic.sex = index.name
       this.sexShow = false
     },

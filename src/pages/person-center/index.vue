@@ -18,12 +18,8 @@
     </view>
     <u-divider class="divider"></u-divider>
     <view class="content" v-if="identity">
-      <template v-for="(item, index) in feature_data">
-        <view
-          :key="item.key"
-          @click="clickFeature(item.key)"
-          class="content_every"
-        >
+      <block v-for="item in feature_data" :key="item.key">
+        <view @click="clickFeature(item.key)" class="content_every">
           <view class="feature">
             <view class="left">
               <i
@@ -41,7 +37,7 @@
             <u-line margin="10rpx 0 10rpx 5%" length="94%"></u-line>
           </view>
         </view>
-      </template>
+      </block>
     </view>
     <confirm v-else></confirm>
     <u-notify ref="uNotify" message="请登录"></u-notify>

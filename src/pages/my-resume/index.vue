@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-17 15:53:24
+ * @LastEditTime: 2022-03-19 17:31:25
 -->
 <template>
   <view class="mb-10">
@@ -44,7 +44,7 @@
         <view class="mq border-b" :key="item.key">
           <view class="top">
             <view class="top_name">{{ item.schoolName }}</view>
-            <view class="top_time">{{ item.start + '-' + item.end }}</view>
+            <view class="top_time">{{ item.start + '——' + item.end }}</view>
           </view>
           <view class="size14">
             <text>{{ item.rank }}</text>
@@ -60,7 +60,7 @@
         <view class="mq border-b" :key="item.key">
           <view class="top">
             <view class="top_name">{{ item.companyName }}</view>
-            <view class="top_time">{{ item.start + '-' + item.end }}</view>
+            <view class="top_time">{{ item.start + '——' + item.end }}</view>
           </view>
           <view class="size14">
             <text>{{ item.job }}</text>
@@ -75,7 +75,7 @@
         <view class="mq border-b" :key="item.key">
           <view class="top">
             <view class="top_name">{{ item.projectName }}</view>
-            <view class="top_time">{{ item.start + '-' + item.end }}</view>
+            <view class="top_time">{{ item.start + '——' + item.end }}</view>
           </view>
           <view class="size14">
             <text>{{ item.job }}</text>

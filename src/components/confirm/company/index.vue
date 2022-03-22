@@ -15,7 +15,7 @@
           :rules="companyFormRules"
           ref="company"
         >
-          <u-form-item label="姓名" prop="name" borderBottom required>
+          <u-form-item label="企业名称" prop="name" borderBottom required>
             <u--input v-model="companyData.name" border="none"></u--input>
           </u-form-item>
           <u-form-item
@@ -72,7 +72,7 @@ export default {
         legalPerson: '',
       },
       companyFormRules: {
-        name: name,
+        legalPerson: name,
         number: socialCode,
         industry: {
           type: 'string',
@@ -80,7 +80,7 @@ export default {
           message: '请正确填写行业',
           trigger: 'blur',
         },
-        legalPerson: {
+        name: {
           type: 'string',
           required: true,
           message: '请正确填写法定代表人',

@@ -29,6 +29,9 @@
       .text {
         margin-left: 5rpx;
       }
+      &:active {
+        background-color: $uni-bg-color-hover;
+      }
     }
   }
   .divider {

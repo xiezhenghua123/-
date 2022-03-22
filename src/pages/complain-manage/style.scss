@@ -1,0 +1,39 @@
+.box {
+  display: flex;
+  background-color: #fff;
+  justify-content: space-between;
+  padding-left: 30rpx;
+  padding-right: 30rpx;
+  align-items: center;
+  height: 164rpx;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin: 10px;
+  &:active {
+    background-color: $uni-bg-color-hover;
+  }
+  &-left {
+    .name {
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .status {
+      margin-left: 10px;
+    }
+    .content {
+      margin-top: 5px;
+      .detail {
+        font-weight: bold;
+      }
+    }
+  }
+}
+.success {
+  color: $uni-color-success;
+}
+.error {
+  color: $uni-color-error;
+}
+.primary {
+  color: $uni-color-primary;
+}

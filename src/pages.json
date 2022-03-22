@@ -78,6 +78,18 @@
       "style": {
         "navigationBarTitleText": "简历编辑"
       }
+    },
+    {
+      "path": "pages/enterprise-information/edit/index",
+      "style": {
+        "navigationBarTitleText": "企业信息编辑"
+      }
+    },
+    {
+      "path": "pages/complain-manage/details/index",
+      "style": {
+        "navigationBarTitleText": "投诉详情"
+      }
     }
   ],
   "tabBar": {

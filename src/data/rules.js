@@ -4,11 +4,11 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-14 17:08:11
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-14 21:37:42
+ * @LastEditTime: 2022-03-21 14:33:48
  */
 const name = [
   {
-    require: true,
+    required: true,
     message: '请输入姓名',
     validator: (rule, value, callback) => {
       return !!value

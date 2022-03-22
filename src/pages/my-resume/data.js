@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-12 13:40:50
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-17 22:31:04
+ * @LastEditTime: 2022-03-21 14:35:36
  */
 const resumeData = {
   basic: [
@@ -36,7 +36,7 @@ const resumeData = {
     {
       title: '最高学历',
       key: 'maxEducation',
-      content: '本科',
+      content: '',
     },
   ],
   jobExpectations: [
@@ -88,8 +88,8 @@ const resumeData = {
     {
       projectName: '大学生兼职平台',
       job: '前端开发',
-      start: '2021.5',
-      end: '2022.2',
+      start: '2021-05',
+      end: '2022-02',
       details: 'xxxxxxxxxxxxxxxxxxxxx',
     },
   ],

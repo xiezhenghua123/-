@@ -4,10 +4,10 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-13 18:51:08
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-17 22:52:58
+ * @LastEditTime: 2022-03-21 15:22:04
 -->
 <template>
-  <view>
+  <view class="mb-10">
     <fixed-button text="确认" @click="clickConfirm"></fixed-button>
     <view class="content-box size16">
       <view class="headline">基本信息</view>
@@ -86,8 +86,8 @@
       </u--form>
     </view>
     <view class="content-box size16">
-      <view class="headline">基本信息</view>
-      <u-form :model="jobExpectations" ref="basicRef" labelWidth="auto">
+      <view class="headline">求职期望</view>
+      <u-form :model="jobExpectations" labelWidth="auto">
         <u-form-item prop="job" label="期望岗位：" borderBottom>
           <u--input v-model="jobExpectations.job" border="none"></u--input>
         </u-form-item>
@@ -107,7 +107,7 @@
       <view v-for="(item, index) in educations" :key="index">
         <u-form
           :model="item"
-          :ref="`educationsRef${index}`"
+          :ref="`educationRef${index}`"
           labelWidth="auto"
           :rules="educationsRules"
         >
@@ -283,6 +283,98 @@
         </view>
       </view>
     </view>
+    <view class="content-box size16 experience">
+      <view class="flex-box">
+        <view class="headline"> 项目经历 </view>
+        <add-button
+          @click.native="addExperience('projectExperience')"
+        ></add-button>
+      </view>
+      <view v-for="(item, index) in projectExperiences" :key="index">
+        <u-form
+          :ref="'projectExperienceRef' + index"
+          :model="item"
+          labelWidth="auto"
+          :rules="internshipExperiencesRules"
+        >
+          <u-form-item prop="projectName" label="项目名称：" required>
+            <u--input v-model="item.projectName" border="none"></u--input>
+          </u-form-item>
+          <u-form-item
+            prop="start"
+            label="开始时间："
+            @click="clickShow(item, 'start')"
+            required
+          >
+            <u--input
+              v-model="item.start.time"
+              disabled
+              placeholder="请选择开始时间"
+              border="none"
+            ></u--input>
+            <u-icon slot="right" name="arrow-right"></u-icon>
+            <custom-datetime-picker
+              title="开始时间"
+              :initTime="item.start.time"
+              :pickShow.sync="item.start.show"
+              @confirm="timeConfirm($event, 'start', item)"
+            ></custom-datetime-picker>
+          </u-form-item>
+          <u-form-item
+            prop="end"
+            label="结束时间："
+            @click="clickShow(item, 'end')"
+            required
+          >
+            <u--input
+              v-model="item.end.time"
+              disabled
+              placeholder="请选择结束时间"
+              border="none"
+            ></u--input>
+            <u-icon slot="right" name="arrow-right"></u-icon>
+            <custom-datetime-picker
+              title="结束时间"
+              :initTime="item.end.time"
+              :pickShow.sync="item.end.show"
+              @confirm="timeConfirm($event, 'end', item)"
+            ></custom-datetime-picker>
+          </u-form-item>
+          <u-form-item prop="job" label="实习岗位：" required>
+            <u--input
+              v-model="item.job"
+              border="none"
+              placeholder="请输入实习岗位名称"
+            ></u--input>
+          </u-form-item>
+          <view class="details-box">
+            <u-form-item prop="details" label="工作内容：">
+              <u--textarea
+                v-model="item.details"
+                count
+                maxlength="1000"
+              ></u--textarea>
+            </u-form-item>
+          </view>
+        </u-form>
+        <view
+          class="button--size"
+          @click="removeExperience('projectExperience', index)"
+        >
+          <u-button text="删除" type="error"></u-button>
+        </view>
+      </view>
+    </view>
+    <view class="content-box size16">
+      <view class="headline"> 自我评价 </view>
+      <view class="u-form selfEvaluation">
+        <u--textarea
+          v-model="selfEvaluation"
+          count
+          maxlength="1000"
+        ></u--textarea>
+      </view>
+    </view>
   </view>
 </template>
 <script src="./component.js"></script>
@@ -299,6 +391,9 @@
     display: flex;
     justify-content: space-between;
     align-content: center;
+  }
+  .selfEvaluation {
+    font-size: 15px;
   }
 }
 ::v-deep .experience {

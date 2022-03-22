@@ -4,23 +4,23 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-14 19:56:39
+ * @LastEditTime: 2022-03-20 21:08:01
  */
 const state = () => {
   return {
     isLogin: true,
     // isConfirm: false,
-    identity: 'student',
+    identity: 'company',
     // identityArray: []
     identityArray: [
       {
         name: '学生',
         key: 'student',
       },
-      // {
-      //   name: '企业',
-      //   key: 'company',
-      // },
+      {
+        name: '企业',
+        key: 'company',
+      },
     ],
   }
 }
