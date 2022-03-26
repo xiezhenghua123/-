@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-21 18:35:48
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-22 22:35:06
+ * @LastEditTime: 2022-03-23 15:10:49
 -->
 <template>
   <view>
@@ -75,16 +75,7 @@ export default {
       ],
     }
   },
-  methods: {
-    clickToDetails(item) {
-      console.log(JSON.stringify(item))
-      uni.navigateTo({
-        url: `/pages/complain-manage/details/index?object=${JSON.stringify(
-          item
-        )}`,
-      })
-    },
-  },
+  methods: {},
 }
 </script>
 <style lang="scss" scoped>

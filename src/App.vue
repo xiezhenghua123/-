@@ -4,12 +4,11 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:34:01
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-22 16:51:24
+ * @LastEditTime: 2022-03-25 15:28:35
 -->
 <script>
 export default {
   onLaunch: function () {
-    document.body.addEventListener('touchstart', function () {})
     console.log('App Launch')
   },
   onShow: function () {
@@ -18,6 +17,7 @@ export default {
   onHide: function () {
     console.log('App Hide')
   },
+  onUnload() {},
 }
 </script>
 

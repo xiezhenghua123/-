@@ -2,19 +2,20 @@
  * @Descripttion: 
  * @version: 
  * @Author: ZhenghuaXie
+ * @Date: 2022-03-24 15:25:48
+ * @LastEditors: ZhenghuaXie
+ * @LastEditTime: 2022-03-24 15:31:54
+-->
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
  * @LastEditTime: 2022-03-24 15:06:09
 -->
 <template>
   <view>
-    <fixed-button
-      text="编辑"
-      type="primary"
-      shape="circle"
-      @click="clickEdit"
-      v-show="show"
-    ></fixed-button>
     <view class="content-box size16">
       <view class="every">
         <view class="every_title"> 企业名称：</view>
@@ -61,10 +62,9 @@
 </template>
 
 <script>
-import companyData from './data.js'
-import minix from '../minix/index.js'
+import companyData from '../../enterprise-information/data.js'
+
 export default {
-  mixins: [minix],
   data() {
     return {
       companyData: {},
@@ -72,14 +72,11 @@ export default {
   },
   onLoad() {
     this.companyData = companyData
+    uni.setNavigationBarTitle({
+      title: this.companyData.name,
+    })
   },
-  methods: {
-    clickEdit() {
-      uni.navigateTo({
-        url: '/pages/enterprise-information/edit/index',
-      })
-    },
-  },
+  methods: {},
 }
 </script>
 

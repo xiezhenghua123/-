@@ -90,6 +90,42 @@
       "style": {
         "navigationBarTitleText": "投诉详情"
       }
+    },
+    {
+      "path": "pages/components/fullTime-details/index",
+      "style": {
+        "navigationBarTitleText": "职位详情"
+      }
+    },
+    {
+      "path": "pages/components/partTime-details/index",
+      "style": {
+        "navigationBarTitleText": "职位详情"
+      }
+    },
+    {
+      "path": "pages/components/person-details/index",
+      "style": {
+        "navigationBarTitleText": "人员详情"
+      }
+    },
+    {
+      "path": "pages/components/company-details/index",
+      "style": {
+        "navigationBarTitleText": "企业详情"
+      }
+    },
+    {
+      "path": "pages/my-release/candidate/index",
+      "style": {
+        "navigationBarTitleText": "应聘者"
+      }
+    },
+    {
+      "path": "pages/complain-manage/complainant-upload/index",
+      "style": {
+        "navigationBarTitleText": "投诉材料上传"
+      }
     }
   ],
   "tabBar": {

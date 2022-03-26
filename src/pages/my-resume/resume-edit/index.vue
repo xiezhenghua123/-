@@ -4,11 +4,15 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-13 18:51:08
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-21 15:22:04
+ * @LastEditTime: 2022-03-26 22:48:29
 -->
 <template>
   <view class="mb-10">
-    <fixed-button text="确认" @click="clickConfirm"></fixed-button>
+    <fixed-button
+      text="确认"
+      @click="clickConfirm"
+      v-show="show"
+    ></fixed-button>
     <view class="content-box size16">
       <view class="headline">基本信息</view>
       <u--form
@@ -20,7 +24,7 @@
         <u-form-item prop="headPhoto" label="头像：" required>
           <u-upload
             maxCount="1"
-            :fileList="basic.headPhoto"
+            :fileList="basic.headPhoto ? [{ url: basic.headPhoto }] : []"
             name="avatar"
             @delete="deletePic"
             @afterRead="afterRead"

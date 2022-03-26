@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-26 21:14:32
+ * @LastEditTime: 2022-03-26 21:14:57
 -->
 <template>
   <view>
@@ -14,39 +14,36 @@
       class="container m-10"
       @click="clickToDetails(item)"
     >
-      <u-swipe-action>
-        <u-swipe-action-item :options="options">
-          <touch-hover>
-            <view class="box">
-              <view class="box-left">
-                <view class="name">{{ item.content }}</view>
-                <text class="status"
-                  >状态：<text>{{ item.status }}</text></text
-                >
-                <text class="type"
-                  >类型：<text>{{ item.type }}</text></text
-                >
-              </view>
-              <view class="box-right">
-                <view class="payMent">{{ item.payMent }}</view>
+      <touch-hover>
+        <view class="box">
+          <view class="box-left">
+            <view class="name">{{ item.content }}</view>
+            <text class="status"
+              >状态：<text>{{ item.status }}</text></text
+            >
+            <text class="type"
+              >类型：<text>{{ item.type }}</text></text
+            >
+          </view>
+          <view class="box-right">
+            <view class="payMent">{{ item.payMent }}</view>
 
-                <view
-                  class="button"
-                  @click.native.stop="clickToCandidate(item.status)"
-                >
-                  <u-button text="查看应聘者" type="primary"></u-button>
-                </view>
-              </view>
+            <view class="button" @click.native.stop="complete">
+              <u-button
+                :disabled="item.status === '已完成'"
+                text="确认完成"
+                :type="item.status === '已完成' ? 'info' : 'primary'"
+              ></u-button>
             </view>
-          </touch-hover>
-        </u-swipe-action-item>
-      </u-swipe-action>
+          </view>
+        </view>
+      </touch-hover>
     </view>
   </view>
 </template>
 
 <script>
-import touchHover from '../../components/touch-hover/touch-hover.vue'
+import touchHover from '../../../../components/touch-hover/touch-hover.vue'
 export default {
   components: { touchHover },
   data() {
@@ -55,42 +52,28 @@ export default {
         {
           content: '琴湖快递拿到北青',
           employer: '张三',
+          candidate: '李四',
           type: '兼职',
           details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
           position: '湘潭大学',
           payMent: '10元',
           start: '2022年3月1日',
           end: '2022年3月1日',
-          status: '招聘中',
+          education: '本科',
+          status: '进行中',
         },
         {
           content: '琴湖快递拿到北青',
           employer: '张三',
+          candidate: '李四',
           type: '兼职',
           details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
           position: '湘潭大学',
           payMent: '10元',
           start: '2022年3月1日',
           end: '2022年3月1日',
-          status: '招聘中',
-        },
-        {
-          content: '前端开发工程师',
-          employer: '阿里巴巴（杭州）',
-          type: '全职',
-          details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
-          position: '杭州',
-          education: '本科',
-          payMent: '15k-20k',
-          scale: '500-999人',
-          cash: '30元',
-          isReturnCash: false,
-          status: '招聘中',
-        },
-      ],
-      options: [
-        {
-          text: '取消发布',
+          education: '不限',
+          status: '已完成',
         },
       ],
     }
@@ -103,21 +86,17 @@ export default {
         uni.navigateTo({
           url: `/pages/components/fullTime-details/index?data=${JSON.stringify(
             item
-          )}&key=myRealease`,
+          )}&key=releaseOrder`,
         })
       } else {
         uni.navigateTo({
           url: `/pages/components/partTime-details/index?data=${JSON.stringify(
             item
-          )}&key=myRealease`,
+          )}&key=releaseOrder`,
         })
       }
     },
-    clickToCandidate(status) {
-      uni.navigateTo({
-        url: '/pages/my-release/candidate/index',
-      })
-    },
+    complete() {},
   },
 }
 </script>

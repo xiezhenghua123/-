@@ -2,14 +2,14 @@
  * @Descripttion: 
  * @version: 
  * @Author: ZhenghuaXie
- * @Date: 2022-03-11 22:35:51
+ * @Date: 2022-03-23 15:03:05
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-26 21:14:32
+ * @LastEditTime: 2022-03-26 21:14:09
 -->
 <template>
   <view>
     <view
-      v-for="(item, index) in initData"
+      v-for="(item, index) in allData"
       :key="index"
       class="container m-10"
       @click="clickToDetails(item)"
@@ -18,23 +18,15 @@
         <u-swipe-action-item :options="options">
           <touch-hover>
             <view class="box">
-              <view class="box-left">
-                <view class="name">{{ item.content }}</view>
-                <text class="status"
-                  >状态：<text>{{ item.status }}</text></text
-                >
-                <text class="type"
-                  >类型：<text>{{ item.type }}</text></text
-                >
+              <view class="box_left">
+                <view class="content">{{ item.content }}</view>
+                <text class="name">{{ item.employer }}</text>
+                <text class="type">{{ item.type }}</text>
               </view>
-              <view class="box-right">
-                <view class="payMent">{{ item.payMent }}</view>
-
-                <view
-                  class="button"
-                  @click.native.stop="clickToCandidate(item.status)"
-                >
-                  <u-button text="查看应聘者" type="primary"></u-button>
+              <view class="box_right">
+                <view class="payment">{{ item.payMent }}</view>
+                <view class="button" @click.native.stop="relation">
+                  <u-button text="我要应聘" type="primary"></u-button>
                 </view>
               </view>
             </view>
@@ -44,14 +36,23 @@
     </view>
   </view>
 </template>
-
 <script>
-import touchHover from '../../components/touch-hover/touch-hover.vue'
+import touchHover from '../../../components/touch-hover/touch-hover.vue'
 export default {
   components: { touchHover },
+  name: 'student-favorite',
   data() {
     return {
-      initData: [
+      options: [
+        {
+          text: '删除',
+          style: {
+            backgroundColor: '#dd524d',
+          },
+        },
+      ],
+      // 兼职
+      partTime: [
         {
           content: '琴湖快递拿到北青',
           employer: '张三',
@@ -72,6 +73,20 @@ export default {
           payMent: '10元',
           start: '2022年3月1日',
           end: '2022年3月1日',
+          status: '招聘中',
+        },
+      ],
+      // 全职
+      fullTime: [
+        {
+          content: '前端开发工程师',
+          employer: '阿里巴巴（杭州）',
+          type: '全职',
+          details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
+          position: '杭州',
+          education: '本科',
+          payMent: '15k-20k',
+          scale: '500-999人',
           status: '招聘中',
         },
         {
@@ -83,72 +98,36 @@ export default {
           education: '本科',
           payMent: '15k-20k',
           scale: '500-999人',
-          cash: '30元',
-          isReturnCash: false,
           status: '招聘中',
-        },
-      ],
-      options: [
-        {
-          text: '取消发布',
         },
       ],
     }
   },
+  computed: {
+    allData() {
+      return [...this.fullTime, ...this.partTime]
+    },
+  },
   methods: {
-    // 兼容小程序的空函数
-    emptyF() {},
+    relation() {},
     clickToDetails(item) {
       if (item.type === '全职') {
         uni.navigateTo({
           url: `/pages/components/fullTime-details/index?data=${JSON.stringify(
             item
-          )}&key=myRealease`,
+          )}&key=myFavorite`,
         })
       } else {
         uni.navigateTo({
           url: `/pages/components/partTime-details/index?data=${JSON.stringify(
             item
-          )}&key=myRealease`,
+          )}&key=myFavorite`,
         })
       }
-    },
-    clickToCandidate(status) {
-      uni.navigateTo({
-        url: '/pages/my-release/candidate/index',
-      })
     },
   },
 }
 </script>
-
 <style lang="scss" scoped>
-.box {
-  display: flex;
-  justify-content: space-between;
-  padding: 15rpx 30rpx;
-  align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  .name {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-
-  .box-right {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .type {
-    margin-left: 10px;
-  }
-  .payMent {
-    color: #02a7f0;
-    margin-bottom: 8px;
-    font-weight: bold;
-  }
-}
+@import '../style.scss';
 </style>

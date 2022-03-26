@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-13 14:01:58
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-14 21:00:19
+ * @LastEditTime: 2022-03-24 15:09:14
 -->
 <template>
   <!-- <view></view> -->
@@ -20,6 +20,9 @@
 <script>
 export default {
   name: 'fixed-button',
+  data() {
+    return {}
+  },
   props: {
     type: {
       type: String,
@@ -34,6 +37,7 @@ export default {
       default: 'circle',
     },
   },
+
   methods: {
     click() {
       this.$emit('click')

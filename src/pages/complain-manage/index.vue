@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-22 22:37:41
+ * @LastEditTime: 2022-03-26 18:53:33
 -->
 <template>
   <view>
@@ -14,6 +14,8 @@
         :current="current"
         @click="click"
         :activeStyle="activeStyle"
+        lineWidth="30"
+        :scrollable="false"
       ></u-tabs>
     </u-sticky>
     <be-complainant v-if="current === 1"></be-complainant>

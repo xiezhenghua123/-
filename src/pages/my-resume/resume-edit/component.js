@@ -4,11 +4,14 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-17 15:24:44
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-21 14:55:50
+ * @LastEditTime: 2022-03-26 22:44:43
  */
 import { name, tel } from 'data/rules.js'
 import data from '../data.js'
+import minix from '../../minix/index.js'
+
 export default {
+  mixins: [minix],
   data() {
     return {
       internshipExperience: {
@@ -124,7 +127,6 @@ export default {
           required: true,
           message: '请上传头像',
           validator: (rule, value, callback) => {
-            console.log(value)
             return !!value.length
           },
           trigger: ['blur', 'change'],
@@ -173,16 +175,8 @@ export default {
       projectExperiences,
       selfEvaluation,
     } = data
-    basic.forEach(item => {
-      if (item.key === 'headPhoto') {
-        this.$set(this.basic, item.key, [{ url: item.content }])
-      } else {
-        this.$set(this.basic, item.key, item.content)
-      }
-    })
-    jobExpectations.forEach(item => {
-      this.$set(this.jobExpectations, item.key, item.content)
-    })
+    this.basic = basic
+    this.jobExpectations = jobExpectations
     this.educations = educations.map(item => {
       return {
         ...item,
@@ -280,11 +274,11 @@ export default {
       this.maxEducationShow = false
     },
     deletePic() {
-      this.basic.headPhoto = []
+      this.basic.headPhoto = ''
       this.$refs.basicRef.validateField('headPhoto')
     },
     afterRead(event) {
-      this.basic.headPhoto = [{ url: event.file.url }]
+      this.basic.headPhoto = event.file.url
       this.$refs.basicRef.validateField('headPhoto')
     },
     rankSelect(value, index, item) {

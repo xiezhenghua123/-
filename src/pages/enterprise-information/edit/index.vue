@@ -4,11 +4,15 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-20 21:23:45
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-22 22:50:15
+ * @LastEditTime: 2022-03-24 15:05:32
 -->
 <template>
   <view class="mb-10">
-    <fixed-button text="确认" @click="clickConfirm"></fixed-button>
+    <fixed-button
+      text="确认"
+      @click="clickConfirm"
+      v-show="show"
+    ></fixed-button>
     <view class="content-box size16">
       <view class="ml-10">
         <u-form
@@ -104,8 +108,10 @@
 
 <script>
 import initData from '../data.js'
+import minix from '../../minix/index.js'
 
 export default {
+  mixins: [minix],
   data() {
     return {
       establishedTimeShow: false,

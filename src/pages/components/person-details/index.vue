@@ -2,19 +2,20 @@
  * @Descripttion: 
  * @version: 
  * @Author: ZhenghuaXie
+ * @Date: 2022-03-24 13:44:40
+ * @LastEditors: ZhenghuaXie
+ * @LastEditTime: 2022-03-24 15:18:33
+-->
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-24 15:01:35
+ * @LastEditTime: 2022-03-24 13:54:31
 -->
 <template>
   <view class="mb-10">
-    <fixed-button
-      type="primary"
-      text="编辑"
-      shape="circle"
-      @click="clickEdit"
-      v-show="show"
-    ></fixed-button>
     <view class="content-box size16">
       <view class="headline">基本信息</view>
 
@@ -38,7 +39,7 @@
       </view>
       <view class="every">
         <view class="every_title">联系电话 </view>
-        <view class="every_content">{{ resumeData.basic.tel }}</view>
+        <view class="every_content">{{ telHide(resumeData.basic.tel) }}</view>
       </view>
       <view class="every">
         <view class="every_title">最高学历 </view>
@@ -116,26 +117,29 @@
         <text space="nbsp">{{ resumeData.selfEvaluation }}</text>
       </view>
     </view>
+    <view class="relation-bt m-10">
+      <u-button text="联系求职者" type="primary"></u-button>
+    </view>
   </view>
 </template>
 
 <script>
-import resumeData from './data.js'
-import mixins from '../minix/index.js'
 export default {
-  mixins: [mixins],
   data() {
     return {
-      // show: true,
-      resumeData: resumeData,
+      resumeData: {},
     }
   },
+  onLoad(options) {
+    this.resumeData = JSON.parse(options.data)
 
+    uni.setNavigationBarTitle({
+      title: this.resumeData.basic.name,
+    })
+  },
   methods: {
-    clickEdit() {
-      uni.navigateTo({
-        url: '/pages/my-resume/resume-edit/index',
-      })
+    telHide(tel) {
+      return tel.replace(tel.slice(3, 7), '****')
     },
   },
 }
@@ -156,6 +160,11 @@ export default {
   &_name {
     font-size: 16px;
     font-weight: bold;
+  }
+}
+::v-deep .relation-bt {
+  .u-button__text {
+    font-size: 16px !important;
   }
 }
 </style>
