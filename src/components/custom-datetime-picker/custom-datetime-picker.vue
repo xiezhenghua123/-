@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-16 19:28:00
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-16 20:30:43
+ * @LastEditTime: 2022-03-29 13:45:29
 -->
 <template>
   <u-datetime-picker
@@ -13,16 +13,20 @@
     v-model="time"
     :show="show"
     :formatter="formatter"
-    mode="year-month"
     @confirm="timeConfirm"
     @close="close"
     @cancel="cancel"
+    :mode="mode"
   ></u-datetime-picker>
 </template>
 <script>
 export default {
   name: 'custom-datetime-picker',
   props: {
+    mode: {
+      type: String,
+      default: 'year-month',
+    },
     title: {
       type: String,
       default: '',
@@ -33,6 +37,7 @@ export default {
     },
     initTime: {
       type: String,
+      dafault: '-',
     },
   },
   watch: {
@@ -71,8 +76,21 @@ export default {
       }
       return value
     },
+    getTimeFormat(type) {
+      switch (type) {
+        case 'year-month':
+          return 'yyyy-mm'
+          break
+        case 'date':
+          return 'yyyy-mm-dd'
+          break
+      }
+    },
     timeConfirm(e) {
-      this.$emit('confirm', uni.$u.timeFormat(e.value, 'yyyy-mm'))
+      this.$emit(
+        'confirm',
+        uni.$u.timeFormat(e.value, this.getTimeFormat(this.mode))
+      )
       this.show = false
       this.$emit('update:pickShow', this.show)
     },

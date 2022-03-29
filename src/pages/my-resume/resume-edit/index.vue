@@ -4,10 +4,11 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-13 18:51:08
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-26 22:48:29
+ * @LastEditTime: 2022-03-29 14:32:30
 -->
 <template>
   <view class="mb-10">
+    <u-toast ref="uToast"></u-toast>
     <fixed-button
       text="确认"
       @click="clickConfirm"

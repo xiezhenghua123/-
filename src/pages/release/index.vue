@@ -1,52 +1,83 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: ZhenghuaXie
+ * @Date: 2022-03-11 22:35:51
+ * @LastEditors: ZhenghuaXie
+ * @LastEditTime: 2022-03-29 14:45:18
+-->
 <template>
-	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
-		<view class="text-area">
-			<text class="title">{{title}}</text>
-		</view>
-	</view>
+  <view class="m-10">
+    <view v-if="identity && isLogin">
+      <view>
+        <view class="title"> 职位类型 </view>
+        <view class="select">
+          <u-radio-group v-model="current">
+            <u-radio
+              v-for="item in radioList"
+              :key="item.key"
+              :name="item.key"
+              :label="item.name"
+              @change="change"
+              labelSize="16"
+              :disabled="item.key === 'fullTime' && identity === 'student'"
+            ></u-radio>
+          </u-radio-group>
+        </view>
+      </view>
+      <full-time v-if="current === 'fullTime'"></full-time>
+      <part-time v-else-if="current === 'partTime'"></part-time>
+    </view>
+    <confirm v-else></confirm>
+  </view>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				title: 'Hello'
-			}
-		},
-		onLoad() {
+import confirm from '@/components/confirm/index.vue'
+import { mapState } from 'vuex'
+import fullTime from './fullTime/index.vue'
+import partTime from './partTime/index.vue'
 
-		},
-		methods: {
-
-		}
-	}
+export default {
+  components: {
+    fullTime,
+    partTime,
+    confirm,
+  },
+  data() {
+    return {
+      current: '',
+      radioList: [
+        {
+          name: '兼职',
+          key: 'partTime',
+        },
+        {
+          name: '全职',
+          key: 'fullTime',
+        },
+      ],
+    }
+  },
+  computed: {
+    ...mapState('appState', ['identity', 'isLogin']),
+  },
+  onLoad() {},
+  methods: {
+    change(data) {},
+  },
+}
 </script>
 
-<style>
-	.content {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.logo {
-		height: 200rpx;
-		width: 200rpx;
-		margin-top: 200rpx;
-		margin-left: auto;
-		margin-right: auto;
-		margin-bottom: 50rpx;
-	}
-
-	.text-area {
-		display: flex;
-		justify-content: center;
-	}
-
-	.title {
-		font-size: 36rpx;
-		color: #8f8f94;
-	}
+<style lang="scss" scoped>
+.title {
+  font-size: 20px;
+  font-weight: bold;
+}
+::v-deep .select {
+  margin-top: 10px;
+  .u-radio {
+    margin-left: 20px;
+  }
+}
 </style>

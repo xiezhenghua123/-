@@ -1,5 +1,6 @@
 <template>
   <view class="container">
+    <u-toast ref="uToast"></u-toast>
     <view class="top">
       <view class="message">
         <u-avatar :src="src" size="60"></u-avatar>
@@ -17,7 +18,7 @@
       </view>
     </view>
     <u-divider class="divider"></u-divider>
-    <view class="content" v-if="identity">
+    <view class="content" v-if="identity && isLogin">
       <block v-for="item in feature_data" :key="item.key">
         <view @click="clickFeature(item.key)" class="content_every">
           <view class="feature">
@@ -40,7 +41,6 @@
       </block>
     </view>
     <confirm v-else></confirm>
-    <u-notify ref="uNotify" message="请登录"></u-notify>
     <!-- 身份切换 -->
     <u-modal
       :show="confirmAnother"
@@ -127,27 +127,24 @@ export default {
     },
     change() {
       if (!this.isLogin) {
-        uni.showToast({
-          title: '请先登录',
-          mask: true,
-          icon: 'error',
+        this.$refs.uToast.show({
+          message: '请先登录',
+          type: 'error',
         })
         return false
       }
       if (!this.identityArray.length) {
-        uni.showToast({
-          title: '请先认证身份',
-          mask: true,
-          icon: 'error',
+        this.$refs.uToast.show({
+          message: '请先认证身份',
+          type: 'error',
         })
       } else if (this.identityArray.length < 2) {
         this.confirmAnother = true
       } else {
         this.changeIdentity().then(() => {
-          uni.showToast({
-            title: '切换成功',
-            mask: true,
-            icon: 'success',
+          this.$refs.uToast.show({
+            message: '切换成功',
+            type: 'success',
           })
         })
       }

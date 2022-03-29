@@ -45,10 +45,11 @@
     }
     .feature {
       display: flex;
-      height: 80rpx;
+      // height: 80rpx;
       align-items: center;
       justify-content: space-between;
       margin: 0 40rpx;
+      padding: 15rpx 0;
       .left {
         display: flex;
         align-items: center;

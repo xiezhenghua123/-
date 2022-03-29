@@ -225,9 +225,9 @@ export default {
           this.$methods.timeChange.timestamp(item['start'].time) >=
           this.$methods.timeChange.timestamp(e)
         ) {
-          uni.showToast({
-            title: '结束时间不能小于开始时间',
-            icon: 'error',
+          this.$refs.uToast.show({
+            message: '结束时间不能小于开始时间',
+            type: 'error',
           })
           return false
         }
@@ -236,9 +236,9 @@ export default {
           this.$methods.timeChange.timestamp(item['end'].time) <=
           this.$methods.timeChange.timestamp(e)
         ) {
-          uni.showToast({
-            title: '开始时间不能小于结束时间',
-            icon: 'error',
+          this.$refs.uToast.show({
+            message: '开始时间不能大于结束时间',
+            type: 'error',
           })
           return false
         }

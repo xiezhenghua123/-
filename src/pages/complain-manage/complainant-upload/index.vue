@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-26 23:03:09
+ * @LastEditTime: 2022-03-27 11:13:02
 -->
 <template>
   <view class="m-10">
@@ -52,6 +52,7 @@ export default {
     },
     afterRead(file, lists, name) {
       this.fileList.push({ url: file.url })
+      console.log(file)
     },
   },
 }

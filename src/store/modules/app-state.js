@@ -4,13 +4,13 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-23 20:46:42
+ * @LastEditTime: 2022-03-29 14:45:39
  */
 const state = () => {
   return {
     isLogin: true,
     // isConfirm: false,
-    identity: 'student',
+    identity: 'company',
     // identityArray: []
     identityArray: [
       {
