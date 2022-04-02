@@ -4,43 +4,40 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-12 15:58:14
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-12 16:19:07
+ * @LastEditTime: 2022-03-31 19:52:44
 -->
 <template>
-  <view class="content">
-    <image class="logo" src="/static/logo.png"></image>
-    <view class="text-area">
-      <text class="title">{{ title }}</text>
+  <view>
+    <view v-if="identity && isLogin">
+      <job-square v-if="identity === 'student'"></job-square>
+      <talent-market v-else></talent-market>
     </view>
+    <confirm v-else></confirm>
   </view>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import confirm from '@/components/confirm/index.vue'
+import jobSquare from './job-square/index.vue'
+import talentMarket from './talent-market/index.vue'
+
 export default {
+  components: {
+    confirm,
+    jobSquare,
+    talentMarket,
+  },
   data() {
     return {
       title: 'Hello',
     }
   },
-  // watch: {
-  //   identity: {
-  //     handler(val) {
-  //       uni.setNavigationBarTitle({
-  //         title: val === 'company' ? '牛人广场' : '职位广场',
-  //       })
-  //     },
-  //     immediate: true,
-  //   },
-  // },
+
   computed: {
-    ...mapState('appState', ['identity']),
+    ...mapState('appState', ['identity', 'isLogin']),
   },
-  onReady() {
-    uni.setNavigationBarTitle({
-      title: this.identity === 'company' ? '牛人广场' : '职位广场',
-    })
-  },
+  onReady() {},
   onShow() {
     uni.setNavigationBarTitle({
       title: this.identity === 'company' ? '牛人广场' : '职位广场',
@@ -51,30 +48,6 @@ export default {
 }
 </script>
 
-<style>
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.logo {
-  height: 200rpx;
-  width: 200rpx;
-  margin-top: 200rpx;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 50rpx;
-}
-
-.text-area {
-  display: flex;
-  justify-content: center;
-}
-
-.title {
-  font-size: 36rpx;
-  color: #8f8f94;
-}
+<style lang="scss" scoped>
+@import './style.scss';
 </style>

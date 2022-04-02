@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-23 15:02:59
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-26 15:03:37
+ * @LastEditTime: 2022-03-31 16:39:42
 -->
 <template>
   <view>
@@ -16,17 +16,22 @@
     >
       <u-swipe-action>
         <u-swipe-action-item :options="options">
-          <view class="box flex-column">
-            <view class="box-top">
+          <view class="box">
+            <view class="box-left">
               <view class="name">{{ item.name }} </view>
-              <view class="maxEducation">{{ item.maxEducation }}</view>
-            </view>
-            <view class="box-bottom">
-              <view class="job">
-                期望岗位：<text>{{ item.job }}</text>
+              <view class="expect">
+                <view class="job mr-10">
+                  <text>{{ item.job }}</text>
+                </view>
+                <view class="salary">
+                  <text>{{ item.salary }}</text>
+                </view>
               </view>
-              <view class="salary">
-                期望薪资：<text>{{ item.salary }}</text>
+            </view>
+            <view class="box-right">
+              <view class="maxEducation">{{ item.maxEducation }}</view>
+              <view class="button">
+                <u-button text="联系" type="primary"></u-button>
               </view>
             </view>
           </view>
@@ -84,24 +89,30 @@ export default {
   flex-direction: column;
 }
 .box {
-  align-items: stretch;
-  &-top {
-    font-size: 16px;
+  &-left {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     margin-bottom: 20rpx;
     .name {
+      font-size: 16px;
       font-weight: bold;
       color: $uni-text-color;
+      margin-bottom: 15px;
     }
+    .expect {
+      display: flex;
+    }
+  }
+  &-right {
+    display: flex;
+    font-size: 16px;
+    flex-direction: column;
+    align-items: center;
     .maxEducation {
       font-weight: bold;
       color: #02a7f0;
+      margin-bottom: 8px;
     }
-  }
-  &-bottom {
-    display: flex;
-    justify-content: space-between;
   }
 }
 </style>

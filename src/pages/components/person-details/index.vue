@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-24 13:44:40
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-24 15:18:33
+ * @LastEditTime: 2022-03-31 16:17:40
 -->
 <!--
  * @Descripttion: 
@@ -118,7 +118,7 @@
       </view>
     </view>
     <view class="relation-bt m-10">
-      <u-button text="联系求职者" type="primary"></u-button>
+      <u-button text="联系求职者" type="primary" size="large"></u-button>
     </view>
   </view>
 </template>

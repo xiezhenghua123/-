@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-26 21:14:42
+ * @LastEditTime: 2022-04-01 19:38:09
 -->
 <template>
   <view>
@@ -17,29 +17,28 @@
       <touch-hover>
         <view class="box">
           <view class="box-left">
-            <view class="name">{{ item.content }}</view>
-            <text class="status"
-              >状态：<text>{{ item.status }}</text></text
-            >
+            <view class="box-left">
+              <view class="flex">
+                <view class="name">{{ item.content }}</view>
+                <view class="tag ml-10">
+                  <u-text
+                    :text="item.status"
+                    type="primary"
+                    size="12"
+                    bold
+                  ></u-text>
+                </view>
+              </view>
+            </view>
             <text class="type"
-              >类型：<text>{{ item.type }}</text></text
+              ><text>{{ item.type }}</text></text
             >
           </view>
           <view class="box-right">
             <view class="payMent">{{ item.payMent }}</view>
 
             <view class="button" @click.native.stop="complete">
-              <u-button
-                :disabled="
-                  item.status === '已完成' || item.status === '面试完成'
-                "
-                text="确认完成"
-                :type="
-                  item.status === '已完成' || item.status === '面试完成'
-                    ? 'info'
-                    : 'primary'
-                "
-              ></u-button>
+              <u-button text="确认完成" type="primary"></u-button>
             </view>
           </view>
         </view>
@@ -67,7 +66,49 @@ export default {
           scale: '500-999人',
           cash: '30元',
           isReturnCash: false,
-          status: '面试完成',
+          status: '您已停止招聘',
+        },
+        {
+          content: '前端开发工程师',
+          employer: '阿里巴巴（杭州）',
+          candidate: '郭小天',
+          type: '全职',
+          details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
+          position: '杭州',
+          education: '本科',
+          payMent: '15k-20k',
+          scale: '500-999人',
+          cash: '30元',
+          isReturnCash: false,
+          status: '应聘者取消应聘',
+        },
+        {
+          content: '前端开发工程师',
+          employer: '阿里巴巴（杭州）',
+          candidate: '郭小天',
+          type: '全职',
+          details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
+          position: '杭州',
+          education: '本科',
+          payMent: '15k-20k',
+          scale: '500-999人',
+          cash: '30元',
+          isReturnCash: false,
+          status: '已拒绝',
+        },
+        {
+          content: '前端开发工程师',
+          employer: '阿里巴巴（杭州）',
+          candidate: '郭小天',
+          type: '全职',
+          details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
+          position: '杭州',
+          education: '本科',
+          payMent: '15k-20k',
+          scale: '500-999人',
+          cash: '30元',
+          isReturnCash: false,
+          status: '已录取',
         },
         {
           content: '前端开发工程师',
@@ -129,13 +170,13 @@ export default {
     align-items: center;
   }
 
-  .type {
-    margin-left: 10px;
-  }
   .payMent {
     color: #02a7f0;
     margin-bottom: 8px;
     font-weight: bold;
   }
+}
+.flex {
+  align-items: stretch;
 }
 </style>

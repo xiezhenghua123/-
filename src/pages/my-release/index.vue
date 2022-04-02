@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-26 21:14:32
+ * @LastEditTime: 2022-04-01 20:09:50
 -->
 <template>
   <view>
@@ -32,7 +32,7 @@
 
                 <view
                   class="button"
-                  @click.native.stop="clickToCandidate(item.status)"
+                  @click.native.stop="clickToCandidate(item.number)"
                 >
                   <u-button text="查看应聘者" type="primary"></u-button>
                 </view>
@@ -61,6 +61,7 @@ export default {
           payMent: '10元',
           start: '2022年3月1日',
           end: '2022年3月1日',
+          number: 0,
           status: '招聘中',
         },
         {
@@ -72,6 +73,7 @@ export default {
           payMent: '10元',
           start: '2022年3月1日',
           end: '2022年3月1日',
+          number: 1,
           status: '招聘中',
         },
         {
@@ -84,13 +86,14 @@ export default {
           payMent: '15k-20k',
           scale: '500-999人',
           cash: '30元',
+          number: 2,
           isReturnCash: false,
           status: '招聘中',
         },
       ],
       options: [
         {
-          text: '取消发布',
+          text: '停止招聘',
         },
       ],
     }
@@ -113,9 +116,9 @@ export default {
         })
       }
     },
-    clickToCandidate(status) {
+    clickToCandidate(number) {
       uni.navigateTo({
-        url: '/pages/my-release/candidate/index',
+        url: '/pages/my-release/candidate/index?number=number',
       })
     },
   },

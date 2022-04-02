@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-23 22:33:52
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-26 21:25:29
+ * @LastEditTime: 2022-03-31 16:17:32
 -->
 <template>
   <view>
@@ -65,29 +65,37 @@
     </view>
     <view class="job-button size16 m-10" v-if="key === 'myFavorite'">
       <view class="apply">
-        <u-button text="我要应聘" type="primary"></u-button>
+        <u-button text="我要应聘" type="primary" size="large"></u-button>
       </view>
 
       <view class="relation">
-        <u-button text="联系企业" type="primary"></u-button>
+        <u-button text="联系企业" type="primary" size="large"></u-button>
       </view>
     </view>
     <view class="job-button size16 m-10" v-if="key === 'applyOrder'">
       <view class="tort" @click="clickToComplainant">
-        <u-button text="被侵权？点击投诉" type="primary"></u-button>
+        <u-button
+          text="被侵权？点击投诉"
+          type="primary"
+          size="large"
+        ></u-button>
       </view>
 
       <view class="relation">
-        <u-button text="联系企业" type="primary"></u-button>
+        <u-button text="联系企业" type="primary" size="large"></u-button>
       </view>
     </view>
     <view class="job-button size16 m-10" v-if="key === 'releaseOrder'">
       <view class="tort" @click="clickToComplainant">
-        <u-button text="被侵权？点击投诉" type="primary"></u-button>
+        <u-button
+          text="被侵权？点击投诉"
+          type="primary"
+          size="large"
+        ></u-button>
       </view>
 
       <view class="relation">
-        <u-button text="联系应聘者" type="primary"></u-button>
+        <u-button text="联系应聘者" type="primary" size="large"></u-button>
       </view>
     </view>
   </view>

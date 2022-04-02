@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-22 16:59:01
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-22 22:31:06
+ * @LastEditTime: 2022-04-01 14:18:15
 -->
 <template>
   <view class="content-box size16">
@@ -48,10 +48,12 @@ export default {
   data() {
     return {
       initData: {},
+      type: '',
     }
   },
   onLoad(options) {
     this.initData = JSON.parse(options.object)
+    this.type = options.type
   },
   methods: {},
 }

@@ -4,12 +4,12 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-21 18:35:48
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-23 15:10:49
+ * @LastEditTime: 2022-04-01 14:17:53
 -->
 <template>
   <view>
     <block v-for="(item, index) in initData" :key="index">
-      <view class="box" @click="clickToDetails(item)">
+      <view class="box" @click="clickToDetails(item, 'complainant')">
         <view class="box-left">
           <text class="name">{{ item.complainant }}</text>
           <text class="status" :class="[getColor(item.status)]">{{

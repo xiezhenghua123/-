@@ -4,14 +4,17 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-29 14:45:39
+ * @LastEditTime: 2022-04-01 22:36:10
  */
+
 const state = () => {
   return {
-    isLogin: true,
+    // isLogin: false,
+    isLogin: false,
     // isConfirm: false,
-    identity: 'company',
-    // identityArray: []
+    identity: 'student',
+    // identityArray: []\
+    userInfo: {},
     identityArray: [
       {
         name: '学生',
@@ -31,6 +34,12 @@ const actions = {
   },
   changeIdentity({ commit }, data) {
     commit('changeIdentity', data)
+  },
+  setLogin({ commit }, data) {
+    commit('setLogin', data)
+  },
+  setUserInfo({ commit }, data) {
+    commit('setUserInfo', data)
   },
 }
 
@@ -53,6 +62,12 @@ const mutations = {
       })[0].key
       state.identity = status
     }
+  },
+  setLogin(state, data) {
+    state.isLogin = data
+  },
+  setUserInfo(state, data) {
+    state.userInfo = data
   },
 }
 

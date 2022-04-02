@@ -1,52 +1,59 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: ZhenghuaXie
+ * @Date: 2022-03-11 22:35:51
+ * @LastEditors: ZhenghuaXie
+ * @LastEditTime: 2022-03-30 16:08:34
+-->
 <template>
-	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
-		<view class="text-area">
-			<text class="title">{{title}}</text>
-		</view>
-	</view>
+  <view>
+    <u-sticky bgColor="#fff">
+      <u-tabs
+        :list="list"
+        :scrollable="false"
+        :current="current"
+        :activeStyle="activeStyle"
+        @click="click"
+      ></u-tabs>
+    </u-sticky>
+    <full-time v-if="current === 1"></full-time>
+    <part-time v-else></part-time>
+  </view>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				title: 'Hello'
-			}
-		},
-		onLoad() {
-
-		},
-		methods: {
-
-		}
-	}
+import fullTime from './fullTime/index.vue'
+import partTime from './partTime/index.vue'
+export default {
+  components: {
+    fullTime,
+    partTime,
+  },
+  data() {
+    return {
+      current: '0',
+      activeStyle: {
+        'font-weight': 'bold',
+        color: '#303133',
+      },
+      list: [
+        {
+          name: '兼职',
+        },
+        {
+          name: '全职',
+        },
+      ],
+    }
+  },
+  onLoad() {},
+  methods: {
+    click(data) {
+      this.current = data.index
+    },
+  },
+}
 </script>
 
-<style>
-	.content {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.logo {
-		height: 200rpx;
-		width: 200rpx;
-		margin-top: 200rpx;
-		margin-left: auto;
-		margin-right: auto;
-		margin-bottom: 50rpx;
-	}
-
-	.text-area {
-		display: flex;
-		justify-content: center;
-	}
-
-	.title {
-		font-size: 36rpx;
-		color: #8f8f94;
-	}
-</style>
+<style></style>

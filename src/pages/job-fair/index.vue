@@ -1,52 +1,52 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: ZhenghuaXie
+ * @Date: 2022-03-11 22:35:51
+ * @LastEditors: ZhenghuaXie
+ * @LastEditTime: 2022-04-02 19:26:51
+-->
 <template>
-	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
-		<view class="text-area">
-			<text class="title">{{title}}</text>
-		</view>
-	</view>
+  <view>
+    <view v-if="isLogin && identity" class="box">
+      <web-view src="https://xtu.jysd.com/teachin"></web-view>
+      <!-- <view v-html="html"></view> -->
+    </view>
+    <confirm v-else></confirm>
+  </view>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				title: 'Hello'
-			}
-		},
-		onLoad() {
+import { mapState } from 'vuex'
+import confirm from '@/components/confirm/index.vue'
+// import { getJobList } from '../../request/index.js'
 
-		},
-		methods: {
-
-		}
-	}
+export default {
+  components: {
+    confirm,
+  },
+  data() {
+    return {
+      title: 'Hello',
+      html: '',
+    }
+  },
+  onLoad() {
+    // getJobList().then(res => {
+    //   this.html = res.data
+    // })
+  },
+  methods: {},
+  computed: {
+    ...mapState('appState', ['isLogin', 'identity']),
+  },
+}
 </script>
 
-<style>
-	.content {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.logo {
-		height: 200rpx;
-		width: 200rpx;
-		margin-top: 200rpx;
-		margin-left: auto;
-		margin-right: auto;
-		margin-bottom: 50rpx;
-	}
-
-	.text-area {
-		display: flex;
-		justify-content: center;
-	}
-
-	.title {
-		font-size: 36rpx;
-		color: #8f8f94;
-	}
+<style lang="scss" scoped>
+.box {
+  ::v-deep .containers .searchbox {
+    display: none;
+  }
+}
 </style>

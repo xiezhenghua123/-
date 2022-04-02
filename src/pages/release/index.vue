@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-29 14:45:18
+ * @LastEditTime: 2022-03-29 19:55:32
 -->
 <template>
   <view class="m-10">
@@ -46,7 +46,7 @@ export default {
   },
   data() {
     return {
-      current: '',
+      current: 'partTime',
       radioList: [
         {
           name: '兼职',

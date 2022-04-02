@@ -40,6 +40,13 @@
               border="none"
             ></u--input>
           </u-form-item>
+          <u-form-item label="联系电话" prop="tel" borderBottom required>
+            <u--input
+              v-model="companyData.tel"
+              border="none"
+              type="number"
+            ></u--input>
+          </u-form-item>
         </u-form>
       </view>
     </u-modal>
@@ -48,7 +55,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { name, socialCode } from '@/data/rules.js'
+import { name, socialCode, tel } from '@/data/rules.js'
 export default {
   name: 'company',
   props: {
@@ -70,8 +77,10 @@ export default {
         number: '',
         industry: '',
         legalPerson: '',
+        tel: '',
       },
       companyFormRules: {
+        tel: tel,
         legalPerson: name,
         number: socialCode,
         industry: {

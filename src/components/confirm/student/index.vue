@@ -13,6 +13,7 @@
           :model="studentData"
           :rules="studentFormRules"
           ref="student"
+          labelWidth="auto"
         >
           <u-form-item label="姓名" prop="name" borderBottom required>
             <u--input v-model="studentData.name" border="none"></u--input>
@@ -20,11 +21,18 @@
           <u-form-item label="学号" prop="number" borderBottom required>
             <u--input v-model="studentData.number" border="none"></u--input>
           </u-form-item>
+          <u-form-item label="联系电话" prop="tel" borderBottom required>
+            <u--input v-model="studentData.tel" border="none"></u--input>
+          </u-form-item>
           <u-form-item label="学院" prop="college" borderBottom required>
             <u--input v-model="studentData.college" border="none"></u--input>
           </u-form-item>
           <u-form-item label="专业" prop="major" borderBottom required>
-            <u--input v-model="studentData.major" border="none"></u--input>
+            <u--input
+              v-model="studentData.major"
+              border="none"
+              type="number"
+            ></u--input>
           </u-form-item>
         </u-form>
       </view>
@@ -34,7 +42,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { name, schoolNumber } from '@/data/rules.js'
+import { name, schoolNumber, tel } from '@/data/rules.js'
 export default {
   name: 'student',
   props: {
@@ -56,8 +64,10 @@ export default {
         number: '',
         college: '',
         major: '',
+        tel: '',
       },
       studentFormRules: {
+        tel: tel,
         name: [...name],
         number: [...schoolNumber],
         college: {

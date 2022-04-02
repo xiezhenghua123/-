@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-26 21:14:57
+ * @LastEditTime: 2022-04-01 19:26:35
 -->
 <template>
   <view>
@@ -17,12 +17,20 @@
       <touch-hover>
         <view class="box">
           <view class="box-left">
-            <view class="name">{{ item.content }}</view>
-            <text class="status"
-              >状态：<text>{{ item.status }}</text></text
-            >
+            <view class="flex">
+              <view class="name">{{ item.content }}</view>
+              <view class="tag ml-10">
+                <u-text
+                  :text="item.status"
+                  type="primary"
+                  size="12"
+                  bold
+                ></u-text>
+              </view>
+            </view>
+
             <text class="type"
-              >类型：<text>{{ item.type }}</text></text
+              ><text>{{ item.type }}</text></text
             >
           </view>
           <view class="box-right">
@@ -49,6 +57,19 @@ export default {
   data() {
     return {
       initData: [
+        {
+          content: '琴湖快递拿到北青',
+          employer: '张三',
+          candidate: '李四',
+          type: '兼职',
+          details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
+          position: '湘潭大学',
+          payMent: '10元',
+          start: '2022年3月1日',
+          end: '2022年3月1日',
+          education: '本科',
+          status: '雇员已取消',
+        },
         {
           content: '琴湖快递拿到北青',
           employer: '张三',
@@ -121,13 +142,16 @@ export default {
     align-items: center;
   }
 
-  .type {
-    margin-left: 10px;
-  }
+  // .type {
+  //   margin-left: 10px;
+  // }
   .payMent {
     color: #02a7f0;
     margin-bottom: 8px;
     font-weight: bold;
   }
+}
+.flex {
+  align-items: stretch;
 }
 </style>

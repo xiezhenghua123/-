@@ -1,0 +1,10 @@
+::v-deep .filter {
+  .select-tab-fixed-top {
+    /* #ifdef H5 */
+    top: 88px !important;
+    /* #endif */
+    /* #ifdef MP-WEIXIN */
+    top: 44px !important;
+    /* #endif */
+  }
+}

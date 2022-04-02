@@ -3,9 +3,9 @@
     <u-toast ref="uToast"></u-toast>
     <view class="top">
       <view class="message">
-        <u-avatar :src="src" size="60"></u-avatar>
+        <u-avatar :src="userInfo.avatarUrl" size="60"></u-avatar>
         <view class="m_right" v-if="isLogin">
-          <view class="message_name">{{ name }}</view>
+          <view class="message_name">{{ userInfo.nickName }}</view>
           <view class="message_identity">{{ getIdentity() }}</view>
         </view>
         <view v-else class="m_right">
@@ -17,8 +17,17 @@
         <text class="text">切换身份</text>
       </view>
     </view>
-    <u-divider class="divider"></u-divider>
+    <view class="divider" :class="{ 'm-10': identity === 'company' }">
+      <u-divider></u-divider>
+    </view>
     <view class="content" v-if="identity && isLogin">
+      <view class="profit-loss p-10 mb-10" v-if="identity === 'student'">
+        <view class="all mb-10">盈亏：xx（元） </view>
+        <view class="flex">
+          <view class="income">收入：xx（元）</view>
+          <view class="disbursement">支出：xx（元）</view>
+        </view>
+      </view>
       <block v-for="item in feature_data" :key="item.key">
         <view @click="clickFeature(item.key)" class="content_every">
           <view class="feature">
@@ -93,7 +102,12 @@ export default {
     },
   },
   computed: {
-    ...mapState('appState', ['isLogin', 'identity', 'identityArray']),
+    ...mapState('appState', [
+      'isLogin',
+      'identity',
+      'identityArray',
+      'userInfo',
+    ]),
   },
   onLoad() {},
   methods: {

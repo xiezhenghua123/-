@@ -34,8 +34,8 @@
       }
     }
   }
-  .divider {
-    margin-top: 0;
+  ::v-deep .divider .u-divider {
+    margin: 0;
   }
   .content {
     &_every {
@@ -66,4 +66,17 @@
 }
 .f-bold {
   font-weight: bold;
+}
+.profit-loss {
+  display: flex;
+  font-weight: bold;
+  align-items: center;
+  flex-direction: column;
+  font-size: 15px;
+  color: #fff;
+  background-color: $u-info-disabled;
+  .flex {
+    justify-content: space-around;
+    width: 100%;
+  }
 }

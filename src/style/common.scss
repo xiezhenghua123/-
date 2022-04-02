@@ -34,6 +34,9 @@ body {
 .m-10 {
   margin: 10px;
 }
+.p-10 {
+  padding: 10px;
+}
 .button--size {
   margin: 5px auto;
   width: 30%;
@@ -46,4 +49,13 @@ body {
 }
 .name--color {
   color: #0000ff;
+}
+.flex {
+  display: flex;
+  align-items: center;
+}
+.button {
+  .u-button {
+    height: 30px !important;
+  }
 }

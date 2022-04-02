@@ -4,16 +4,16 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-22 20:27:06
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-22 22:38:40
+ * @LastEditTime: 2022-04-01 14:17:17
  */
 export default {
   methods: {
-    clickToDetails(item) {
+    clickToDetails(item, type) {
       console.log(JSON.stringify(item))
       uni.navigateTo({
         url: `/pages/complain-manage/details/index?object=${JSON.stringify(
           item
-        )}`,
+        )}&type=${type}`,
       })
     },
     getColor(item) {
