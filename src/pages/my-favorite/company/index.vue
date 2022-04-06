@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-23 15:02:59
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-31 16:39:42
+ * @LastEditTime: 2022-04-06 18:48:06
 -->
 <template>
   <view>
@@ -30,7 +30,7 @@
             </view>
             <view class="box-right">
               <view class="maxEducation">{{ item.maxEducation }}</view>
-              <view class="button">
+              <view class="button" @click.stop="enterChat">
                 <u-button text="联系" type="primary"></u-button>
               </view>
             </view>
@@ -79,6 +79,9 @@ export default {
           data
         )}`,
       })
+    },
+    enterChat() {
+      this.$methods.chat.enterChat('33c3693b-dbb0-4bc9-99c6-fa77b9eb763f')
     },
   },
 }

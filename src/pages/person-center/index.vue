@@ -17,11 +17,11 @@
         <text class="text">切换身份</text>
       </view>
     </view>
-    <view class="divider" :class="{ 'm-10': identity === 'company' }">
+    <view class="divider">
       <u-divider></u-divider>
     </view>
     <view class="content" v-if="identity && isLogin">
-      <view class="profit-loss p-10 mb-10" v-if="identity === 'student'">
+      <view class="profit-loss p-10" v-if="identity === 'student'">
         <view class="all mb-10">盈亏：xx（元） </view>
         <view class="flex">
           <view class="income">收入：xx（元）</view>
@@ -43,8 +43,8 @@
               <u-icon name="arrow-right"></u-icon>
             </view>
           </view>
-          <view>
-            <u-line margin="10rpx 0 10rpx 5%" length="94%"></u-line>
+          <view class="line">
+            <u-line margin="10rpx 0 10rpx 0"></u-line>
           </view>
         </view>
       </block>

@@ -4,9 +4,10 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-16 20:08:30
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-01 22:41:22
+ * @LastEditTime: 2022-04-05 22:08:05
  */
 import timeChange from './time-change.js'
+import chat from './chat.js'
 
 const sleep = time => {
   return new Promise((res, rej) => {
@@ -19,6 +20,7 @@ export default {
     Vue.prototype.$methods = {
       timeChange,
       sleep,
+      chat,
     }
   },
 }

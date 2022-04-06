@@ -4,13 +4,15 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-02 19:26:51
+ * @LastEditTime: 2022-04-04 21:29:58
 -->
 <template>
   <view>
+    <u-toast ref="uToast"></u-toast>
     <view v-if="isLogin && identity" class="box">
-      <web-view src="https://xtu.jysd.com/teachin"></web-view>
-      <!-- <view v-html="html"></view> -->
+      <u-swiper :list="list1"></u-swiper>
+      <u-parse :content="html" :tagStyle="style" @linkTap="linkTap"></u-parse>
+      <u-loadmore :status="status" />
     </view>
     <confirm v-else></confirm>
   </view>
@@ -19,7 +21,7 @@
 <script>
 import { mapState } from 'vuex'
 import confirm from '@/components/confirm/index.vue'
-// import { getJobList } from '../../request/index.js'
+import { getJobList } from '@/api/getJobList.js'
 
 export default {
   components: {
@@ -27,16 +29,62 @@ export default {
   },
   data() {
     return {
-      title: 'Hello',
+      status: 'loading',
       html: '',
+      style: {
+        img: 'height: 55px;width: 55px;',
+      },
+      page: 1,
+      list1: [
+        'https://cdn.uviewui.com/uview/swiper/swiper1.png',
+        'https://cdn.uviewui.com/uview/swiper/swiper2.png',
+        'https://cdn.uviewui.com/uview/swiper/swiper3.png',
+      ],
     }
   },
   onLoad() {
-    // getJobList().then(res => {
-    //   this.html = res.data
-    // })
+    this.getList(true)
   },
-  methods: {},
+  onReachBottom() {
+    this.status = 'loading'
+    this.getList()
+      .then(() => {
+        this.status = 'loadmore'
+      })
+      .catch(rej => {
+        this.status = 'nomore'
+      })
+  },
+  onPullDownRefresh() {
+    uni.startPullDownRefresh()
+    this.getList(true)
+      .then(() => {
+        uni.stopPullDownRefresh()
+      })
+      .catch(res => {
+        this.$refs.uToast.show({
+          type: 'error',
+          message: '加载失败',
+        })
+      })
+  },
+  methods: {
+    linkTap(obj) {
+      console.log(obj)
+    },
+    getList(first = false) {
+      return new Promise((resolve, reject) => {
+        getJobList({ page: first ? 1 : ++this.page })
+          .then(res => {
+            this.html = first ? res.data : this.html + res.data
+            resolve()
+          })
+          .catch(rej => {
+            reject(rej)
+          })
+      })
+    },
+  },
   computed: {
     ...mapState('appState', ['isLogin', 'identity']),
   },
@@ -44,9 +92,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.box {
-  ::v-deep .containers .searchbox {
-    display: none;
-  }
-}
+@import './style.scss';
 </style>

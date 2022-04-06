@@ -1,52 +1,50 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: ZhenghuaXie
+ * @Date: 2022-03-11 22:35:51
+ * @LastEditors: ZhenghuaXie
+ * @LastEditTime: 2022-04-06 20:05:20
+-->
 <template>
-	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
-		<view class="text-area">
-			<text class="title">{{title}}</text>
-		</view>
-	</view>
+  <view class="content">
+    <view v-if="showItem">
+      <conversations v-if="isLogin && identity"></conversations>
+    </view>
+    <confirm v-else></confirm>
+  </view>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				title: 'Hello'
-			}
-		},
-		onLoad() {
+import conversations from './conversations/conversations.vue'
+import { mapState } from 'vuex'
+import confirm from '@/components/confirm/index.vue'
+import minix from '../minix/index.js'
 
-		},
-		methods: {
-
-		}
-	}
+export default {
+  components: {
+    conversations,
+    confirm,
+  },
+  mixins: [minix],
+  data() {
+    return {
+      showItem: true,
+    }
+  },
+  computed: {
+    ...mapState('appState', ['identity', 'isLogin']),
+  },
+  onLoad() {},
+  onPullDownRefresh() {
+    this.showItem = false
+    this.$nextTick(() => {
+      this.showItem = true
+      uni.stopPullDownRefresh()
+    })
+  },
+  methods: {},
+}
 </script>
 
-<style>
-	.content {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.logo {
-		height: 200rpx;
-		width: 200rpx;
-		margin-top: 200rpx;
-		margin-left: auto;
-		margin-right: auto;
-		margin-bottom: 50rpx;
-	}
-
-	.text-area {
-		display: flex;
-		justify-content: center;
-	}
-
-	.title {
-		font-size: 36rpx;
-		color: #8f8f94;
-	}
-</style>
+<style></style>

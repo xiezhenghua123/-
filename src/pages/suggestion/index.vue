@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-12 15:06:12
+ * @LastEditTime: 2022-04-04 21:12:55
 -->
 <template>
   <view>
@@ -19,9 +19,12 @@
       ></u--textarea>
     </view>
     <view class="button-bottom">
-      <u-button type="primary" size="large" @click="submit"
-        ><text class="size18">提交</text></u-button
-      >
+      <u-button
+        type="primary"
+        size="large"
+        text="提交"
+        @click="submit"
+      ></u-button>
     </view>
   </view>
 </template>

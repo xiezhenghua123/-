@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-23 22:33:52
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-31 16:17:14
+ * @LastEditTime: 2022-04-05 22:21:26
 -->
 <template>
   <view>
@@ -61,7 +61,7 @@
         <u-button text="我要应聘" type="primary" size="large"></u-button>
       </view>
 
-      <view class="relation">
+      <view class="relation" @click="enterChat">
         <u-button text="联系雇主" type="primary" size="large"></u-button>
       </view>
     </view>
@@ -74,7 +74,7 @@
         ></u-button>
       </view>
 
-      <view class="relation">
+      <view class="relation" @click="enterChat">
         <u-button text="联系雇员" type="primary" size="large"></u-button>
       </view>
     </view>
@@ -87,7 +87,7 @@
         ></u-button>
       </view>
 
-      <view class="relation">
+      <view class="relation" @click="enterChat">
         <u-button text="联系雇主" type="primary" size="large"></u-button>
       </view>
     </view>
@@ -106,6 +106,9 @@ export default {
     this.key = options.key
   },
   methods: {
+    enterChat() {
+      this.$methods.chat.enterChat('33c3693b-dbb0-4bc9-99c6-fa77b9eb763f')
+    },
     clickToPerson() {},
     clickToComplainant() {
       uni.navigateTo({

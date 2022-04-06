@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-01 22:44:27
+ * @LastEditTime: 2022-04-05 22:20:36
 -->
 <template>
   <view>
@@ -38,6 +38,7 @@
 import { mapState, mapActions } from 'vuex'
 import student from './student/index.vue'
 import company from './company/index.vue'
+import restApi from '@/goEasy/lib/restapi'
 
 export default {
   props: {
@@ -83,7 +84,9 @@ export default {
         desc: '获取头像',
         success(res) {
           that.setLogin(true)
+          uni.setStorageSync('currentUser', restApi.findUser('Mattie', '123'))
           that.setUserInfo(res.userInfo)
+          this.$methods.chat.connect(that)
         },
         fail(res) {
           console.log(res)

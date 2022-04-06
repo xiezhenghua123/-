@@ -1,0 +1,518 @@
+::v-deep .box {
+  * {
+    text-decoration: none;
+  }
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  .mescroll {
+    margin-bottom: 40px;
+  }
+  .JobList {
+    background-color: #fff;
+    padding-top: 98px;
+  }
+  .JobList .text-danger {
+    color: red;
+    border: 1px solid red;
+  }
+  .JobList .no-data {
+    padding: 10px;
+    background-color: #f2f2f2;
+    margin: 10px 0;
+    text-align: center;
+  }
+  .JobList ul {
+    overflow: hidden;
+    padding: 0;
+  }
+  .JobList ul li {
+    padding: 10px 7px 10px 7px;
+    border-bottom: 1px solid #dcdcdc;
+    position: relative;
+  }
+  .JobList ul li a {
+    overflow: hidden;
+    display: block;
+    width: 100%;
+  }
+  .JobList ul li img {
+    height: 55px;
+    width: 55px;
+    position: absolute;
+    left: 7px;
+    border-radius: 50%;
+  }
+  .JobList ul li .center-scl {
+    padding: 0 5px 0 65px !important;
+  }
+  .JobList ul li .center-scl div {
+    padding-right: 30px;
+  }
+  .JobList ul li .center-img {
+    padding-left: 88px !important;
+  }
+  .JobList ul li .center-img .icon-map-marker {
+    margin-left: 0 !important;
+  }
+  .JobList ul li .JobList-center {
+    font-family: PingFang-SC-Regular;
+    font-weight: 400;
+    color: #666666;
+  }
+  /* .JobList ul li .JobList-center  .job-line{
+padding:5px 0;
+}
+.JobList ul li .JobList-center  .job-line span:last-child{
+position: absolute;
+top: 18px;
+right: 10px;
+} */
+  .JobList ul li .JobList-center .job-line .css-title {
+    padding: 0;
+    width: 70%;
+    overflow: hidden;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+    color: #333333;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .JobList ul li .JobList-center .icon-education {
+    background: url('https://xtu.jysd.com/static/wechat-2019/image/University.png')
+      no-repeat left;
+    background-size: 10px;
+    width: 70%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 15px;
+  }
+  .JobList ul li .JobList-center .icon-map-marker {
+    background: url('https://xtu.jysd.com/static/wechat-2019/image/address.png')
+      no-repeat left;
+    background-size: 9px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 15px;
+    width: 30%;
+  }
+  .JobList ul li .JobList-center .icon-time {
+    background: url('https://xtu.jysd.com/static/wechat-2019/image/time.png')
+      no-repeat left;
+    background-size: 10px;
+    padding-left: 15px;
+  }
+  .JobList ul li .JobList-center h5 {
+    /* margin-bottom: 5px; */
+    color: #333333;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0;
+    overflow: hidden;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+    /* display: inline-block; */
+  }
+  .JobList ul li .JobList-center p {
+    color: #666666;
+    font-size: 12px;
+    margin: 0 0 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0;
+  }
+  .JobList ul li .JobList-center p i {
+    margin-right: 2px;
+    font-size: 12px;
+  }
+  .JobList ul li .JobList-center div span {
+    font-size: 12px;
+    padding-left: 12px;
+  }
+  .JobList ul li .JobList-right {
+    float: right;
+    padding: 0;
+    text-align: center;
+  }
+  .JobList ul li .JobList-right p:first-child {
+    font-size: 14px;
+    font-family: PingFang-SC-Medium;
+    font-weight: 500;
+    color: #f5760f;
+    margin-bottom: 5px;
+  }
+  .JobList ul li .JobList-right p:last-child {
+    font-size: 11px;
+    font-family: PingFang-SC-Regular;
+    font-weight: 400;
+    color: #666666;
+  }
+  .JobList .topTips {
+    float: right;
+  }
+  .JobList .invesbtn {
+    background-color: #ddd !important;
+  }
+  .JobList .btn-defalut {
+    position: absolute;
+    right: 15px;
+    top: 42%;
+    background-color: #1e99f0;
+    color: #fff;
+    padding: 0px 10px;
+    border-radius: 5px;
+  }
+  .jobtop {
+    padding-top: 0px;
+  }
+  .basic-details {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #dcdcdc;
+    position: relative;
+  }
+  .basic-details h4 {
+    font-size: 15px;
+    font-family: PingFang-SC-Bold;
+    font-weight: bold;
+    color: #333333;
+    padding-left: 8px;
+    position: relative;
+    margin-bottom: 15px;
+  }
+  .basic-details h4::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 1px;
+    width: 2.5px;
+    height: 14px;
+    background: #1e99f0;
+  }
+  .basic-details p {
+    font-size: 13px;
+    font-family: PingFang-SC-Regular;
+    font-weight: 400;
+    color: #4c4c4c;
+  }
+  .basic-details p span:nth-child(1) {
+    color: #666666;
+  }
+  .basic-details p span:nth-child(2) {
+    color: #333333;
+  }
+  .basic-details .view-all {
+    font-size: 12px;
+    font-family: PingFang-SC-Regular;
+    font-weight: 400;
+    color: #1e99f0;
+    text-align: center;
+    margin-top: 10px;
+  }
+  .basic-details img {
+    width: 40px;
+    height: 40px;
+    float: left;
+  }
+  .basic-details .basic-details-right h5 {
+    font-size: 16px;
+    font-family: PingFang-SC-Medium;
+    font-weight: 500;
+    color: #333333;
+    margin-bottom: 14px;
+  }
+  .basic-details .basic-details-right p {
+    font-size: 10px;
+    font-family: PingFang-SC-Regular;
+    font-weight: 400;
+    color: #666666;
+  }
+  .basic-details i {
+    font-size: 18px;
+    position: absolute;
+    right: 12px;
+    top: 25px;
+    color: #696969;
+  }
+  /* 搴曢儴 */
+  .details-footer {
+    height: 40px;
+  }
+  .details-footer-left div {
+    float: left;
+    text-align: center;
+    font-size: 10px;
+    font-family: PingFang-SC-Medium;
+    font-weight: 500;
+    color: #4a4a4a;
+    padding-top: 5px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .details-footer-left img {
+    width: 14px;
+    height: 14px;
+  }
+  .details-footer-left p {
+    font-size: 10px;
+    margin-top: 3px;
+  }
+  .details-footer .details-footer-right {
+    background-color: #1e99f0;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    color: #fff;
+    font-size: 17px;
+    font-family: PingFang-SC-Medium;
+    font-weight: 503;
+  }
+  .basic-details {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #dcdcdc;
+    position: relative;
+  }
+  .basic-details h4 {
+    font-size: 15px;
+    font-family: PingFang-SC-Bold;
+    font-weight: bold;
+    color: #333333;
+    padding-left: 8px;
+    position: relative;
+    margin-bottom: 15px;
+  }
+  .basic-details h4::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 1px;
+    width: 2.5px;
+    height: 14px;
+    background: #1e99f0;
+  }
+  .basic-details p {
+    font-size: 13px;
+    font-family: PingFang-SC-Regular;
+    font-weight: 400;
+    color: #4c4c4c;
+  }
+  .basic-details p span:nth-child(1) {
+    color: #666666;
+  }
+  .basic-details p span:nth-child(2) {
+    color: #333333;
+  }
+  .basic-details .view-all {
+    font-size: 12px;
+    font-family: PingFang-SC-Regular;
+    font-weight: 400;
+    color: #1e99f0;
+    text-align: center;
+    margin-top: 10px;
+  }
+  .basic-details img {
+    width: 40px;
+    height: 40px;
+    float: left;
+  }
+  .basic-details .basic-details-right h5 {
+    font-size: 15px;
+    font-family: PingFang-SC-Medium;
+    font-weight: 500;
+    color: #333333;
+    margin-bottom: 14px;
+  }
+  .basic-details .basic-details-right p {
+    font-size: 10px;
+    font-family: PingFang-SC-Regular;
+    font-weight: 400;
+    color: #666666;
+  }
+  .basic-details i {
+    font-size: 18px;
+    position: absolute;
+    right: 12px;
+    top: 25px;
+    color: #555;
+  }
+  .schoolTog {
+    width: 55px;
+    height: 55px;
+    line-height: 55px;
+    opacity: 0.7;
+    position: fixed;
+    right: 0;
+    bottom: 14%;
+    border-radius: 50%;
+    background-color: #1e99f0;
+    text-align: center;
+    z-index: 99;
+  }
+  .schoolTog p {
+    color: #fff;
+    font-size: 12px;
+    text-align: center;
+  }
+  .consullist {
+    padding-top: 98px;
+  }
+  .consullist ul li img {
+    width: 55px;
+    border-radius: 5px;
+  }
+  .consullist ul li .fa-angle-right {
+    font-size: 25px;
+    position: absolute;
+    color: #ddd;
+    top: 30px;
+    right: 10px;
+  }
+  .State {
+    border-radius: 2px;
+    font-size: 10px;
+    padding: 0 2px;
+    font-family: PingFang-SC-Regular;
+    margin-right: 3px;
+    display: inline-block;
+    height: 16px;
+    line-height: 16px;
+    vertical-align: top;
+    float: left;
+  }
+  .text-titles {
+    vertical-align: top;
+    font-size: 15px;
+  }
+  .text-success {
+    border: 1px solid #3c763d;
+  }
+  .Alreadyheld {
+    position: absolute;
+    right: 7px;
+    top: 65px;
+    color: #fff;
+    padding: 1px 10px;
+    border-radius: 6px;
+    background-color: rgba(76, 76, 76, 0.7);
+    font-size: 10px;
+    font-family: PingFang-SC-Regular;
+  }
+  .arrow-right {
+    width: 0;
+    height: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 25px solid transparent;
+    border-left: 20px solid red;
+    position: absolute;
+    right: -4px;
+    top: -17px;
+    transform: rotate(-45deg);
+  }
+  .arrow-right span {
+    color: #fff;
+    position: absolute;
+    right: 7px;
+    z-index: 1;
+    top: -5px;
+    font-size: 11px;
+    transform: rotate(44deg);
+  }
+  .Information-List .calendar {
+    position: absolute;
+    right: 9px;
+    top: 8px;
+    font-size: 16px;
+  }
+  .Information-List .calendar-input {
+    width: 95%;
+  }
+  .Information-List .form-group .fa-search {
+    right: 40px !important;
+  }
+  .Information-List-picture {
+    margin-bottom: 45px;
+  }
+  .Information-List-picture ul li {
+    padding: 10px 7px 9px 7px;
+  }
+  .Information-List-picture ul li a img {
+    float: left;
+    position: static;
+    width: 80px;
+  }
+  .Information-List-picture ul li a .JobList-center h5 {
+    min-height: 35px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  #jobList-industry .JobList-center {
+    width: 71%;
+  }
+  .jobList-industry li img {
+    border-radius: 50%;
+  }
+  .recruitList {
+    padding-top: 113px;
+  }
+  .recruitList .JobList-center .icon-map-marker {
+    width: auto !important;
+  }
+  .recruitList ul li img {
+    width: 80px;
+    border-radius: 0 !important;
+  }
+  .scrollerTran {
+    transform: translate(0px, 0px) !important;
+    transition: all 300ms ease !important;
+  }
+  .Recruitment ul li .JobList-center h5 {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: block;
+    padding-bottom: 5px;
+  }
+
+  .switch-tab {
+    height: 40px;
+    width: 100%;
+    white-space: nowrap;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    overflow-x: scroll;
+    overflow-y: hidden;
+    text-align: justify;
+    background: #f4f5f6;
+    padding: 0px 5px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    position: fixed;
+    top: 80px;
+    z-index: 999;
+  }
+  .switch-tab a {
+    height: 40px;
+    line-height: 40px;
+    color: #333;
+    padding: 0 10px;
+    display: inline-block;
+  }
+  .switch-tab .active {
+    border-bottom: 2px solid #0262b4;
+  }
+  .switch-tab::-webkit-scrollbar {
+    display: none;
+  }
+}

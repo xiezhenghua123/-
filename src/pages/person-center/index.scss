@@ -4,7 +4,8 @@
     height: 160rpx;
     align-items: center;
     justify-content: space-between;
-    margin-left: 40rpx;
+    padding-left: 40rpx;
+    background-color: $uni-bg-color-hover;
     .message {
       display: flex;
       align-items: center;
@@ -49,7 +50,7 @@
       align-items: center;
       justify-content: space-between;
       margin: 0 40rpx;
-      padding: 15rpx 0;
+      padding: 10px 0;
       .left {
         display: flex;
         align-items: center;
@@ -60,6 +61,11 @@
       &_name {
         font-size: $uni-font-size-lg;
         font-weight: bold;
+      }
+    }
+    ::v-deep .line {
+      .u-line {
+        margin: 0 !important;
       }
     }
   }

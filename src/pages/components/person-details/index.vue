@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-24 13:44:40
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-31 16:17:40
+ * @LastEditTime: 2022-04-05 22:25:35
 -->
 <!--
  * @Descripttion: 
@@ -117,7 +117,7 @@
         <text space="nbsp">{{ resumeData.selfEvaluation }}</text>
       </view>
     </view>
-    <view class="relation-bt m-10">
+    <view class="relation-bt m-10" @click="enterChat">
       <u-button text="联系求职者" type="primary" size="large"></u-button>
     </view>
   </view>
@@ -138,6 +138,9 @@ export default {
     })
   },
   methods: {
+    enterChat() {
+      this.$methods.chat.enterChat('33c3693b-dbb0-4bc9-99c6-fa77b9eb763f')
+    },
     telHide(tel) {
       return tel.replace(tel.slice(3, 7), '****')
     },
