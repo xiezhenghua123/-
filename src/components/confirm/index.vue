@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-05 22:20:36
+ * @LastEditTime: 2022-04-06 22:52:04
 -->
 <template>
   <view>
@@ -77,6 +77,7 @@ export default {
       wx.login({
         success(res) {
           if (res.code) {
+            // console.log(res.code)
           }
         },
       })
@@ -86,7 +87,7 @@ export default {
           that.setLogin(true)
           uni.setStorageSync('currentUser', restApi.findUser('Mattie', '123'))
           that.setUserInfo(res.userInfo)
-          this.$methods.chat.connect(that)
+          that.$methods.chat.connect(that)
         },
         fail(res) {
           console.log(res)

@@ -4,12 +4,12 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-06 20:05:20
+ * @LastEditTime: 2022-04-06 23:43:02
 -->
 <template>
   <view class="content">
-    <view v-if="showItem">
-      <conversations v-if="isLogin && identity"></conversations>
+    <view v-if="isLogin && identity">
+      <conversations v-if="showItem"></conversations>
     </view>
     <confirm v-else></confirm>
   </view>

@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-23 22:33:52
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-05 22:21:26
+ * @LastEditTime: 2022-04-06 22:55:22
 -->
 <template>
   <view>
@@ -107,7 +107,7 @@ export default {
   },
   methods: {
     enterChat() {
-      this.$methods.chat.enterChat('33c3693b-dbb0-4bc9-99c6-fa77b9eb763f')
+      this.$methods.chat.enterChat('3bb179af-bcc5-4fe0-9dac-c05688484649')
     },
     clickToPerson() {},
     clickToComplainant() {
