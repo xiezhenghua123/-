@@ -127,9 +127,9 @@ export default {
   mounted() {
     //监听会话列表变化
     let self = this
-    this.goEasy.im.on(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, content => {
-      self.renderConversations(content)
-    })
+    // this.goEasy.im.on(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, content => {
+    //   self.renderConversations(content)
+    // })
     //加载会话列表
     this.goEasy.im.latestConversations({
       onSuccess: function (result) {

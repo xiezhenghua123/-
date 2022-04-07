@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-06 22:52:04
+ * @LastEditTime: 2022-04-07 23:13:41
 -->
 <template>
   <view>
@@ -39,6 +39,7 @@ import { mapState, mapActions } from 'vuex'
 import student from './student/index.vue'
 import company from './company/index.vue'
 import restApi from '@/goEasy/lib/restapi'
+import renderConversations from '@/pages/minix/renderConversations'
 
 export default {
   props: {
@@ -50,6 +51,7 @@ export default {
       },
     },
   },
+  mixins: [renderConversations],
   name: 'confirm',
   components: {
     student: student,
@@ -88,6 +90,12 @@ export default {
           uni.setStorageSync('currentUser', restApi.findUser('Mattie', '123'))
           that.setUserInfo(res.userInfo)
           that.$methods.chat.connect(that)
+          that.goEasy.im.on(
+            that.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED,
+            content => {
+              that.renderConversations(content)
+            }
+          )
         },
         fail(res) {
           console.log(res)

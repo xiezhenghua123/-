@@ -4,10 +4,13 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-24 14:50:36
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-06 23:40:15
+ * @LastEditTime: 2022-04-08 00:06:16
  */
 import { mapState } from 'vuex'
+import renderConversations from './renderConversations'
+
 export default {
+  mixins: [renderConversations],
   data() {
     return {
       timer: null,
@@ -17,12 +20,30 @@ export default {
   computed: {
     ...mapState('appState', ['identity', 'isLogin']),
   },
+  onLoad() {
+    this.$methods.chat.connect(this)
+  },
   onShow() {
     if (this.isLogin && this.identity) {
       //监听会话列表变化
       let self = this
       this.goEasy.im.on(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, content => {
         self.renderConversations(content)
+      })
+      this.goEasy.im.latestConversations({
+        onSuccess: function (result) {
+          let content = result.content
+          self.renderConversations(content)
+        },
+        onFailed: function (error) {
+          //获取失败
+          console.log(
+            '失败获取最新会话列表, code:' +
+              error.code +
+              ' content:' +
+              error.content
+          )
+        },
       })
     }
   },
@@ -32,24 +53,5 @@ export default {
     this.timer = setTimeout(() => {
       this.show = true
     }, 300)
-  },
-  methods: {
-    renderConversations(content) {
-      this.conversations = content.conversations || []
-      let unreadTotal = content.unreadTotal
-      this.setUnreadAmount(unreadTotal)
-    },
-    setUnreadAmount(unreadTotal) {
-      if (unreadTotal > 0) {
-        uni.setTabBarBadge({
-          index: 3,
-          text: unreadTotal.toString(),
-        })
-      } else {
-        uni.removeTabBarBadge({
-          index: 3,
-        })
-      }
-    },
   },
 }
