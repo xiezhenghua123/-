@@ -1,12 +1,24 @@
 <template>
-  <view class="container">
+  <view class="container" @click="toolTip = false">
     <u-toast ref="uToast"></u-toast>
     <view class="top">
       <view class="message">
         <u-avatar :src="userInfo.avatarUrl" size="60"></u-avatar>
         <view class="m_right" v-if="isLogin">
           <view class="message_name">{{ userInfo.nickName }}</view>
-          <view class="message_identity">{{ getIdentity() }}</view>
+          <view class="flex">
+            <view class="message_identity">{{ getIdentity() }}</view>
+            <view class="credit-points-box flex ml-10" v-if="identity">
+              信用分：<span>80分</span
+              ><i
+                class="iconfont icon-help"
+                @click.stop="toolTip = !toolTip"
+              ></i>
+              <span v-if="toolTip" class="toolTip"
+                >信用分满分100分，低于80分将无法进行职位应聘和发布</span
+              >
+            </view>
+          </view>
         </view>
         <view v-else class="m_right">
           <view class="message_name">请登录</view>
@@ -77,7 +89,7 @@ export default {
   components: {
     confirm: confirm,
     student: student,
-    company: company,
+    company: company
   },
   data() {
     return {
@@ -87,6 +99,7 @@ export default {
       src: '/static/logo.png',
       name: '黄汉雄',
       feature_data: [],
+      toolTip: false
     }
   },
   watch: {
@@ -98,16 +111,16 @@ export default {
           this.feature_data = feature_data.student
         }
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
   computed: {
     ...mapState('appState', [
       'isLogin',
       'identity',
       'identityArray',
-      'userInfo',
-    ]),
+      'userInfo'
+    ])
   },
   onLoad() {},
   methods: {
@@ -143,14 +156,14 @@ export default {
       if (!this.isLogin) {
         this.$refs.uToast.show({
           message: '请先登录',
-          type: 'error',
+          type: 'error'
         })
         return false
       }
       if (!this.identityArray.length) {
         this.$refs.uToast.show({
           message: '请先认证身份',
-          type: 'error',
+          type: 'error'
         })
       } else if (this.identityArray.length < 2) {
         this.confirmAnother = true
@@ -158,17 +171,17 @@ export default {
         this.changeIdentity().then(() => {
           this.$refs.uToast.show({
             message: '切换成功',
-            type: 'success',
+            type: 'success'
           })
         })
       }
     },
     clickFeature(key) {
       uni.navigateTo({
-        url: `/pages/${key}/index`,
+        url: `/pages/${key}/index`
       })
-    },
-  },
+    }
+  }
 }
 </script>
 

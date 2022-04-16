@@ -538,17 +538,30 @@ export default {
       })
     },
     openFile(e) {
+     console.log(e.currentTarget.dataset.url)
       uni.downloadFile({
         url: e.currentTarget.dataset.url,
         success: function (res) {
           let filePath = res.tempFilePath
-          uni.openDocument({
-            filePath: filePath,
-            showMenu: true,
-            success: function (res) {
-              console.log('打开文档成功')
-            },
-          })
+           uni.saveFile({
+              tempFilePath: res.tempFilePath,
+              success: (resData) => {
+                // 新开页面打开文档，支持格式：doc, xls, ppt, pdf, docx, xlsx, pptx。
+                uni.openDocument({
+                  filePath: resData.savedFilePath,
+                  showMenu: true, // 允许出现分享功能
+                  success: r => {
+                    console.log('openDocument ===> res',r)
+                  },
+                  fail: openError => {
+                    console.log('打开失败: ', openError)
+                  }
+                })
+              },
+              fail: error => {
+                console.log('error: ', error)
+              }
+            })
         },
       })
     },

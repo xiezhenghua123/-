@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'iconfont'; /* Project id 3227631 */
-  src: url('//at.alicdn.com/t/font_3227631_84bc4fjw9np.css');
-  src: url('//at.alicdn.com/t/font_3227631_84bc4fjw9np.woff2?t=1649219947561')
+  src: url('//at.alicdn.com/t/font_3227631_4zd7uraovoh.css');
+  src: url('//at.alicdn.com/t/font_3227631_4zd7uraovoh.woff2?t=1649219947561')
       format('woff2'),
-    url('//at.alicdn.com/t/font_3227631_84bc4fjw9np.woff?t=1649219947561')
+    url('//at.alicdn.com/t/font_3227631_4zd7uraovoh.woff?t=1649219947561')
       format('woff'),
-    url('//at.alicdn.com/t/font_3227631_84bc4fjw9np.ttf?t=1649219947561')
+    url('//at.alicdn.com/t/font_3227631_4zd7uraovoh.ttf?t=1649219947561')
       format('truetype');
 }
 
@@ -99,4 +99,7 @@
 }
 .icon-wj-wjj:before {
   content: '\e7b8';
+}
+.icon-help:before{
+ content:'\e600'
 }
