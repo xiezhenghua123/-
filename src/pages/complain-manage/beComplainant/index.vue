@@ -4,12 +4,12 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-21 18:35:48
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-01 14:17:39
+ * @LastEditTime: 2022-04-16 17:27:48
 -->
 <template>
   <view>
     <block v-for="(item, index) in initData" :key="index">
-      <view class="box" @click="clickToDetails(item, 'beComplainant')">
+      <view class="box m-10" @click="clickToDetails(item, 'beComplainant')">
         <view class="box-left">
           <text class="name">{{ item.complainant }}</text>
           <text class="status primary">{{ getStatus(item.status) }}</text>
@@ -41,7 +41,7 @@ export default {
           status: 'pending',
           reason: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
           measure: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-          time: '2022-2-14-16:00',
+          time: '2022-2-14-16:00'
         },
         {
           complainant: '王五',
@@ -50,7 +50,7 @@ export default {
           status: 'resolve',
           reason: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
           measure: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-          time: '2022-2-14-16:00',
+          time: '2022-2-14-16:00'
         },
         {
           complainant: '王五',
@@ -59,7 +59,7 @@ export default {
           status: 'resolve',
           reason: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
           measure: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-          time: '2022-2-14-16:00',
+          time: '2022-2-14-16:00'
         },
         {
           complainant: '王五',
@@ -69,9 +69,9 @@ export default {
           reason:
             'xxxxxxxxxx\n        xxxxxxxxx\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
           measure: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-          time: '2022-2-14-16:00',
-        },
-      ],
+          time: '2022-2-14-16:00'
+        }
+      ]
     }
   },
 
@@ -82,8 +82,8 @@ export default {
       } else {
         return '已完成'
       }
-    },
-  },
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
