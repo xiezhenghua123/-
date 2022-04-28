@@ -4,29 +4,70 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-02 17:10:08
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-03 19:01:07
+ * @LastEditTime: 2022-04-28 13:32:16
  */
 
-import { apiRoot } from '../requestUrl/index.js'
+import { apiRoot, getJobUrl } from '../requestUrl/index.js'
+import ajax from 'uni-ajax'
+import { errorToast } from '../../components/toast/index.js'
 
-const request = config => {
-  // 处理 apiUrl
-  config.url = apiRoot + config.url
-  // config.url = apiRoot
-  if (!config.data) config.data = {}
-  config.timeout = 300000
-  let promise = new Promise(function (resolve, reject) {
-    uni.request({
-      ...config,
-      success(res) {
-        resolve(res.data)
-      },
-      fail(rej) {
-        reject(rej)
-      },
-    })
-  })
-  return promise
+const baseConfig = {
+  baseURL: apiRoot,
+  header: {
+    Accept: 'application/json, text/plain, */*',
+    'Content-Type': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest'
+  },
+  timeout: 60000
 }
 
-export { request }
+const setInterceptors = instance => {
+  instance.interceptors.request.use(requestInterceptors, error => {
+    return Promise.reject(error)
+  })
+
+  instance.interceptors.response.use(responseInterceptors, error => {
+    return Promise.reject(error)
+  })
+}
+
+const requestInterceptors = config => {
+  return config
+}
+
+const responseInterceptors = response => {
+  const repx = /\/check/
+  if (repx.test(response.config.url)) {
+    return response.data
+  }
+  if (response.config.baseURL == getJobUrl) {
+    return response.data
+  }
+  if (response.data.code != 0) {
+    errorToast(response.data.status)
+    return Promise.reject(response.data.status)
+  }
+  return response.data
+}
+
+const request = (type, url, data = {}, config) => {
+  const options = {
+    method: type,
+    url: url,
+    data: data,
+    ...baseConfig,
+    ...config
+  }
+  const instance = ajax.create(options)
+  setInterceptors(instance)
+  return new Promise(async (res, rej) => {
+    await instance()
+      .then(data => {
+        res(data)
+      })
+      .catch(err => {
+        rej(err)
+      })
+  })
+}
+export default request

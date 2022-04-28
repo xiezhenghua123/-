@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-22 16:59:01
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-01 14:18:15
+ * @LastEditTime: 2022-04-25 13:27:00
 -->
 <template>
   <view class="content-box size16">
@@ -22,7 +22,7 @@
     </view>
     <view class="every flex-column">
       <text>投诉原因：</text>
-      <u--text :text="initData.reason" wordWrap="anyWhere"></u--text>
+      <u--text :text="initData.reason" wordWrap="anyWhere" margin="5"></u--text>
     </view>
     <view class="every flex-column">
       <text>惩罚措施：</text>
@@ -48,14 +48,14 @@ export default {
   data() {
     return {
       initData: {},
-      type: '',
+      type: ''
     }
   },
   onLoad(options) {
     this.initData = JSON.parse(options.object)
     this.type = options.type
   },
-  methods: {},
+  methods: {}
 }
 </script>
 <style lang="scss" scoped>

@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-16 19:28:00
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-29 13:45:29
+ * @LastEditTime: 2022-04-28 12:14:50
 -->
 <template>
   <u-datetime-picker
@@ -12,6 +12,7 @@
     ref="datetimePicker"
     v-model="time"
     :show="show"
+    :minDate="minDate"
     :formatter="formatter"
     @confirm="timeConfirm"
     @close="close"
@@ -23,41 +24,44 @@
 export default {
   name: 'custom-datetime-picker',
   props: {
+    minDate: {
+      type: String
+    },
     mode: {
       type: String,
-      default: 'year-month',
+      default: 'year-month'
     },
     title: {
       type: String,
-      default: '',
+      default: ''
     },
     pickShow: {
       type: Boolean,
-      default: false,
+      default: false
     },
     initTime: {
       type: String,
-      dafault: '-',
-    },
+      dafault: '-'
+    }
   },
   watch: {
     pickShow: {
       handler(val) {
         this.show = val
       },
-      immediate: true,
+      immediate: true
     },
     initTime: {
       handler(val) {
         this.time = val
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
   data() {
     return {
       show: false,
-      time: '',
+      time: ''
     }
   },
   onReady() {
@@ -101,8 +105,8 @@ export default {
     cancel() {
       this.show = false
       this.$emit('update:pickShow', this.show)
-    },
-  },
+    }
+  }
 }
 </script>
 <style></style>

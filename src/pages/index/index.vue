@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-12 15:58:14
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-06 20:22:23
+ * @LastEditTime: 2022-04-28 17:31:39
 -->
 <template>
   <view>
@@ -15,7 +15,7 @@
         <u-loadmore :status="status" />
       </view>
     </view>
-    <confirm v-else></confirm>
+    <confirm v-else @isLogin="loginConfirm"></confirm>
   </view>
 </template>
 
@@ -30,18 +30,19 @@ export default {
   components: {
     confirm,
     jobSquare,
-    talentMarket,
+    talentMarket
   },
   mixins: [minix],
   data() {
     return {
       status: 'loadmore',
-      showItem: true,
+      showItem: true
+      // scrollTop: 0
     }
   },
 
   computed: {
-    ...mapState('appState', ['identity', 'isLogin']),
+    ...mapState('appState', ['identity', 'isLogin'])
   },
   onReachBottom() {
     this.status = 'loading'
@@ -50,22 +51,46 @@ export default {
     }, 2000)
   },
   onPullDownRefresh() {
-    this.showItem = false
-    this.$nextTick(() => {
-      ;(this.showItem = true), uni.stopPullDownRefresh()
-    })
+    this.refresh()
   },
+  // onPageScroll: uni.$u.debounce(function (e) {
+  //   console.log(e)
+  //   if (this.scrollTop > scrollTop) {
+  //     uni.$emit('scrollTop', true)
+  //   } else {
+  //     uni.$emit('scrollTop', false)
+  //   }
+  //   this.scrollTop = scrollTop
+  // }, 500),
+  // onPageScroll({ scrollTop }) {
+  //   console.log(scrollTop)
+  //   if (this.scrollTop > scrollTop) {
+  //     uni.$emit('scrollTop', true)
+  //   } else {
+  //     uni.$emit('scrollTop', false)
+  //   }
+  //   this.scrollTop = scrollTop
+  // },
   onReady() {},
   onShow() {
     uni.setNavigationBarTitle({
-      title: this.identity === 'company' ? '牛人广场' : '职位广场',
+      title: this.identity === 'company' ? '牛人广场' : '职位广场'
     })
   },
-  onLoad() {
-    this.$methods.chat.connect(this)
-  },
 
-  methods: {},
+  methods: {
+    loginConfirm(status) {
+      if (status) {
+        this.refresh()
+      }
+    },
+    refresh() {
+      this.showItem = false
+      this.$nextTick(() => {
+        this.showItem = true
+      })
+    }
+  }
 }
 </script>
 

@@ -4,14 +4,13 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-03 14:52:20
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-03 15:00:52
+ * @LastEditTime: 2022-04-25 23:08:31
  */
-import { request } from './request'
-const getJobList = (data = {}) => {
-  return request({
-    url: '/getJobList',
-    method: 'GET',
-    data: data,
+import request from './request/index.js'
+import { getJobUrl } from './requestUrl'
+const getJobList = data => {
+  return request('get', '/getJobList', data, {
+    baseURL: getJobUrl
   })
 }
 export { getJobList }

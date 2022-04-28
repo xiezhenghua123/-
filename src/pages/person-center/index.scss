@@ -12,18 +12,20 @@
       justify-content: space-between;
       .m_right {
         margin-left: 10rpx;
-        .credit-points-box{
-         position: relative;
-         .toolTip{
-          position: absolute;
-          left: 110px;
-          width: 120px;
-          font-size: 14px;
-          background-color: #fff;
-          border-radius: 5px;
-          padding: 5px;
-          z-index: 999;
-         }
+        .credit-points-box {
+          position: relative;
+          .toolTip {
+            position: absolute;
+            left: 110px;
+            width: 120px;
+            font-size: 14px;
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 5px;
+            z-index: 999;
+            text-align: justify;
+            border: 1px solid #efefef;
+          }
         }
       }
       .message_name {

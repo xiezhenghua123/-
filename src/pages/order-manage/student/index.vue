@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-26 15:36:54
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-26 18:52:36
+ * @LastEditTime: 2022-04-25 12:46:16
 -->
 <template>
   <view>
@@ -21,7 +21,8 @@
       </view>
     </u-sticky>
     <apply-order v-if="current === 1"></apply-order>
-    <release-order v-else></release-order>
+    <release-order v-else-if="current === 0"></release-order>
+    <view v-else>已完成</view>
   </view>
 </template>
 <script>
@@ -31,22 +32,22 @@ export default {
   data() {
     return {
       current: 0,
-      list: [{ name: '发布职位订单' }, { name: '应聘职位订单' }],
+      list: [{ name: '我的发布' }, { name: '我的应聘' }, { name: '已完成' }],
       activeStyle: {
         'font-weight': 'bold',
-        color: '#303133',
-      },
+        color: '#303133'
+      }
     }
   },
   components: {
     applyOrder,
-    releaseOrder,
+    releaseOrder
   },
   methods: {
     click(data) {
       this.current = data.index
-    },
-  },
+    }
+  }
 }
 </script>
 <style></style>

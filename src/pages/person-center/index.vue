@@ -1,11 +1,11 @@
 <template>
-  <view class="container" @click="toolTip = false">
+  <view class="container" @click="toolTip = false" style="height: 100%">
     <u-toast ref="uToast"></u-toast>
     <view class="top">
       <view class="message">
-        <u-avatar :src="userInfo.avatarUrl" size="60"></u-avatar>
+        <u-avatar :src="userInfo.avatar" size="60"></u-avatar>
         <view class="m_right" v-if="isLogin">
-          <view class="message_name">{{ userInfo.nickName }}</view>
+          <view class="message_name">{{ userInfo.name }}</view>
           <view class="flex">
             <view class="message_identity">{{ getIdentity() }}</view>
             <view class="credit-points-box flex ml-10" v-if="identity">
@@ -14,9 +14,7 @@
                 class="iconfont icon-help"
                 @click.stop="toolTip = !toolTip"
               ></i>
-              <span v-if="toolTip" class="toolTip"
-                >信用分满分100分，低于80分将无法进行职位应聘和发布</span
-              >
+              <span v-if="toolTip" class="toolTip">{{ toolText }}</span>
             </view>
           </view>
         </view>
@@ -33,13 +31,13 @@
       <u-divider></u-divider>
     </view>
     <view class="content" v-if="identity && isLogin">
-      <view class="profit-loss p-10" v-if="identity === 'student'">
+      <!-- <view class="profit-loss p-10" v-if="identity === 'student'">
         <view class="all mb-10">盈亏：xx（元） </view>
         <view class="flex">
           <view class="income">收入：xx（元）</view>
           <view class="disbursement">支出：xx（元）</view>
         </view>
-      </view>
+      </view> -->
       <block v-for="item in feature_data" :key="item.key">
         <view @click="clickFeature(item.key)" class="content_every">
           <view class="feature">
@@ -74,12 +72,19 @@
         >认证，是否进行认证？
       </view>
     </u-modal>
-    <company :companyShow.sync="companyShow"></company>
-    <student :studentShow.sync="studentShow"></student>
+    <company
+      :companyShow.sync="companyShow"
+      @statusUpdate="getConfirmData"
+    ></company>
+    <student
+      :studentShow.sync="studentShow"
+      @statusUpdate="getConfirmData"
+    ></student>
   </view>
 </template>
 
 <script>
+import { checkConfirm, authenticate } from '@/api/user.js'
 import feature_data from '../../data/feature.js'
 import confirm from '@/components/confirm/index.vue'
 import company from '@/components/confirm/company/index.vue'
@@ -99,7 +104,8 @@ export default {
       src: '/static/logo.png',
       name: '黄汉雄',
       feature_data: [],
-      toolTip: false
+      toolTip: false,
+      toolText: '信用分满分100分，低于80分将无法进行职位应聘和发布'
     }
   },
   watch: {
@@ -107,24 +113,54 @@ export default {
       handler(val) {
         if (this.identity === 'company') {
           this.feature_data = feature_data.company
+          this.toolText = '信用分满分:100分，低于80分将无法进行职位发布'
         } else {
           this.feature_data = feature_data.student
+          this.toolText = '信用分满分:100分，低于80分将无法进行职位应聘和发布'
         }
       },
       immediate: true
     }
   },
   computed: {
-    ...mapState('appState', [
-      'isLogin',
-      'identity',
-      'identityArray',
-      'userInfo'
-    ])
+    ...mapState('appState', ['isLogin', 'identity', 'userInfo'])
   },
   onLoad() {},
   methods: {
-    ...mapActions('appState', ['changeIdentity']),
+    ...mapActions('appState', ['setIdentity', 'setUserInfo']),
+    getConfirmData({ confirmData, type }) {
+      let data = {}
+      if (type == 1) {
+        data = {
+          type: type,
+          openid: this.userInfo.openid,
+          avatar: this.userInfo.avatar,
+          name: confirmData.name,
+          phone: confirmData.tel,
+          major: confirmData.major,
+          college: confirmData.college,
+          uid: confirmData.number
+        }
+      } else {
+        data = {
+          type: type,
+          openid: this.userInfo.openid,
+          avatar: this.userInfo.avatar,
+          name: confirmData.name,
+          phone: confirmData.tel,
+          industry: confirmData.industry,
+          legal_person: confirmData.legalPerson,
+          code: confirmData.number
+        }
+      }
+      authenticate(data).then(data => {
+        this.confirmShow = false
+        this.$refs.uToast.show({
+          message: '提交成功，管理员将在1-2天内进行审核',
+          type: 'success'
+        })
+      })
+    },
     confirmAnotherCancel() {
       this.confirmAnother = false
     },
@@ -147,9 +183,7 @@ export default {
       if (!this.identity) {
         return '请认证'
       } else {
-        return this.identityArray.filter(item => {
-          return item.key === this.identity
-        })[0].name
+        return this.identity == 'student' ? '学生' : '企业'
       }
     },
     change() {
@@ -160,21 +194,39 @@ export default {
         })
         return false
       }
-      if (!this.identityArray.length) {
-        this.$refs.uToast.show({
-          message: '请先认证身份',
-          type: 'error'
-        })
-      } else if (this.identityArray.length < 2) {
-        this.confirmAnother = true
+
+      if (this.identity == 'student') {
+        this.check(2)
       } else {
-        this.changeIdentity().then(() => {
-          this.$refs.uToast.show({
-            message: '切换成功',
-            type: 'success'
-          })
-        })
+        this.check(1)
       }
+    },
+    // 检查身份
+    check(type) {
+      const that = this
+      wx.login({
+        success({ code }) {
+          checkConfirm({ js_code: code, type: type }).then(data => {
+            if (data.code != 0) {
+              that.confirmAnother = true
+            } else {
+              uni.setStorageSync('identity', data.data.type)
+              that.setIdentity({ key: data.data.type })
+              that.setUserInfo({
+                openid: data.data.user.openid,
+                uuid: data.data.user.id,
+                avatar: data.data.user.avatar,
+                name: data.data.user.name,
+                phone: data.data.user.phone
+              })
+              that.$refs.uToast.show({
+                message: '切换成功',
+                type: 'success'
+              })
+            }
+          })
+        }
+      })
     },
     clickFeature(key) {
       uni.navigateTo({

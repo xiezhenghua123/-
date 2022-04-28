@@ -2,20 +2,9 @@
  * @Descripttion: 
  * @version: 
  * @Author: ZhenghuaXie
- * @Date: 2022-03-26 15:48:08
- * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-01 20:51:04
--->
-<template></template>
-<script></script>
-<style></style>
-<!--
- * @Descripttion: 
- * @version: 
- * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-26 20:23:59
+ * @LastEditTime: 2022-04-25 12:59:16
 -->
 <template>
   <view>
@@ -57,7 +46,7 @@
                   >
                     <u-button text="确认完成" type="primary"></u-button>
                   </view>
-                  <view class="button mt-10" @click.native.stop="cancel" v-else>
+                  <view class="button" @click.native.stop="cancel" v-else>
                     <u-button text="取消应聘" type="primary"></u-button>
                   </view>
                 </view>
@@ -80,20 +69,20 @@ export default {
         {
           text: '删除',
           style: {
-            backgroundColor: '#f56c6c',
-          },
-        },
+            backgroundColor: '#f56c6c'
+          }
+        }
       ],
       optionsPart: [
         {
           text: '删除',
           style: {
-            backgroundColor: '#f56c6c',
-          },
+            backgroundColor: '#f56c6c'
+          }
         },
         {
-          text: '取消应聘',
-        },
+          text: '取消应聘'
+        }
       ],
       initData: [
         {
@@ -106,7 +95,7 @@ export default {
           education: '本科',
           payMent: '15k-20k',
           scale: '500-999人',
-          status: '待企业确认',
+          status: '待企业确认'
         },
         {
           content: '前端开发工程师',
@@ -118,7 +107,7 @@ export default {
           education: '本科',
           payMent: '15k-20k',
           scale: '500-999人',
-          status: '面试中',
+          status: '面试中'
         },
         {
           content: '前端开发工程师',
@@ -130,7 +119,7 @@ export default {
           education: '本科',
           payMent: '15k-20k',
           scale: '500-999人',
-          status: '已录取',
+          status: '已录取'
         },
         {
           content: '前端开发工程师',
@@ -142,7 +131,7 @@ export default {
           education: '本科',
           payMent: '15k-20k',
           scale: '500-999人',
-          status: '企业已拒绝',
+          status: '企业已拒绝'
         },
         {
           content: '前端开发工程师',
@@ -154,7 +143,7 @@ export default {
           education: '本科',
           payMent: '15k-20k',
           scale: '500-999人',
-          status: '停止招聘',
+          status: '停止招聘'
         },
         {
           content: '琴湖快递拿到北青',
@@ -167,7 +156,7 @@ export default {
           start: '2022年3月1日',
           end: '2022年3月1日',
           education: '本科',
-          status: '待雇主确认',
+          status: '待雇主确认'
         },
         {
           content: '琴湖快递拿到北青',
@@ -180,7 +169,7 @@ export default {
           start: '2022年3月1日',
           end: '2022年3月1日',
           education: '不限',
-          status: '已完成',
+          status: '已完成'
         },
         {
           content: '琴湖快递拿到北青',
@@ -193,9 +182,9 @@ export default {
           start: '2022年3月1日',
           end: '2022年3月1日',
           education: '不限',
-          status: '进行中',
-        },
-      ],
+          status: '进行中'
+        }
+      ]
     }
   },
   methods: {
@@ -206,19 +195,19 @@ export default {
         uni.navigateTo({
           url: `/pages/components/fullTime-details/index?data=${JSON.stringify(
             item
-          )}&key=applyOrder`,
+          )}&key=applyOrder`
         })
       } else {
         uni.navigateTo({
           url: `/pages/components/partTime-details/index?data=${JSON.stringify(
             item
-          )}&key=applyOrder`,
+          )}&key=applyOrder`
         })
       }
     },
     complete() {},
-    cancel() {},
-  },
+    cancel() {}
+  }
 }
 </script>
 

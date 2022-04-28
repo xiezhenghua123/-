@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-05 22:07:22
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-06 20:20:29
+ * @LastEditTime: 2022-04-26 21:30:32
  */
 
 import IMService from '@/goEasy/lib/imservice'
@@ -15,15 +15,14 @@ chat.enterChat = uuid => {
   //进入私聊
   let path = '/pages/chat/privateChat/privateChat?to=' + uuid
   uni.navigateTo({
-    url: path,
+    url: path
   })
 }
 
-chat.connect = self => {
-  let currentUser = uni.getStorageSync('currentUser')
+chat.connect = (self, userInfo) => {
   if (self.goEasy.getConnectionStatus() === 'disconnected') {
     getApp().globalData.imService = new IMService(self.goEasy, self.GoEasy)
-    getApp().globalData.imService.connect(currentUser)
+    getApp().globalData.imService.connect(userInfo)
   }
 }
 

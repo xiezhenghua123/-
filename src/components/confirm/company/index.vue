@@ -26,8 +26,27 @@
           >
             <u--input v-model="companyData.number" border="none"></u--input>
           </u-form-item>
-          <u-form-item label="行业" prop="industry" borderBottom required>
-            <u--input v-model="companyData.industry" border="none"></u--input>
+          <u-form-item
+            label="行业"
+            prop="industry"
+            borderBottom
+            required
+            @click="industryShow = true"
+          >
+            <u--input
+              v-model="companyData.industry"
+              border="none"
+              disabled
+              placeholder="请选择行业"
+            ></u--input>
+            <u-icon slot="right" name="arrow-right"></u-icon>
+            <u-picker
+              :show="industryShow"
+              :columns="industry"
+              @confirm="industryConfirm"
+              @cancel="industryShow = false"
+              title="选择行业"
+            ></u-picker>
           </u-form-item>
           <u-form-item
             label="法定代表人"
@@ -54,30 +73,33 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+// import { mapActions } from 'vuex'
+import { industrySort } from '@/data/industry.js'
 import { name, socialCode, tel } from '@/data/rules.js'
 export default {
   name: 'company',
   props: {
     companyShow: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   watch: {
     companyShow(val) {
       this.show = val
-    },
+    }
   },
   data() {
     return {
+      industry: [industrySort],
+      industryShow: false,
       show: false,
       companyData: {
         name: '',
         number: '',
         industry: '',
         legalPerson: '',
-        tel: '',
+        tel: ''
       },
       companyFormRules: {
         tel: tel,
@@ -86,20 +108,24 @@ export default {
         industry: {
           type: 'string',
           required: true,
-          message: '请正确填写行业',
-          trigger: 'blur',
+          message: '请选择行业',
+          trigger: 'blur'
         },
         name: {
           type: 'string',
           required: true,
           message: '请正确填写法定代表人',
-          trigger: 'blur',
-        },
-      },
+          trigger: 'blur'
+        }
+      }
     }
   },
   methods: {
-    ...mapActions('appState', ['setIdentity']),
+    // ...mapActions('appState', ['setIdentity']),
+    industryConfirm({ value }) {
+      this.companyData.industry = value.toString()
+      this.industryShow = false
+    },
     companyCancel() {
       this.show = false
       this.$emit('update:companyShow', this.show)
@@ -109,19 +135,19 @@ export default {
         if (data) {
           this.show = false
           this.$emit('update:companyShow', this.show)
-          this.$emit('statusUpdate', true)
-          uni.showModal({
-            title: '提交成功，管理员将在1-2天内进行审核',
-            showCancel: false,
-          })
-          this.setIdentity({ name: '企业', key: 'company' })
+          this.$emit('statusUpdate', { confirmData: this.companyData, type: 2 })
+          // uni.showModal({
+          //   title: '提交成功，管理员将在1-2天内进行审核',
+          //   showCancel: false,
+          // })
+          // this.setIdentity({ name: '企业', key: 'company' })
         }
       })
-    },
+    }
   },
   onReady() {
     this.$refs.company.setRules(this.companyFormRules)
-  },
+  }
 }
 </script>
 

@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-23 22:33:52
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-07 22:54:12
+ * @LastEditTime: 2022-04-28 18:53:02
 -->
 <template>
   <view>
@@ -15,7 +15,7 @@
       </view>
       <view class="every">
         <view class="title">雇主：</view>
-        <view class="content name--color">{{ initData.employer }}</view>
+        <view class="content name--color">{{ initData.name || '测试' }}</view>
       </view>
       <view class="every" v-if="initData.candidate">
         <view class="title">雇员：</view>
@@ -25,7 +25,7 @@
       </view>
       <view class="every">
         <view class="title">岗位类型：</view>
-        <view class="content">{{ initData.type }}</view>
+        <view class="content">兼职</view>
       </view>
       <view class="every">
         <view class="title">学历要求：</view>
@@ -33,27 +33,19 @@
       </view>
       <view class="every">
         <view class="title">工作地点：</view>
-        <view class="content">{{ initData.position }}</view>
+        <view class="content">{{ initData.place }}</view>
       </view>
       <view class="every">
         <view class="title">薪酬：</view>
-        <view class="content">{{ initData.payMent }}</view>
+        <view class="content">{{ initData.salary }}</view>
       </view>
       <view class="every">
-        <view class="title">开始时间：</view>
-        <view class="content">{{ initData.start }}</view>
-      </view>
-      <view class="every">
-        <view class="title">结束时间：</view>
-        <view class="content">{{ initData.end }}</view>
+        <view class="title">招聘截止时间：</view>
+        <view class="content">{{ initData.dateline }}</view>
       </view>
       <view class="every flex-column">
         <view>工作说明：</view>
-        <u--text :text="initData.details" wordWrap="anyWhere"></u--text>
-      </view>
-      <view class="every">
-        <view class="title">岗位状态：</view>
-        <view class="content">{{ initData.status }}</view>
+        <u--text :text="initData.description" wordWrap="anyWhere"></u--text>
       </view>
     </view>
     <view class="job-button size16 m-10" v-if="key === 'myFavorite'">
@@ -94,28 +86,33 @@
   </view>
 </template>
 <script>
+import { jobDetail } from '@/api/recruit.js'
 export default {
   data() {
     return {
       initData: {},
       key: '',
+      id: ''
     }
   },
   onLoad(options) {
-    this.initData = JSON.parse(options.data)
+    this.id = options.id
+    jobDetail(this.id).then(({ data }) => {
+      this.initData = data
+    })
     this.key = options.key
   },
   methods: {
     enterChat() {
-      this.$methods.chat.enterChat('33c3693b-dbb0-4bc9-99c6-fa77b9eb763f')
+      this.$methods.chat.enterChat(this.initData.company_id)
     },
     clickToPerson() {},
     clickToComplainant() {
       uni.navigateTo({
-        url: '/pages/complain-manage/complainant-upload/index',
+        url: '/pages/complain-manage/complainant-upload/index'
       })
-    },
-  },
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

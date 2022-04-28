@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-29 12:15:50
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-29 19:28:25
+ * @LastEditTime: 2022-04-28 15:29:10
 -->
 <template>
   <view class="mt-10">
@@ -25,7 +25,7 @@
           <u-input v-model="data.address"></u-input>
         </u-form-item>
         <u-form-item prop="payMent" label="工作薪酬(元):" required>
-          <u-input v-model="data.payMent" type="number"></u-input>
+          <u--input v-model="data.payMent" type="number" />
         </u-form-item>
         <u-form-item
           prop="education"
@@ -43,37 +43,23 @@
           ></u-action-sheet>
         </u-form-item>
         <u-form-item
-          prop="start"
-          label="开始时间:"
+          prop="deadLine"
+          label="招聘截止时间:"
           @click="startShow = true"
           required
         >
-          <u-text :text="data.start"></u-text>
+          <u-text :text="data.deadLine"></u-text>
           <u-icon slot="right" name="arrow-right"></u-icon>
           <custom-datetime-picker
             :pickShow.sync="startShow"
-            title="请选择开始时间"
+            title="请选择招聘截止时间"
             mode="date"
-            @confirm="timeConfirm($event, 'start')"
-          ></custom-datetime-picker>
-        </u-form-item>
-        <u-form-item
-          prop="end"
-          label="结束时间:"
-          @click="endShow = true"
-          required
-        >
-          <u-text :text="data.end"></u-text>
-          <u-icon slot="right" name="arrow-right"></u-icon>
-          <custom-datetime-picker
-            :pickShow.sync="endShow"
-            title="请选择结束时间"
-            mode="date"
-            @confirm="timeConfirm($event, 'end')"
+            :minDate="minDate"
+            @confirm="timeConfirm($event)"
           ></custom-datetime-picker>
         </u-form-item>
         <view class="details-box">
-          <u-form-item prop="details" label="工作说明：">
+          <u-form-item prop="details" label="工作说明：" required>
             <u--textarea
               v-model="data.details"
               count
@@ -97,49 +83,53 @@
   </view>
 </template>
 <script>
+import { releaseJob } from '@/api/recruit.js'
+import { mapState } from 'vuex'
 export default {
   name: 'part-time',
   data() {
     return {
+      minDate: this.$methods.timeChange.timestamp(),
       pay: 0,
       rules: {
+        details: {
+          required: true,
+          message: '请输入工作说明',
+          trigger: ['change', 'blur']
+        },
         content: {
           required: true,
           message: '请输入工作内容',
-          trigger: ['change', 'blur'],
+          trigger: ['change', 'blur']
         },
         address: {
           required: true,
           message: '请输入工作地点',
-          trigger: ['change', 'blur'],
+          trigger: ['change', 'blur']
         },
-        payMent: {
-          type: 'number',
-          required: true,
-          validator: (rule, value, callback) => {
-            return value !== 0
+        payMent: [
+          {
+            validator: (rule, value, callback) => {
+              return value > 0
+            },
+            message: '工作薪酬必须大于0',
+            trigger: ['change', 'blur']
           },
-          message: '请输入工作薪酬',
-          trigger: ['change', 'blur'],
-        },
-        start: {
+          {
+            type: 'number',
+            message: '工作薪酬必须为数字',
+            trigger: ['change', 'blur']
+          }
+        ],
+        deadLine: {
           required: true,
-          message: '请选择开始时间',
-          validator: (rule, value, callback) => {
-            return value !== '-'
-          },
-          trigger: ['change', 'blur'],
-        },
-        end: {
-          required: true,
-          message: '请选择结束时间',
+          message: '请选择招聘截止时间',
           validator: (rule, value, callback) => {
             return value !== '-'
           },
-          trigger: ['change', 'blur'],
-        },
+          trigger: ['change', 'blur']
+        }
       },
-      endShow: false,
       educationShow: false,
       startShow: false,
       data: {
@@ -148,83 +138,67 @@ export default {
         address: '',
         payMent: 0,
         education: '不限',
-        start: '-',
-        end: '-',
+        deadLine: '-'
       },
       list: [
         { name: '不限' },
         { name: '本科' },
         { name: '硕士' },
         { name: '博士' },
-        { name: '博士后' },
-      ],
+        { name: '博士后' }
+      ]
     }
   },
   mounted() {
     this.$refs.form.setRules(this.rules)
+  },
+  computed: {
+    ...mapState('appState', ['userInfo'])
   },
   methods: {
     selectEducation(data) {
       this.data.education = data.name
       this.educationShow = false
     },
-    timeConfirm(e, type) {
-      if (
-        this.$methods.timeChange.timestamp() >
-        this.$methods.timeChange.timestamp(e)
-      ) {
-        this.$refs.uToast.show({
-          message: '时间不能小于当前时间',
-          type: 'error',
-        })
-        return false
-      }
-      if (type === 'end') {
-        if (
-          this.$methods.timeChange.timestamp(this.data['start']) >
-          this.$methods.timeChange.timestamp(e)
-        ) {
-          this.$refs.uToast.show({
-            message: '结束时间不能小于开始时间',
-            type: 'error',
-          })
-
-          return false
-        }
-      } else {
-        if (
-          this.$methods.timeChange.timestamp(this.data['end']) <
-          this.$methods.timeChange.timestamp(e)
-        ) {
-          this.$refs.uToast.show({
-            message: '开始时间不能大于结束时间',
-            type: 'error',
-          })
-          return false
-        }
-      }
-      this.data[type] = e
+    timeConfirm(e) {
+      this.data.deadLine = e
     },
     submit() {
-      this.$refs.form.validate().then(data => {
-        if (!data) {
-          return false
-        }
-        this.pay = (this.data.payMent * (1 + 0.001)).toFixed(2)
-        this.$refs.uToast.show({
-          loading: true,
-          message: '支付中',
-          type: 'loading',
-          complete: data => {
-            this.$refs.uToast.show({
-              message: `您已成功支付${this.pay}元`,
-              type: 'success',
-            })
-          },
+      this.$refs.form
+        .validate()
+        .then(data => {
+          if (!data) {
+            return false
+          }
+          this.pay = (this.data.payMent * (1 + 0.001)).toFixed(2)
+          const service_charge = (this.data.payMent * 0.001).toFixed(2)
+          releaseJob({
+            company_id: this.userInfo.uuid.toString(),
+            type: 'partTime',
+            content: this.data.content,
+            place: this.data.address,
+            salary: this.data.payMent,
+            education: this.data.education,
+            description: this.data.details,
+            service_charge: service_charge,
+            dateline: this.data.deadLine
+          })
         })
-      })
-    },
-  },
+        .then(() => {
+          this.$refs.uToast.show({
+            loading: true,
+            message: '支付中',
+            type: 'loading',
+            complete: data => {
+              this.$refs.uToast.show({
+                message: `您已成功支付${this.pay}元`,
+                type: 'success'
+              })
+            }
+          })
+        })
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

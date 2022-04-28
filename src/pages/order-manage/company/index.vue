@@ -4,179 +4,44 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-01 19:38:09
+ * @LastEditTime: 2022-04-25 13:09:37
 -->
 <template>
   <view>
-    <view
-      v-for="(item, index) in initData"
-      :key="index"
-      class="container m-10"
-      @click="clickToDetails(item)"
-    >
-      <touch-hover>
-        <view class="box">
-          <view class="box-left">
-            <view class="box-left">
-              <view class="flex">
-                <view class="name">{{ item.content }}</view>
-                <view class="tag ml-10">
-                  <u-text
-                    :text="item.status"
-                    type="primary"
-                    size="12"
-                    bold
-                  ></u-text>
-                </view>
-              </view>
-            </view>
-            <text class="type"
-              ><text>{{ item.type }}</text></text
-            >
-          </view>
-          <view class="box-right">
-            <view class="payMent">{{ item.payMent }}</view>
-
-            <view class="button" @click.native.stop="complete">
-              <u-button text="确认完成" type="primary"></u-button>
-            </view>
-          </view>
-        </view>
-      </touch-hover>
-    </view>
+    <u-sticky bgColor="#fff">
+      <view class="tabs">
+        <u-tabs
+          :list="list"
+          :current="current"
+          @click="click"
+          :activeStyle="activeStyle"
+          lineWidth="70"
+          :scrollable="false"
+        ></u-tabs>
+      </view>
+    </u-sticky>
+    <my-release v-if="current === 0"></my-release>
+    <view v-else>已完成</view>
   </view>
 </template>
-
 <script>
-import touchHover from '../../../components/touch-hover/touch-hover.vue'
+import myRelease from '@/pages/my-release/index.vue'
 export default {
-  components: { touchHover },
+  components: { myRelease },
   data() {
     return {
-      initData: [
-        {
-          content: '前端开发工程师',
-          employer: '阿里巴巴（杭州）',
-          candidate: '郭小天',
-          type: '全职',
-          details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
-          position: '杭州',
-          education: '本科',
-          payMent: '15k-20k',
-          scale: '500-999人',
-          cash: '30元',
-          isReturnCash: false,
-          status: '您已停止招聘',
-        },
-        {
-          content: '前端开发工程师',
-          employer: '阿里巴巴（杭州）',
-          candidate: '郭小天',
-          type: '全职',
-          details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
-          position: '杭州',
-          education: '本科',
-          payMent: '15k-20k',
-          scale: '500-999人',
-          cash: '30元',
-          isReturnCash: false,
-          status: '应聘者取消应聘',
-        },
-        {
-          content: '前端开发工程师',
-          employer: '阿里巴巴（杭州）',
-          candidate: '郭小天',
-          type: '全职',
-          details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
-          position: '杭州',
-          education: '本科',
-          payMent: '15k-20k',
-          scale: '500-999人',
-          cash: '30元',
-          isReturnCash: false,
-          status: '已拒绝',
-        },
-        {
-          content: '前端开发工程师',
-          employer: '阿里巴巴（杭州）',
-          candidate: '郭小天',
-          type: '全职',
-          details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
-          position: '杭州',
-          education: '本科',
-          payMent: '15k-20k',
-          scale: '500-999人',
-          cash: '30元',
-          isReturnCash: false,
-          status: '已录取',
-        },
-        {
-          content: '前端开发工程师',
-          employer: '阿里巴巴（杭州）',
-          type: '全职',
-          candidate: '黄大熊',
-          details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
-          position: '杭州',
-          education: '本科',
-          payMent: '15k-20k',
-          scale: '500-999人',
-          cash: '30元',
-          isReturnCash: false,
-          status: '面试中',
-        },
-      ],
+      current: 0,
+      list: [{ name: '我的发布' }, { name: '已完成' }],
+      activeStyle: {
+        'font-weight': 'bold',
+        color: '#303133'
+      }
     }
   },
   methods: {
-    // 兼容小程序的空函数
-    emptyF() {},
-    clickToDetails(item) {
-      if (item.type === '全职') {
-        uni.navigateTo({
-          url: `/pages/components/fullTime-details/index?data=${JSON.stringify(
-            item
-          )}&key=releaseOrder`,
-        })
-      } else {
-        uni.navigateTo({
-          url: `/pages/components/partTime-details/index?data=${JSON.stringify(
-            item
-          )}&key=releaseOrder`,
-        })
-      }
-    },
-    complete() {},
-  },
+    click(data) {
+      this.current = data.index
+    }
+  }
 }
 </script>
-
-<style lang="scss" scoped>
-.box {
-  display: flex;
-  justify-content: space-between;
-  padding: 15rpx 30rpx;
-  align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  .name {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-
-  .box-right {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .payMent {
-    color: #02a7f0;
-    margin-bottom: 8px;
-    font-weight: bold;
-  }
-}
-.flex {
-  align-items: stretch;
-}
-</style>

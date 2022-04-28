@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-04 21:29:58
+ * @LastEditTime: 2022-04-27 23:24:23
 -->
 <template>
   <view>
@@ -14,7 +14,7 @@
       <u-parse :content="html" :tagStyle="style" @linkTap="linkTap"></u-parse>
       <u-loadmore :status="status" />
     </view>
-    <confirm v-else></confirm>
+    <confirm v-else @isLogin="loginConfirm"></confirm>
   </view>
 </template>
 
@@ -25,25 +25,27 @@ import { getJobList } from '@/api/getJobList.js'
 
 export default {
   components: {
-    confirm,
+    confirm
   },
   data() {
     return {
       status: 'loading',
       html: '',
       style: {
-        img: 'height: 55px;width: 55px;',
+        img: 'height: 55px;width: 55px;'
       },
       page: 1,
       list1: [
         'https://cdn.uviewui.com/uview/swiper/swiper1.png',
         'https://cdn.uviewui.com/uview/swiper/swiper2.png',
-        'https://cdn.uviewui.com/uview/swiper/swiper3.png',
-      ],
+        'https://cdn.uviewui.com/uview/swiper/swiper3.png'
+      ]
     }
   },
   onLoad() {
-    this.getList(true)
+    if (this.isLogin) {
+      this.getList(true)
+    }
   },
   onReachBottom() {
     this.status = 'loading'
@@ -56,19 +58,22 @@ export default {
       })
   },
   onPullDownRefresh() {
-    uni.startPullDownRefresh()
     this.getList(true)
-      .then(() => {
-        uni.stopPullDownRefresh()
-      })
+      .then(() => {})
       .catch(res => {
+        uni.stopPullDownRefresh()
         this.$refs.uToast.show({
           type: 'error',
-          message: '加载失败',
+          message: '加载失败'
         })
       })
   },
   methods: {
+    loginConfirm(status) {
+      if (status) {
+        this.getList(true)
+      }
+    },
     linkTap(obj) {
       console.log(obj)
     },
@@ -83,11 +88,11 @@ export default {
             reject(rej)
           })
       })
-    },
+    }
   },
   computed: {
-    ...mapState('appState', ['isLogin', 'identity']),
-  },
+    ...mapState('appState', ['isLogin', 'identity'])
+  }
 }
 </script>
 

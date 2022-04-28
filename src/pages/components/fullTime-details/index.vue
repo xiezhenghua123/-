@@ -4,10 +4,11 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-23 22:33:52
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-07 22:54:07
+ * @LastEditTime: 2022-04-28 18:53:08
 -->
 <template>
   <view>
+    <toast></toast>
     <view class="content-box size16">
       <view class="every">
         <view class="title">工作岗位：</view>
@@ -27,7 +28,7 @@
       </view>
       <view class="every">
         <view class="title">岗位类型：</view>
-        <view class="content">{{ initData.type }}</view>
+        <view class="content">全职</view>
       </view>
       <view class="every">
         <view class="title">工作地点：</view>
@@ -101,33 +102,38 @@
   </view>
 </template>
 <script>
+import { jobDetail } from '@/api/recruit.js'
 export default {
   data() {
     return {
       initData: {},
       key: '',
+      id: ''
     }
   },
   onLoad(options) {
-    this.initData = JSON.parse(options.data)
+    this.id = options.id
+    jobDetail(this.id).then(({ data }) => {
+      this.initData = data
+    })
     this.key = options.key
   },
   methods: {
     enterChat() {
-      this.$methods.chat.enterChat('33c3693b-dbb0-4bc9-99c6-fa77b9eb763f')
+      this.$methods.chat.enterChat(this.initData.company_id)
     },
     clickToCompany() {
       uni.navigateTo({
-        url: '/pages/components/company-details/index',
+        url: '/pages/components/company-details/index'
       })
     },
     clickToPerson() {},
     clickToComplainant() {
       uni.navigateTo({
-        url: '/pages/complain-manage/complainant-upload/index',
+        url: '/pages/complain-manage/complainant-upload/index'
       })
-    },
-  },
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
