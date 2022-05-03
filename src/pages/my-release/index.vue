@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-03 18:11:00
+ * @LastEditTime: 2022-05-03 22:44:11
 -->
 <template>
   <view>
@@ -16,7 +16,7 @@
         class="container m-10"
       >
         <u-swipe-action>
-          <u-swipe-action-item :options="options" @click="del(item.id)">
+          <u-swipe-action-item :options="options" @click="del(item)">
             <touch-hover>
               <view class="box" @click.stop="clickToDetails(item)">
                 <view class="box-left">
@@ -101,9 +101,21 @@ export default {
           })
       })
     },
-    del(id) {
-      delJob(id).then(() => {
-        successToast(' 职位下架成功!')
+    del(item) {
+      delJob(item.id).then(() => {
+        let text
+        if (item.order_type == 'partTime') {
+          text = '职位下架成功！职位薪酬和服务费正在返还中'
+        } else {
+          text = '职位下架成功！服务费正在返还中'
+        }
+        successToast(text, {
+          loading: true,
+          type: 'loading',
+          complete: () => {
+            successToast('返还成功！')
+          }
+        })
         this.getData()
       })
     },
