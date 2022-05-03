@@ -63,7 +63,7 @@
               :show="majorShow"
               :columns="major"
               @confirm="majorConfirm"
-              @cancel="majorData = false"
+              @cancel="majorShow = false"
               title="选择专业"
             ></u-picker>
           </u-form-item>

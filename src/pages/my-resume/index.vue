@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-24 15:01:35
+ * @LastEditTime: 2022-04-30 21:31:23
 -->
 <template>
   <view class="mb-10">
@@ -70,10 +70,12 @@
         <view class="mq border-b" :key="item.key">
           <view class="top">
             <view class="top_name">{{ item.schoolName }}</view>
-            <view class="top_time">{{ item.start + '——' + item.end }}</view>
+            <view class="top_time">{{
+              item.start.time + '——' + item.end.time
+            }}</view>
           </view>
           <view class="size14">
-            <text>{{ item.rank }}</text>
+            <text>{{ item.rank.text }}</text>
             <text class="ml-10">{{ item.major }}</text>
           </view>
           <text space="nbsp">{{ item.details }}</text>
@@ -86,7 +88,9 @@
         <view class="mq border-b" :key="item.key">
           <view class="top">
             <view class="top_name">{{ item.companyName }}</view>
-            <view class="top_time">{{ item.start + '——' + item.end }}</view>
+            <view class="top_time">{{
+              item.start.time + '——' + item.end.time
+            }}</view>
           </view>
           <view class="size14">
             <text>{{ item.job }}</text>
@@ -101,7 +105,9 @@
         <view class="mq border-b" :key="item.key">
           <view class="top">
             <view class="top_name">{{ item.projectName }}</view>
-            <view class="top_time">{{ item.start + '——' + item.end }}</view>
+            <view class="top_time">{{
+              item.start.time + '——' + item.end.time
+            }}</view>
           </view>
           <view class="size14">
             <text>{{ item.job }}</text>
@@ -120,24 +126,53 @@
 </template>
 
 <script>
-import resumeData from './data.js'
+// import resumeData from './data.js'
 import mixins from '../minix/index.js'
+import { getMyResume } from '@/api/resume.js'
+import { mapState } from 'vuex'
 export default {
   mixins: [mixins],
   data() {
     return {
       // show: true,
-      resumeData: resumeData,
+      resumeData: {}
     }
   },
-
+  computed: {
+    ...mapState('appState', ['userInfo'])
+  },
+  onLoad() {
+    getMyResume(this.userInfo.openid).then(({ data }) => {
+      if (data) {
+        this.resumeData = {
+          basic: {
+            headPhoto: data.avatar,
+            name: data.name,
+            sex: data.sex,
+            age: data.age,
+            tel: data.phone,
+            maxEducation: data.education
+          },
+          jobExpectations: {
+            job: data.position,
+            salary: data.salary,
+            position: data.city
+          },
+          selfEvaluation: data.self_assessment,
+          educations: JSON.parse(data.education_experience),
+          internshipExperiences: JSON.parse(data.internship_experience),
+          projectExperiences: JSON.parse(data.project_experience)
+        }
+      }
+    })
+  },
   methods: {
     clickEdit() {
       uni.navigateTo({
-        url: '/pages/my-resume/resume-edit/index',
+        url: '/pages/my-resume/resume-edit/index'
       })
-    },
-  },
+    }
+  }
 }
 </script>
 

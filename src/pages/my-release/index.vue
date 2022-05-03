@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-28 18:35:05
+ * @LastEditTime: 2022-05-03 18:11:00
 -->
 <template>
   <view>
@@ -14,27 +14,33 @@
         v-for="(item, index) in initData"
         :key="index"
         class="container m-10"
-        @click="clickToDetails(item)"
       >
         <u-swipe-action>
           <u-swipe-action-item :options="options" @click="del(item.id)">
             <touch-hover>
-              <view class="box">
+              <view class="box" @click.stop="clickToDetails(item)">
                 <view class="box-left">
                   <view class="name">{{ item.content }}</view>
-                  <!-- <text class="status"
-                  >状态：<text>{{ item.status }}</text></text
-                > -->
-                  <text class="type"
-                    >类型：<text>{{ item.type }}</text></text
-                  >
+                  <view class="flex">
+                    <u-avatar :src="item.avatar" size="24"></u-avatar>
+                    <text class="ml-10">{{ item.name }}</text>
+                    <text class="type" style="margin-right: 20px"
+                      >类型：<text>{{
+                        item.order_type == 'partTime' ? '兼职' : '全职'
+                      }}</text></text
+                    >
+                  </view>
                 </view>
                 <view class="box-right">
-                  <view class="payMent">{{ item.salary }}</view>
+                  <view class="payMent">{{
+                    item.order_type == 'partTime'
+                      ? item.salary + '元'
+                      : salary(item.salary)
+                  }}</view>
 
                   <view
                     class="button"
-                    @click.native.stop="clickToCandidate(item.number)"
+                    @click.native.stop="clickToCandidate(item)"
                   >
                     <u-button text="查看应聘者" type="primary"></u-button>
                   </view>
@@ -70,12 +76,29 @@ export default {
     this.getData()
   },
   computed: {
-    ...mapState('appState', ['userInfo'])
+    ...mapState('appState', ['userInfo', 'identity'])
   },
   methods: {
+    salary(salary) {
+      return `${JSON.parse(salary).min}k-${JSON.parse(salary).max}k`
+    },
     getData() {
-      getMyReleaseJob(this.userInfo.uuid).then(data => {
-        console.log(data)
+      getMyReleaseJob(this.userInfo.openid).then(({ data }) => {
+        this.initData = data
+          .filter(item => {
+            if (this.identity == 'student') {
+              return item.user_type == '1'
+            } else {
+              return item.user_type == '2'
+            }
+          })
+          .map(item => {
+            return {
+              ...item,
+              name: this.userInfo.name,
+              avatar: this.userInfo.avatar
+            }
+          })
       })
     },
     del(id) {
@@ -87,23 +110,19 @@ export default {
     // 兼容小程序的空函数
     emptyF() {},
     clickToDetails(item) {
-      if (item.type === '全职') {
+      if (item.order_type === 'fullTime') {
         uni.navigateTo({
-          url: `/pages/components/fullTime-details/index?data=${JSON.stringify(
-            item
-          )}&key=myRealease`
+          url: `/pages/components/fullTime-details/index?id=${item.id}&key=releaseOrder`
         })
       } else {
         uni.navigateTo({
-          url: `/pages/components/partTime-details/index?data=${JSON.stringify(
-            item
-          )}&key=myRealease`
+          url: `/pages/components/partTime-details/index?id=${item.id}&key=releaseOrder`
         })
       }
     },
-    clickToCandidate(number) {
+    clickToCandidate(item) {
       uni.navigateTo({
-        url: '/pages/my-release/candidate/index?number=number'
+        url: `/pages/my-release/candidate/index?id=${item.id}`
       })
     }
   }

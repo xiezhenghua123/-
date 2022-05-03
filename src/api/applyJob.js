@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-27 11:03:37
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-27 11:24:52
+ * @LastEditTime: 2022-05-03 11:46:01
  */
 import request from './request'
 
@@ -32,7 +32,7 @@ const cancelApply = id => {
 const getApplyJobList = uid => {
   return request(
     'get',
-    'applicationOrder/:uid',
+    'applicationOrder/user/:uid',
     {},
     {
       params: {
@@ -42,4 +42,20 @@ const getApplyJobList = uid => {
   )
 }
 
-export { addApplyJob, cancelApply, getApplyJobList }
+// 查看应聘者
+const getWorkers = id => {
+  return request(
+    'get',
+    'applicationOrder/workOrder/:wid',
+    {},
+    {
+      params: {
+        params: {
+          wid: id
+        }
+      }
+    }
+  )
+}
+
+export { addApplyJob, cancelApply, getApplyJobList, getWorkers }

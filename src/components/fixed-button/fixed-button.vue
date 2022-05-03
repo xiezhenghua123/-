@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-13 14:01:58
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-24 15:09:14
+ * @LastEditTime: 2022-04-30 21:35:01
 -->
 <template>
   <!-- <view></view> -->
@@ -26,23 +26,23 @@ export default {
   props: {
     type: {
       type: String,
-      default: 'primary',
+      default: 'primary'
     },
     text: {
       type: String,
-      default: '',
+      default: ''
     },
     shape: {
       type: String,
-      default: 'circle',
-    },
+      default: 'circle'
+    }
   },
 
   methods: {
     click() {
       this.$emit('click')
-    },
-  },
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -51,6 +51,6 @@ export default {
   bottom: 100px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 2;
+  z-index: 999;
 }
 </style>

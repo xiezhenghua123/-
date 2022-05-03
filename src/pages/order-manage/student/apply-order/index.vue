@@ -4,63 +4,68 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-25 12:59:16
+ * @LastEditTime: 2022-05-03 11:44:57
 -->
 <template>
   <view>
-    <view
-      v-for="(item, index) in initData"
-      :key="index"
-      class="container m-10"
-      @click="clickToDetails(item)"
-    >
-      <u-swipe-action>
-        <u-swipe-action-item
-          :options="item.type === '兼职' ? optionsPart : optionsFull"
-        >
-          <touch-hover>
-            <view class="box">
-              <view class="box-left">
-                <view class="flex">
-                  <view class="name">{{ item.content }}</view>
-                  <view class="tag ml-10">
-                    <u-text
-                      :text="item.status"
-                      type="primary"
-                      size="12"
-                      bold
-                    ></u-text>
+    <view v-if="initData.length">
+      <view
+        v-for="(item, index) in initData"
+        :key="index"
+        class="container m-10"
+        @click="clickToDetails(item)"
+      >
+        <u-swipe-action>
+          <u-swipe-action-item
+            :options="item.type === '兼职' ? optionsPart : optionsFull"
+          >
+            <touch-hover>
+              <view class="box">
+                <view class="box-left">
+                  <view class="flex">
+                    <view class="name">{{ item.content }}</view>
+                    <view class="tag ml-10">
+                      <u-text
+                        :text="item.status"
+                        type="primary"
+                        size="12"
+                        bold
+                      ></u-text>
+                    </view>
                   </view>
-                </view>
-                <text class="type"
-                  ><text>{{ item.type }}</text></text
-                >
-              </view>
-              <view class="box-right">
-                <view class="payMent">{{ item.payMent }}</view>
-                <view>
-                  <view
-                    class="button"
-                    @click.native.stop="complete"
-                    v-if="item.type === '兼职'"
+                  <text class="type"
+                    ><text>{{ item.type }}</text></text
                   >
-                    <u-button text="确认完成" type="primary"></u-button>
-                  </view>
-                  <view class="button" @click.native.stop="cancel" v-else>
-                    <u-button text="取消应聘" type="primary"></u-button>
+                </view>
+                <view class="box-right">
+                  <view class="payMent">{{ item.payMent }}</view>
+                  <view>
+                    <view
+                      class="button"
+                      @click.native.stop="complete"
+                      v-if="item.type === '兼职'"
+                    >
+                      <u-button text="确认完成" type="primary"></u-button>
+                    </view>
+                    <view class="button" @click.native.stop="cancel" v-else>
+                      <u-button text="取消应聘" type="primary"></u-button>
+                    </view>
                   </view>
                 </view>
               </view>
-            </view>
-          </touch-hover>
-        </u-swipe-action-item>
-      </u-swipe-action>
+            </touch-hover>
+          </u-swipe-action-item>
+        </u-swipe-action>
+      </view>
     </view>
+    <u-empty text="暂无应聘职位"></u-empty>
   </view>
 </template>
 
 <script>
 import touchHover from '../../../../components/touch-hover/touch-hover.vue'
+import { getApplyJobList } from '@/api/applyJob.js'
+import { mapState } from 'vuex'
 export default {
   components: { touchHover },
   data() {
@@ -84,108 +89,16 @@ export default {
           text: '取消应聘'
         }
       ],
-      initData: [
-        {
-          content: '前端开发工程师',
-          employer: '阿里巴巴（杭州）',
-          candidate: '郭小天',
-          type: '全职',
-          details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
-          position: '杭州',
-          education: '本科',
-          payMent: '15k-20k',
-          scale: '500-999人',
-          status: '待企业确认'
-        },
-        {
-          content: '前端开发工程师',
-          employer: '阿里巴巴（杭州）',
-          candidate: '郭小天',
-          type: '全职',
-          details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
-          position: '杭州',
-          education: '本科',
-          payMent: '15k-20k',
-          scale: '500-999人',
-          status: '面试中'
-        },
-        {
-          content: '前端开发工程师',
-          employer: '阿里巴巴（杭州）',
-          candidate: '郭小天',
-          type: '全职',
-          details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
-          position: '杭州',
-          education: '本科',
-          payMent: '15k-20k',
-          scale: '500-999人',
-          status: '已录取'
-        },
-        {
-          content: '前端开发工程师',
-          employer: '阿里巴巴（杭州）',
-          type: '全职',
-          candidate: '黄大熊',
-          details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
-          position: '杭州',
-          education: '本科',
-          payMent: '15k-20k',
-          scale: '500-999人',
-          status: '企业已拒绝'
-        },
-        {
-          content: '前端开发工程师',
-          employer: '阿里巴巴（杭州）',
-          type: '全职',
-          candidate: '黄大熊',
-          details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
-          position: '杭州',
-          education: '本科',
-          payMent: '15k-20k',
-          scale: '500-999人',
-          status: '停止招聘'
-        },
-        {
-          content: '琴湖快递拿到北青',
-          employer: '张三',
-          candidate: '李四',
-          type: '兼职',
-          details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
-          position: '湘潭大学',
-          payMent: '10元',
-          start: '2022年3月1日',
-          end: '2022年3月1日',
-          education: '本科',
-          status: '待雇主确认'
-        },
-        {
-          content: '琴湖快递拿到北青',
-          employer: '张三',
-          candidate: '李四',
-          type: '兼职',
-          details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
-          position: '湘潭大学',
-          payMent: '10元',
-          start: '2022年3月1日',
-          end: '2022年3月1日',
-          education: '不限',
-          status: '已完成'
-        },
-        {
-          content: '琴湖快递拿到北青',
-          employer: '张三',
-          candidate: '李四',
-          type: '兼职',
-          details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
-          position: '湘潭大学',
-          payMent: '10元',
-          start: '2022年3月1日',
-          end: '2022年3月1日',
-          education: '不限',
-          status: '进行中'
-        }
-      ]
+      initData: []
     }
+  },
+  mounted() {
+    getApplyJobList(this.userInfo.id).then(({ data }) => {
+      this.initData = data
+    })
+  },
+  computed: {
+    ...mapState('appState', ['userInfo'])
   },
   methods: {
     // 兼容小程序的空函数

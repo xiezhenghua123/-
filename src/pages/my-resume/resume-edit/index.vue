@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-13 18:51:08
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-29 14:32:30
+ * @LastEditTime: 2022-05-02 12:13:30
 -->
 <template>
   <view class="mb-10">
@@ -25,10 +25,12 @@
         <u-form-item prop="headPhoto" label="头像：" required>
           <u-upload
             maxCount="1"
-            :fileList="basic.headPhoto ? [{ url: basic.headPhoto }] : []"
+            :fileList="previewFile"
             name="avatar"
+            previewFullImage
             @delete="deletePic"
             @afterRead="afterRead"
+            accept="image"
           ></u-upload>
         </u-form-item>
         <u-form-item prop="name" label="姓名：" borderBottom required>
@@ -92,14 +94,19 @@
     </view>
     <view class="content-box size16">
       <view class="headline">求职期望</view>
-      <u-form :model="jobExpectations" labelWidth="auto">
-        <u-form-item prop="job" label="期望岗位：" borderBottom>
+      <u-form
+        :model="jobExpectations"
+        :rules="jobExpectationsRules"
+        ref="jobExpectationsRef"
+        labelWidth="auto"
+      >
+        <u-form-item prop="job" label="期望岗位：" borderBottom required>
           <u--input v-model="jobExpectations.job" border="none"></u--input>
         </u-form-item>
-        <u-form-item prop="salary" label="期望薪资：" borderBottom>
+        <u-form-item prop="salary" label="期望薪资：" borderBottom required>
           <u--input v-model="jobExpectations.salary" border="none"></u--input>
         </u-form-item>
-        <u-form-item prop="position" label="期望城市：" borderBottom>
+        <u-form-item prop="position" label="期望城市：" borderBottom required>
           <u--input v-model="jobExpectations.position" border="none"></u--input>
         </u-form-item>
       </u-form>
@@ -300,7 +307,7 @@
           :ref="'projectExperienceRef' + index"
           :model="item"
           labelWidth="auto"
-          :rules="internshipExperiencesRules"
+          :rules="projectExperiencesRules"
         >
           <u-form-item prop="projectName" label="项目名称：" required>
             <u--input v-model="item.projectName" border="none"></u--input>

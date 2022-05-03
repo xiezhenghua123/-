@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-07 23:53:17
+ * @LastEditTime: 2022-05-03 16:51:10
 -->
 <template>
   <view class="content">
@@ -25,44 +25,33 @@ import minix from '../minix/index.js'
 export default {
   components: {
     conversations,
-    confirm,
+    confirm
   },
   mixins: [minix],
   data() {
     return {
-      showItem: true,
+      showItem: true
     }
   },
   onShow() {
-    // const self = this
-    // this.goEasy.im.latestConversations({
-    //   onSuccess: function (result) {
-    //     let content = result.content
-    //     self.renderConversations(content)
-    //   },
-    //   onFailed: function (error) {
-    //     //获取失败
-    //     console.log(
-    //       '失败获取最新会话列表, code:' +
-    //         error.code +
-    //         ' content:' +
-    //         error.content
-    //     )
-    //   },
-    // })
+    this.refresh()
   },
   computed: {
-    ...mapState('appState', ['identity', 'isLogin']),
+    ...mapState('appState', ['identity', 'isLogin'])
   },
   onLoad() {},
   onPullDownRefresh() {
-    this.showItem = false
-    this.$nextTick(() => {
-      this.showItem = true
-      uni.stopPullDownRefresh()
-    })
+    this.refresh()
+    uni.stopPullDownRefresh()
   },
-  methods: {},
+  methods: {
+    refresh() {
+      this.showItem = false
+      this.$nextTick(() => {
+        this.showItem = true
+      })
+    }
+  }
 }
 </script>
 

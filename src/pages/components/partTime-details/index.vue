@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-23 22:33:52
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-28 18:53:02
+ * @LastEditTime: 2022-05-03 15:42:17
 -->
 <template>
   <view>
@@ -15,12 +15,10 @@
       </view>
       <view class="every">
         <view class="title">雇主：</view>
-        <view class="content name--color">{{ initData.name || '测试' }}</view>
-      </view>
-      <view class="every" v-if="initData.candidate">
-        <view class="title">雇员：</view>
-        <view class="content name--color" @click="clickToPerson">{{
-          initData.candidate
+        <view class="content name--color" @click="clickToDetails">{{
+          (initData.user_type == 1
+            ? initData.worker_name
+            : initData.company_name) || userInfo.name
         }}</view>
       </view>
       <view class="every">
@@ -50,24 +48,16 @@
     </view>
     <view class="job-button size16 m-10" v-if="key === 'myFavorite'">
       <view class="apply">
-        <u-button text="我要应聘" type="primary" size="large"></u-button>
-      </view>
-
-      <view class="relation" @click="enterChat">
-        <u-button text="联系雇主" type="primary" size="large"></u-button>
-      </view>
-    </view>
-    <view class="job-button size16 m-10" v-if="key === 'releaseOrder'">
-      <view class="tort" @click="clickToComplainant">
         <u-button
-          text="被侵权？点击投诉"
+          text="我要应聘"
           type="primary"
           size="large"
+          @click="apply"
         ></u-button>
       </view>
 
       <view class="relation" @click="enterChat">
-        <u-button text="联系雇员" type="primary" size="large"></u-button>
+        <u-button text="联系雇主" type="primary" size="large"></u-button>
       </view>
     </view>
     <view class="job-button size16 m-10" v-if="key === 'applyOrder'">
@@ -87,6 +77,8 @@
 </template>
 <script>
 import { jobDetail } from '@/api/recruit.js'
+import { mapState } from 'vuex'
+import { addApplyJob } from '@/api/applyJob.js'
 export default {
   data() {
     return {
@@ -102,15 +94,68 @@ export default {
     })
     this.key = options.key
   },
+  computed: {
+    ...mapState('appState', ['userInfo'])
+  },
   methods: {
+    apply() {
+      addApplyJob({
+        work_order_id: this.initData.id,
+        worker_id: this.userInfo.id,
+        publisher:
+          this.initData.user_type == '1'
+            ? this.initData.worker_name
+            : this.initData.company_name,
+        recipient: this.userInfo.name
+      }).then(() => {
+        this.$refs.uToast.show({
+          message: '应聘成功！可到个人中心-订单管理查看',
+          type: 'success'
+        })
+      })
+    },
     enterChat() {
-      this.$methods.chat.enterChat(this.initData.company_id)
+      this.$methods.chat.enterChat({
+        uuid:
+          this.initData.user_type == 1
+            ? this.initData.openid + this.initData.worker_id
+            : this.initData.openid + this.initData.company_id,
+        name:
+          this.initData.user_type == 1
+            ? this.initData.worker_name
+            : this.initData.company_name,
+        avatar:
+          this.initData.user_type == 1
+            ? this.initData.worker_avatar
+            : this.initData.company_avatar
+      })
     },
     clickToPerson() {},
     clickToComplainant() {
       uni.navigateTo({
-        url: '/pages/complain-manage/complainant-upload/index'
+        url: `/pages/complain-manage/complainant-upload/index?orderId=${
+          this.initData.id
+        }&companyId=${
+          this.user_type == 1
+            ? this.initData.worker_id
+            : this.initData.company_id
+        }`
       })
+    },
+    clickToDetails() {
+      if (this.initData.user_type == '1') {
+        uni.navigateTo({
+          url: `/pages/components/confirm-page/index?id=${
+            this.initData.worker_id || this.userInfo.id
+          }`
+        })
+      } else {
+        uni.navigateTo({
+          url: `/pages/enterprise-information/index?id=${
+            this.initData.company_id || this.userInfo.id
+          }&type=${this.key}`
+        })
+      }
     }
   }
 }

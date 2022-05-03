@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-28 16:06:41
+ * @LastEditTime: 2022-05-03 17:02:24
 -->
 <template>
   <view>
@@ -48,6 +48,7 @@ import company from './company/index.vue'
 import renderConversations from '@/pages/minix/renderConversations'
 import { checkConfirm, authenticate } from '@/api/user.js'
 import { successToast, errorToast } from '@/components/toast/index.js'
+import { getNotice, delNotice } from '@/api/notice.js'
 
 export default {
   props: {
@@ -120,7 +121,7 @@ export default {
       // uni.setStorageSync('currentUser', restApi.findUser('Mattie', '123'))
       this.setUserInfo(userInfo)
       this.$emit('isLogin', true)
-      this.$methods.chat.connect(this, userInfo)
+      this.$methods.chat.connect(this, userInfo, false)
       this.goEasy.im.on(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, content => {
         this.renderConversations(content)
       })
@@ -142,6 +143,20 @@ export default {
                     that.$set(that.userInfoData, 'openid', data.data)
                   } else {
                     if (data.data.user.status == 2) {
+                      getNotice(data.data.user.openid).then(
+                        async ({ data }) => {
+                          if (data.length) {
+                            let confirmData = data.filter(item => {
+                              return JSON.parse(item.content).type == 'confirm'
+                            })[0]
+                            errorToast(JSON.parse(confirmData.content).content)
+                            await delNotice(confirmData.id)
+                            await that.$methods.sleep(3000)
+                            that.promptShow = true
+                            return
+                          }
+                        }
+                      )
                       errorToast('身份信息正在审核中！')
                     } else if (data.data.user.status == 3) {
                       errorToast(
@@ -169,7 +184,12 @@ export default {
                         'openid',
                         data.data.user.openid
                       )
-                      that.$set(that.userInfoData, 'uuid', data.data.user.id)
+                      that.$set(
+                        that.userInfoData,
+                        'uuid',
+                        data.data.user.openid + data.data.user.id
+                      )
+                      that.$set(that.userInfoData, 'id', data.data.user.id)
                       that.$set(
                         that.userInfoData,
                         'phone',

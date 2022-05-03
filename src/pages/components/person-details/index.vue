@@ -2,17 +2,9 @@
  * @Descripttion: 
  * @version: 
  * @Author: ZhenghuaXie
- * @Date: 2022-03-24 13:44:40
- * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-05 22:25:35
--->
-<!--
- * @Descripttion: 
- * @version: 
- * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-24 13:54:31
+ * @LastEditTime: 2022-05-02 22:07:04
 -->
 <template>
   <view class="mb-10">
@@ -71,10 +63,12 @@
         <view class="mq border-b" :key="item.key">
           <view class="top">
             <view class="top_name">{{ item.schoolName }}</view>
-            <view class="top_time">{{ item.start + '——' + item.end }}</view>
+            <view class="top_time">{{
+              item.start.time + '——' + item.end.time
+            }}</view>
           </view>
           <view class="size14">
-            <text>{{ item.rank }}</text>
+            <text>{{ item.rank.text }}</text>
             <text class="ml-10">{{ item.major }}</text>
           </view>
           <text space="nbsp">{{ item.details }}</text>
@@ -87,7 +81,9 @@
         <view class="mq border-b" :key="item.key">
           <view class="top">
             <view class="top_name">{{ item.companyName }}</view>
-            <view class="top_time">{{ item.start + '——' + item.end }}</view>
+            <view class="top_time">{{
+              item.start.time + '——' + item.end.time
+            }}</view>
           </view>
           <view class="size14">
             <text>{{ item.job }}</text>
@@ -102,7 +98,9 @@
         <view class="mq border-b" :key="item.key">
           <view class="top">
             <view class="top_name">{{ item.projectName }}</view>
-            <view class="top_time">{{ item.start + '——' + item.end }}</view>
+            <view class="top_time">{{
+              item.start.time + '——' + item.end.time
+            }}</view>
           </view>
           <view class="size14">
             <text>{{ item.job }}</text>
@@ -127,24 +125,69 @@
 export default {
   data() {
     return {
-      resumeData: {},
+      resumeData: {
+        basic: {
+          name: '',
+          tel: '',
+          age: '',
+          headPhoto: '',
+          maxEducation: '',
+          sex: '',
+          jobExpectations: {
+            job: '',
+            salary: '',
+            position: ''
+          },
+          educations: {},
+          internshipExperiences: {},
+          projectExperiences: {},
+          selfEvaluation: {}
+        }
+      }
     }
   },
   onLoad(options) {
-    this.resumeData = JSON.parse(options.data)
-
+    let data = JSON.parse(options.data)
+    this.resumeData = {
+      basic: {
+        uuid: data.openid + data.worker_id,
+        name: data.name,
+        tel: data.phone,
+        age: data.age,
+        headPhoto: data.avatar,
+        maxEducation: data.education,
+        sex: data.sex
+      },
+      jobExpectations: {
+        job: data.position,
+        salary: data.salary,
+        position: data.city
+      },
+      educations: JSON.parse(data.education_experience),
+      internshipExperiences: JSON.parse(data.internship_experience),
+      projectExperiences: JSON.parse(data.project_experience),
+      selfEvaluation: data.self_assessment
+    }
     uni.setNavigationBarTitle({
-      title: this.resumeData.basic.name,
+      title: this.resumeData.basic.name
     })
   },
   methods: {
+    formmat(item) {
+      let data = JSON.parse(item)
+      return `${data.start.time}——${data.end.time}`
+    },
     enterChat() {
-      this.$methods.chat.enterChat('33c3693b-dbb0-4bc9-99c6-fa77b9eb763f')
+      this.$methods.chat.enterChat({
+        uuid: this.resumeData.basic.uuid,
+        name: this.resumeData.basic.name,
+        avatar: this.resumeData.basic.headPhoto
+      })
     },
     telHide(tel) {
       return tel.replace(tel.slice(3, 7), '****')
-    },
-  },
+    }
+  }
 }
 </script>
 

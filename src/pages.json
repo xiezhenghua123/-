@@ -22,6 +22,12 @@
       }
     },
     {
+      "path": "pages/components/confirm-page/index",
+      "style": {
+        "navigationBarTitleText": "雇主详情"
+      }
+    },
+    {
       "path": "pages/message-center/index",
       "style": {
         "navigationBarTitleText": "消息中心",
@@ -110,12 +116,6 @@
       "path": "pages/components/person-details/index",
       "style": {
         "navigationBarTitleText": "人员详情"
-      }
-    },
-    {
-      "path": "pages/components/company-details/index",
-      "style": {
-        "navigationBarTitleText": "企业详情"
       }
     },
     {

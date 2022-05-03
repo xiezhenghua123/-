@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-02 17:10:08
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-28 13:32:16
+ * @LastEditTime: 2022-05-03 00:56:21
  */
 
 import { apiRoot, getJobUrl } from '../requestUrl/index.js'
@@ -27,6 +27,9 @@ const setInterceptors = instance => {
   })
 
   instance.interceptors.response.use(responseInterceptors, error => {
+    if (error.statusCode != 200) {
+      errorToast(`访问出错！${error.statusCode}`)
+    }
     return Promise.reject(error)
   })
 }

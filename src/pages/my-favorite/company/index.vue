@@ -4,45 +4,54 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-23 15:02:59
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-06 18:48:06
+ * @LastEditTime: 2022-05-02 22:52:26
 -->
 <template>
   <view>
-    <view
-      v-for="(item, index) in initData"
-      :key="index"
-      class="container m-10"
-      @click="clickToDetails(item)"
-    >
-      <u-swipe-action>
-        <u-swipe-action-item :options="options">
-          <view class="box">
-            <view class="box-left">
-              <view class="name">{{ item.name }} </view>
-              <view class="expect">
-                <view class="job mr-10">
-                  <text>{{ item.job }}</text>
+    <toast></toast>
+    <view v-if="initData.length">
+      <view
+        v-for="(item, index) in initData"
+        :key="index"
+        class="container m-10"
+      >
+        <u-swipe-action>
+          <u-swipe-action-item :options="options" @click="cancel(item)">
+            <view class="box" @click="clickToDetails(item)">
+              <view class="box-left">
+                <view class="flex mb-10">
+                  <u-avatar :src="item.avatar" size="24"></u-avatar>
+                  <view class="name ml-10">{{ item.name }} </view>
                 </view>
-                <view class="salary">
-                  <text>{{ item.salary }}</text>
+                <view class="expect">
+                  <view class="job mr-10">
+                    <text>期望岗位：{{ item.position }}</text>
+                  </view>
+                  <view class="salary">
+                    <text>期望薪酬:{{ item.salary }}</text>
+                  </view>
+                </view>
+              </view>
+              <view class="flex">
+                <view class="box-right">
+                  <view class="maxEducation">{{ item.education }}</view>
+                  <view class="button" @click.stop="enterChat(item)">
+                    <u-button text="联系" type="primary"></u-button>
+                  </view>
                 </view>
               </view>
             </view>
-            <view class="box-right">
-              <view class="maxEducation">{{ item.maxEducation }}</view>
-              <view class="button" @click.stop="enterChat">
-                <u-button text="联系" type="primary"></u-button>
-              </view>
-            </view>
-          </view>
-        </u-swipe-action-item>
-      </u-swipe-action>
+          </u-swipe-action-item>
+        </u-swipe-action>
+      </view>
     </view>
+    <u-empty v-else></u-empty>
   </view>
 </template>
 <script>
-import data from '../../my-resume/data.js'
-
+import { collect, cancelCollect, getCollect } from '@/api/resume.js'
+import { successToast } from '@/components/toast/index'
+import { mapState } from 'vuex'
 export default {
   name: 'company-favorite',
   data() {
@@ -51,39 +60,47 @@ export default {
         {
           text: '删除',
           style: {
-            backgroundColor: '#dd524d',
-          },
-        },
+            backgroundColor: '#dd524d'
+          }
+        }
       ],
-      initData: [
-        {
-          name: '张三',
-          job: '产品经理',
-          maxEducation: '本科',
-          salary: '10k-15k',
-        },
-        {
-          name: '李四',
-          job: '前端开发',
-          maxEducation: '硕士',
-          salary: '10k-20k',
-        },
-      ],
+      initData: []
     }
   },
-  onLoad() {},
+  computed: {
+    ...mapState('appState', ['userInfo'])
+  },
+  mounted() {
+    getCollect(this.userInfo.id).then(({ data }) => {
+      this.initData = data
+    })
+  },
   methods: {
+    cancel(item) {
+      cancelCollect(item.id.toString(), this.userInfo.id.toString()).then(
+        () => {
+          successToast('删除成功！')
+          getCollect(this.userInfo.id).then(({ data }) => {
+            this.initData = data
+          })
+        }
+      )
+    },
     clickToDetails(item) {
       uni.navigateTo({
         url: `/pages/components/person-details/index?data=${JSON.stringify(
-          data
-        )}`,
+          item
+        )}`
       })
     },
-    enterChat() {
-      this.$methods.chat.enterChat('33c3693b-dbb0-4bc9-99c6-fa77b9eb763f')
-    },
-  },
+    enterChat(item) {
+      this.$methods.chat.enterChat({
+        uuid: item.openid + item.worker_id,
+        name: item.name,
+        avatar: item.avatar
+      })
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -100,7 +117,6 @@ export default {
       font-size: 16px;
       font-weight: bold;
       color: $uni-text-color;
-      margin-bottom: 15px;
     }
     .expect {
       display: flex;

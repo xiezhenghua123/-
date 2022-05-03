@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-20 21:23:45
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-24 15:05:32
+ * @LastEditTime: 2022-05-02 16:40:01
 -->
 <template>
   <view class="mb-10">
@@ -24,8 +24,26 @@
           <u-form-item label="企业名称：" prop="name" borderBottom required>
             <u-input v-model="initData.name" border="none"></u-input>
           </u-form-item>
-          <u-form-item label="所属行业：" prop="industry" borderBottom required>
-            <u-input v-model="initData.industry" border="none"></u-input>
+          <u-form-item
+            label="所属行业："
+            prop="industry"
+            borderBottom
+            required
+            @click="industryShow = true"
+          >
+            <u-input
+              v-model="initData.industry"
+              border="none"
+              disabled
+            ></u-input>
+            <u-icon slot="right" name="arrow-right"></u-icon>
+            <u-picker
+              :show="industryShow"
+              :columns="industry"
+              @confirm="industryConfirm"
+              @cancel="industryShow = false"
+              title="选择行业"
+            ></u-picker>
           </u-form-item>
           <u-form-item
             label="统一社会信用代码："
@@ -69,7 +87,12 @@
             >
             </u-action-sheet>
           </u-form-item>
-          <u-form-item label="注册资本：" prop="registeredCapital" borderBottom>
+          <u-form-item
+            label="注册资本："
+            prop="registeredCapital"
+            borderBottom
+            required
+          >
             <u-input
               v-model="initData.registeredCapital"
               border="none"
@@ -92,7 +115,7 @@
             ></custom-datetime-picker>
           </u-form-item>
           <view class="introduction">
-            <u-form-item label="公司介绍：">
+            <u-form-item label="公司介绍：" required prop="introduction">
               <u--textarea
                 v-model="initData.introduction"
                 count
@@ -107,61 +130,122 @@
 </template>
 
 <script>
-import initData from '../data.js'
 import minix from '../../minix/index.js'
+import { editCompanyData, getCompanyConfirmData } from '@/api/user.js'
+import { industrySort } from '@/data/industry.js'
 
 export default {
   mixins: [minix],
   data() {
     return {
+      industryShow: false,
+      industry: [industrySort],
       establishedTimeShow: false,
-      initData: {},
+      initData: {
+        name: '',
+        industry: '',
+        code: '',
+        legalPerson: '',
+        address: '',
+        scale: '',
+        registeredCapital: '',
+        establishedTime: '',
+        introduction: ''
+      },
       companyDataRules: {
+        registeredCapital: {
+          required: true,
+          message: '请输入注册资本',
+          trigger: ['blur', 'change']
+        },
+        introduction: {
+          required: true,
+          message: '请输入公司介绍',
+          trigger: ['blur', 'change']
+        },
         name: {
           required: true,
           message: '请输入企业名称',
-          trigger: ['blur', 'change'],
+          trigger: ['blur', 'change']
         },
         industry: {
           required: true,
-          message: '请输入行业',
-          trigger: ['blur', 'change'],
+          message: '请选择行业',
+          trigger: ['blur', 'change']
         },
         address: {
           required: true,
           message: '请输入公司地址',
-          trigger: ['blur', 'change'],
+          trigger: ['blur', 'change']
         },
         scale: {
           required: true,
           message: '请选择公司规模',
-          trigger: ['blur', 'change'],
+          trigger: ['blur', 'change']
         },
         establishedTime: {
           required: true,
           message: '请选择公司成立日期',
-          trigger: ['blur', 'change'],
-        },
+          trigger: ['blur', 'change']
+        }
       },
       scaleShow: false,
       scaleArray: [
         { name: '0-499人' },
         { name: '500-999人' },
         { name: '1000-9999人' },
-        { name: '10000人以上' },
+        { name: '10000人以上' }
       ],
+      id: ''
     }
   },
-  onLoad() {
-    this.initData = initData
+  onLoad({ id }) {
+    this.id = id
+    getCompanyConfirmData(id).then(({ data }) => {
+      this.initData = {
+        ...data,
+        name: data.name,
+        industry: data.industry,
+        code: data.code,
+        legalPerson: data.legal_person,
+        address: data.address,
+        scale: data.company_size,
+        registeredCapital: data.registered_capital,
+        establishedTime: data.incorporation,
+        introduction: data.introduce
+      }
+    })
   },
   onReady() {
-    this.$refs.companyDataRef.setRules(this.companyDataRules)
+    this.$nextTick(() => {
+      this.$refs.companyDataRef.setRules(this.companyDataRules)
+    })
   },
   methods: {
-    clickConfirm() {
-      this.$refs.companyDataRef.validate()
+    industryConfirm({ value }) {
+      this.initData.industry = value.toString()
+      this.industryShow = false
     },
+    clickConfirm() {
+      this.$refs.companyDataRef.validate().then(vaild => {
+        if (vaild) {
+          editCompanyData(this.id, {
+            ...this.initData,
+            type: 2,
+            legal_person: this.initData.legalPerson,
+            company_size: this.initData.scale,
+            registered_capital: this.initData.registeredCapital,
+            incorporation: this.initData.establishedTime,
+            introduce: this.initData.introduction
+          }).then(() => {
+            uni.navigateTo({
+              url: `/pages/enterprise-information/index?type=releaseOrder&id=${this.userInfo.id}`
+            })
+          })
+        }
+      })
+    },
+
     scaleSelect(value) {
       this.initData.scale = value.name
       this.scaleShow = false
@@ -169,8 +253,8 @@ export default {
     timeConfirm(value) {
       this.initData.establishedTime = value
       this.establishedTimeShow = false
-    },
-  },
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

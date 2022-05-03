@@ -4,10 +4,11 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-27 11:13:02
+ * @LastEditTime: 2022-05-03 16:07:55
 -->
 <template>
   <view class="m-10">
+    <toast></toast>
     <view class="text-box">
       <view class="title">投诉原因：</view>
       <u--textarea
@@ -20,13 +21,12 @@
       ></u--textarea>
     </view>
     <view class="upload">
-      <view class="title">材料附件上传：</view>
+      <view class="title">材料附件上传(仅限图片)：</view>
       <u-upload
-        accept="all"
         :fileList="fileList"
         uploadIcon="plus"
         @afterRead="afterRead"
-        multiple
+        @delete="deletePic"
       >
       </u-upload>
     </view>
@@ -39,22 +39,42 @@
 </template>
 
 <script>
+import { addComplain } from '@/api/complain.js'
+import { mapState } from 'vuex'
+import { successToast } from '@/components/toast/index.js'
+
 export default {
   data() {
     return {
       value: '',
-      fileList: [],
+      fileList: []
     }
+  },
+  computed: {
+    ...mapState('appState', ['userInfo'])
+  },
+  onLoad({ orderId, companyId }) {
+    this.orderId = orderId
+    this.companyId = companyId
   },
   methods: {
     submit() {
-      console.log('提交了建议')
+      addComplain({
+        reporter: this.userInfo.id,
+        worker_order_id: this.orderId,
+        company_id: this.companyId,
+        content: this.value,
+        img: JSON.stringify(this.fileList),
+        status: 0
+      }).then(() => {
+        successToast('投诉成功！')
+      })
     },
     afterRead(file, lists, name) {
       this.fileList.push({ url: file.url })
       console.log(file)
-    },
-  },
+    }
+  }
 }
 </script>
 

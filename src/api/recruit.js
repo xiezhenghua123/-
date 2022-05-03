@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-27 10:45:08
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-28 18:11:38
+ * @LastEditTime: 2022-05-03 18:12:38
  */
 import request from './request'
 
@@ -14,7 +14,7 @@ const releaseJob = data => {
 }
 
 // 获取所有职位
-const allJob = page => {
+const allJob = (page, workerId, type) => {
   return request(
     'get',
     'workOrder/list/:page',
@@ -22,6 +22,10 @@ const allJob = page => {
     {
       params: {
         page: page
+      },
+      query: {
+        workerId: workerId,
+        type: type
       }
     }
   )
@@ -52,11 +56,16 @@ const editJobMssage = (id, data) => {
 
 //职位下架
 const delJob = id => {
-  return request('delete', 'workOrder/:id', data, {
-    params: {
-      id: id
+  return request(
+    'delete',
+    'workOrder/:id',
+    {},
+    {
+      params: {
+        id: id
+      }
     }
-  })
+  )
 }
 
 // 获取我的发布职位
@@ -64,11 +73,11 @@ const delJob = id => {
 const getMyReleaseJob = uuid => {
   return request(
     'get',
-    'workOrder/:cid',
+    'workOrder/me/:id',
     {},
     {
       params: {
-        cid: uuid
+        id: uuid
       }
     }
   )
@@ -88,6 +97,40 @@ const getJobApplyPerson = wid => {
     }
   )
 }
+
+const collect = data => {
+  return request('post', 'collection/workerOrder', data)
+}
+
+// 取消收藏
+const cancelCollect = (workOrderId, workerId) => {
+  return request(
+    'delete',
+    'collection/workerOrder/:id',
+    {
+      workOrderId: workOrderId
+    },
+    {
+      params: {
+        id: workerId
+      }
+    }
+  )
+}
+
+// 获取收藏招聘帖
+const getCollection = id => {
+  return request(
+    'get',
+    'collection/workerOrder/:id',
+    {},
+    {
+      params: {
+        id: id
+      }
+    }
+  )
+}
 export {
   releaseJob,
   allJob,
@@ -95,5 +138,8 @@ export {
   editJobMssage,
   delJob,
   getMyReleaseJob,
-  getJobApplyPerson
+  getJobApplyPerson,
+  collect,
+  cancelCollect,
+  getCollection
 }

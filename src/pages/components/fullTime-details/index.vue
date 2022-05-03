@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-23 22:33:52
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-28 18:53:08
+ * @LastEditTime: 2022-05-03 15:41:24
 -->
 <template>
   <view>
@@ -17,13 +17,7 @@
       <view class="every">
         <view class="title">企业：</view>
         <view class="content name--color" @click="clickToCompany">{{
-          initData.employer
-        }}</view>
-      </view>
-      <view class="every" v-if="initData.candidate">
-        <view class="title">应聘者：</view>
-        <view class="content name--color" @click="clickToPerson">{{
-          initData.candidate
+          initData.company_name || userInfo.name
         }}</view>
       </view>
       <view class="every">
@@ -32,36 +26,23 @@
       </view>
       <view class="every">
         <view class="title">工作地点：</view>
-        <view class="content">{{ initData.position }}</view>
+        <view class="content">{{ initData.place }}</view>
       </view>
       <view class="every">
         <view class="title">薪酬：</view>
-        <view class="content">{{ initData.payMent }}</view>
+        <view class="content">{{ initData.salary }}</view>
       </view>
       <view class="every">
         <view class="title">学历要求：</view>
         <view class="content">{{ initData.education }}</view>
       </view>
       <view class="every">
-        <view class="title">企业规模：</view>
-        <view class="content">{{ initData.scale }}</view>
+        <view class="title">招聘截止时间：</view>
+        <view class="content">{{ initData.dateline }}</view>
       </view>
       <view class="every flex-column">
         <view>岗位要求：</view>
-        <u--text :text="initData.details" wordWrap="anyWhere"></u--text>
-      </view>
-      <view class="every" v-if="key === 'myRealease'">
-        <view class="title">押金金额：</view>
-        <view class="content">{{ initData.cash }}</view>
-      </view>
-      <view class="every" v-if="key === 'myRealease'">
-        <view class="title">押金退还：</view>
-        <view class="content">{{ initData.isReturnCash ? '是' : '否' }}</view>
-      </view>
-
-      <view class="every">
-        <view class="title">岗位状态：</view>
-        <view class="content">{{ initData.status }}</view>
+        <u--text :text="initData.description" wordWrap="anyWhere"></u--text>
       </view>
     </view>
     <view class="job-button size16 m-10" v-if="key === 'myFavorite'">
@@ -70,7 +51,12 @@
       </view>
 
       <view class="relation" @click="enterChat">
-        <u-button text="联系企业" type="primary" size="large"></u-button>
+        <u-button
+          text="联系企业"
+          type="primary"
+          size="large"
+          @click="apply"
+        ></u-button>
       </view>
     </view>
     <view class="job-button size16 m-10" v-if="key === 'applyOrder'">
@@ -86,23 +72,12 @@
         <u-button text="联系企业" type="primary" size="large"></u-button>
       </view>
     </view>
-    <view class="job-button size16 m-10" v-if="key === 'releaseOrder'">
-      <view class="tort" @click="clickToComplainant">
-        <u-button
-          text="被侵权？点击投诉"
-          type="primary"
-          size="large"
-        ></u-button>
-      </view>
-
-      <view class="relation" @click="enterChat">
-        <u-button text="联系应聘者" type="primary" size="large"></u-button>
-      </view>
-    </view>
   </view>
 </template>
 <script>
 import { jobDetail } from '@/api/recruit.js'
+import { mapState } from 'vuex'
+import { addApplyJob } from '@/api/applyJob.js'
 export default {
   data() {
     return {
@@ -111,26 +86,53 @@ export default {
       id: ''
     }
   },
+  computed: {
+    ...mapState('appState', ['userInfo'])
+  },
   onLoad(options) {
     this.id = options.id
     jobDetail(this.id).then(({ data }) => {
-      this.initData = data
+      this.initData = {
+        ...data,
+        salary: `${JSON.parse(data.salary).min}k-${
+          JSON.parse(data.salary).max
+        }k`
+      }
     })
     this.key = options.key
   },
   methods: {
+    apply() {
+      addApplyJob({
+        work_order_id: this.initData.id,
+        worker_id: this.userInfo.id,
+        publisher: this.initData.company_name,
+        recipient: this.userInfo.name
+      }).then(() => {
+        this.$refs.uToast.show({
+          message: '应聘成功！可到个人中心-订单管理查看',
+          type: 'success'
+        })
+      })
+    },
     enterChat() {
-      this.$methods.chat.enterChat(this.initData.company_id)
+      this.$methods.chat.enterChat({
+        uuid: this.initData.openid + this.initData.company_id,
+        name: this.initData.company_name,
+        avatar: this.initData.company_avatar
+      })
     },
     clickToCompany() {
       uni.navigateTo({
-        url: '/pages/components/company-details/index'
+        url: `/pages/enterprise-information/index?id=${
+          this.initData.company_id || this.userInfo.id
+        }&type=${this.key}`
       })
     },
     clickToPerson() {},
     clickToComplainant() {
       uni.navigateTo({
-        url: '/pages/complain-manage/complainant-upload/index'
+        url: `/pages/complain-manage/complainant-upload/index?orderId=${this.initData.id}&companyId=${this.initData.company_id}`
       })
     }
   }

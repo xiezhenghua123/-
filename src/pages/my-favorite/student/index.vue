@@ -4,40 +4,74 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-23 15:03:05
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-03-26 21:14:09
+ * @LastEditTime: 2022-05-03 00:35:30
 -->
 <template>
   <view>
-    <view
-      v-for="(item, index) in allData"
-      :key="index"
-      class="container m-10"
-      @click="clickToDetails(item)"
-    >
-      <u-swipe-action>
-        <u-swipe-action-item :options="options">
-          <touch-hover>
-            <view class="box">
-              <view class="box_left">
-                <view class="content">{{ item.content }}</view>
-                <text class="name">{{ item.employer }}</text>
-                <text class="type">{{ item.type }}</text>
-              </view>
-              <view class="box_right">
-                <view class="payment">{{ item.payMent }}</view>
-                <view class="button" @click.native.stop="relation">
-                  <u-button text="我要应聘" type="primary"></u-button>
+    <toast></toast>
+    <view v-if="initData.length">
+      <view
+        v-for="(item, index) in initData"
+        :key="index"
+        class="container m-10"
+      >
+        <u-swipe-action>
+          <view>
+            <u-swipe-action-item
+              :options="options"
+              @click="cancelCollect(item)"
+            >
+              <touch-hover>
+                <view class="box" @click.stop="clickToDetails(item)">
+                  <view class="box_left">
+                    <view class="content">{{ item.content }}</view>
+                    <view class="flex">
+                      <u-avatar
+                        :src="
+                          item.user_type == '1'
+                            ? item.worker_avatar
+                            : item.company_avatar
+                        "
+                        size="24"
+                      ></u-avatar>
+                      <text class="name ml-10">{{
+                        item.user_type == '1'
+                          ? item.worker_name
+                          : item.company_name
+                      }}</text>
+                      <text class="type" style="margin-right: 25px">{{
+                        item.order_type == 'partTime' ? '兼职' : '全职'
+                      }}</text>
+                    </view>
+                  </view>
+                  <view class="box_right">
+                    <view class="payment">{{
+                      item.order_type == 'partTime'
+                        ? item.salary + '元'
+                        : salary(item.salary)
+                    }}</view>
+                    <view class="button" @click.native.stop="apply(item)">
+                      <u-button text="我要应聘" type="primary"></u-button>
+                    </view>
+                  </view>
                 </view>
-              </view>
-            </view>
-          </touch-hover>
-        </u-swipe-action-item>
-      </u-swipe-action>
+              </touch-hover>
+            </u-swipe-action-item>
+          </view>
+        </u-swipe-action>
+      </view>
+    </view>
+    <view v-else>
+      <u-empty></u-empty>
     </view>
   </view>
 </template>
 <script>
 import touchHover from '../../../components/touch-hover/touch-hover.vue'
+import { getCollection, cancelCollect } from '@/api/recruit.js'
+import { mapState } from 'vuex'
+import { successToast } from '@/components/toast/index'
+import { addApplyJob } from '@/api/applyJob.js'
 export default {
   components: { touchHover },
   name: 'student-favorite',
@@ -47,85 +81,60 @@ export default {
         {
           text: '删除',
           style: {
-            backgroundColor: '#dd524d',
-          },
-        },
+            backgroundColor: '#dd524d'
+          }
+        }
       ],
-      // 兼职
-      partTime: [
-        {
-          content: '琴湖快递拿到北青',
-          employer: '张三',
-          type: '兼职',
-          details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
-          position: '湘潭大学',
-          payMent: '10元',
-          start: '2022年3月1日',
-          end: '2022年3月1日',
-          status: '招聘中',
-        },
-        {
-          content: '琴湖快递拿到北青',
-          employer: '张三',
-          type: '兼职',
-          details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
-          position: '湘潭大学',
-          payMent: '10元',
-          start: '2022年3月1日',
-          end: '2022年3月1日',
-          status: '招聘中',
-        },
-      ],
-      // 全职
-      fullTime: [
-        {
-          content: '前端开发工程师',
-          employer: '阿里巴巴（杭州）',
-          type: '全职',
-          details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
-          position: '杭州',
-          education: '本科',
-          payMent: '15k-20k',
-          scale: '500-999人',
-          status: '招聘中',
-        },
-        {
-          content: '前端开发工程师',
-          employer: '阿里巴巴（杭州）',
-          type: '全职',
-          details: 'xxxxxxxxxxxxxxxxxxxxxxxxx',
-          position: '杭州',
-          education: '本科',
-          payMent: '15k-20k',
-          scale: '500-999人',
-          status: '招聘中',
-        },
-      ],
+      initData: []
     }
   },
+  mounted() {
+    this.getData()
+  },
   computed: {
-    allData() {
-      return [...this.fullTime, ...this.partTime]
-    },
+    ...mapState('appState', ['userInfo'])
   },
   methods: {
+    apply(item) {
+      addApplyJob({
+        work_order_id: item.id,
+        worker_id: this.userInfo.id,
+        publisher: item.user_type == '1' ? item.worker_name : item.company_name,
+        recipient: this.userInfo.name
+      }).then(() => {
+        this.$refs.uToast.show({
+          message: '应聘成功！可到个人中心-订单管理查看',
+          type: 'success'
+        })
+      })
+    },
+    getData() {
+      getCollection(this.userInfo.id).then(({ data }) => {
+        this.initData = data
+      })
+    },
+    cancelCollect(item) {
+      cancelCollect(item.id, this.userInfo.id).then(() => {
+        successToast('删除成功！')
+        this.getData()
+      })
+    },
+    salary(salary) {
+      return `${JSON.parse(salary).min}k-${JSON.parse(salary).max}k`
+    },
     relation() {},
     clickToDetails(item) {
-      if (item.type === '全职') {
+      if (item.order_type === 'fullTime') {
         uni.navigateTo({
-          url: `/pages/components/fullTime-details/index?data=${JSON.stringify(
-            item
-          )}&key=myFavorite`,
+          url: `/pages/components/fullTime-details/index?id=${item.id}&key=myFavorite`
         })
       } else {
         uni.navigateTo({
-          url: `/pages/components/partTime-details/index?data=${JSON.stringify(
-            item
-          )}&key=myFavorite`,
+          url: `/pages/components/partTime-details/index?id=${item.id}&key=myFavorite`
         })
       }
-    },
-  },
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

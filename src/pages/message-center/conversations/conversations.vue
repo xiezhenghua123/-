@@ -92,36 +92,36 @@ export default {
         {
           text: '置顶聊天',
           style: {
-            backgroundColor: '#3c9cff',
-          },
+            backgroundColor: '#3c9cff'
+          }
         },
         {
           text: '删除聊天',
           style: {
-            backgroundColor: '#f56c6c',
-          },
-        },
+            backgroundColor: '#f56c6c'
+          }
+        }
       ],
       options2: [
         {
           text: '取消置顶',
           style: {
-            backgroundColor: '#3c9cff',
-          },
+            backgroundColor: '#3c9cff'
+          }
         },
         {
           text: '删除聊天',
           style: {
-            backgroundColor: '#f56c6c',
-          },
-        },
+            backgroundColor: '#f56c6c'
+          }
+        }
       ],
       unreadTotal: 0,
       conversations: [],
       action: {
         conversation: null,
-        show: false,
-      },
+        show: false
+      }
     }
   },
   mounted() {
@@ -144,7 +144,7 @@ export default {
             ' content:' +
             error.content
         )
-      },
+      }
     })
   },
   methods: {
@@ -159,7 +159,7 @@ export default {
     topConversation() {
       uni.showLoading({
         title: '加载中...',
-        mask: true,
+        mask: true
       })
       let conversation = this.action.conversation
       let failedDescription = conversation.top ? '取消置顶失败' : '置顶失败'
@@ -175,10 +175,10 @@ export default {
             uni.hideLoading()
             uni.showToast({
               title: failedDescription,
-              icon: 'none',
+              icon: 'none'
             })
             console.log(error)
-          },
+          }
         })
       } else {
         this.goEasy.im.topGroupConversation({
@@ -191,17 +191,17 @@ export default {
             uni.hideLoading()
             uni.showToast({
               title: failedDescription,
-              icon: 'none',
+              icon: 'none'
             })
             console.log(error)
-          },
+          }
         })
       }
     },
     removeConversation() {
       uni.showLoading({
         title: '加载中...',
-        mask: true,
+        mask: true
       })
       let failedDescription = '删除失败'
       let conversation = this.action.conversation
@@ -216,10 +216,10 @@ export default {
             uni.hideLoading()
             uni.showToast({
               title: failedDescription,
-              icon: 'none',
+              icon: 'none'
             })
             console.log(error)
-          },
+          }
         })
       } else {
         this.goEasy.im.removeGroupConversation({
@@ -231,15 +231,16 @@ export default {
             uni.hideLoading()
             uni.showToast({
               title: failedDescription,
-              icon: 'none',
+              icon: 'none'
             })
             console.log(error)
-          },
+          }
         })
       }
     },
     renderConversations(content) {
       this.conversations = content.conversations || []
+      console.log(this.conversations)
       let unreadTotal = content.unreadTotal
       this.setUnreadAmount(unreadTotal)
     },
@@ -248,28 +249,26 @@ export default {
       if (this.unreadTotal > 0) {
         uni.setTabBarBadge({
           index: 3,
-          text: this.unreadTotal.toString(),
+          text: this.unreadTotal.toString()
         })
       } else {
         uni.removeTabBarBadge({
-          index: 3,
+          index: 3
         })
       }
     },
     navigateToChat(conversation) {
-      let path =
-        conversation.type === this.GoEasy.IM_SCENE.PRIVATE
-          ? '../chat/privateChat/privateChat?to=' + conversation.userId
-          : '../chat/groupChat/groupChat?to=' + conversation.groupId
-      uni.navigateTo({
-        url: path,
+      console.log(conversation)
+      this.$methods.chat.enterChat({
+        uuid: conversation.userId,
+        ...conversation.data
       })
     },
     showAction(conversation) {
       this.action.conversation = conversation
       this.action.show = true
-    },
-  },
+    }
+  }
 }
 </script>
 

@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-06 18:47:39
+ * @LastEditTime: 2022-05-02 22:09:37
 -->
 <template>
   <view>
@@ -17,48 +17,64 @@
         themeColor="#3c9cff"
       ></sl-filter>
     </view>
-    <view
-      v-for="(item, index) in initData"
-      :key="index"
-      class="container m-10"
-      @click="clickToDetails(item)"
-    >
-      <view class="box">
-        <view class="box-left">
-          <view class="name">{{ item.name }} </view>
-          <view class="expect">
-            <view class="job mr-10">
-              <text>{{ item.job }}</text>
+    <view v-if="resumeData.length">
+      <view
+        v-for="(item, index) in resumeData"
+        :key="index"
+        class="container m-10"
+        @click="clickToDetails(item)"
+      >
+        <view class="box">
+          <view class="box-left">
+            <view class="flex mb-10">
+              <u-avatar :src="item.avatar" size="24"></u-avatar>
+              <view class="name ml-10">{{ item.name }} </view>
             </view>
-            <view class="salary">
-              <text>{{ item.salary }}</text>
-            </view>
-          </view>
-        </view>
-        <view class="flex">
-          <view class="box-right">
-            <view class="maxEducation">{{ item.maxEducation }}</view>
-            <view class="button" @click.stop="enterChat">
-              <u-button text="联系" type="primary"></u-button>
+            <view class="expect">
+              <view class="job mr-10">
+                <text>期望岗位：{{ item.position }}</text>
+              </view>
+              <view class="salary">
+                <text>期望薪酬:{{ item.salary }}</text>
+              </view>
             </view>
           </view>
-          <view @click.native.stop="clickIcon(index)"
-            ><u-icon
-              :name="item.favorite ? 'star-fill' : 'star'"
-              size="22"
-              :index="index"
-              color="#ff9900"
-            ></u-icon
-          ></view>
+          <view class="flex">
+            <view class="box-right">
+              <view class="maxEducation">{{ item.education }}</view>
+              <view class="button" @click.stop="enterChat(item)">
+                <u-button text="联系" type="primary"></u-button>
+              </view>
+            </view>
+            <view @click.native.stop="clickIcon(item, index)"
+              ><u-icon
+                :name="item.isCollection == 1 ? 'star-fill' : 'star'"
+                size="22"
+                :index="index"
+                color="#ff9900"
+              ></u-icon
+            ></view>
+          </view>
         </view>
       </view>
     </view>
+    <u-empty v-else></u-empty>
   </view>
 </template>
 
 <script>
-import data from '../../my-resume/data.js'
+import { collect, cancelCollect } from '@/api/resume.js'
+import { mapState } from 'vuex'
+
 export default {
+  props: {
+    initData: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  },
   data() {
     return {
       menuList: [
@@ -69,29 +85,29 @@ export default {
           detailList: [
             {
               title: '不限',
-              value: 'all',
+              value: 'all'
             },
             {
               title: '0-3k',
-              value: '0-3k',
+              value: '0-3k'
             },
             {
               title: '3k-5k',
-              value: '3k-5k',
+              value: '3k-5k'
             },
             {
               title: '5k-10k',
-              value: '5k-10k',
+              value: '5k-10k'
             },
             {
               title: '10k-20k',
-              value: '10k-20k',
+              value: '10k-20k'
             },
             {
               title: '20k以上',
-              value: '20k以上',
-            },
-          ],
+              value: '20k以上'
+            }
+          ]
         },
 
         {
@@ -101,17 +117,17 @@ export default {
           detailList: [
             {
               title: '不限',
-              value: 'all',
+              value: 'all'
             },
             {
               title: '男',
-              value: 'man',
+              value: 'man'
             },
             {
               title: '女',
-              value: 'women',
-            },
-          ],
+              value: 'women'
+            }
+          ]
         },
         {
           title: '年龄',
@@ -120,69 +136,78 @@ export default {
           detailList: [
             {
               title: '不限',
-              value: 'all',
+              value: 'all'
             },
             {
               title: '18-23岁',
-              value: '18-25',
+              value: '18-25'
             },
             {
               title: '24-35岁',
-              value: '24-35',
+              value: '24-35'
             },
             {
               title: '35岁以上',
-              value: '35岁以上',
-            },
-          ],
-        },
+              value: '35岁以上'
+            }
+          ]
+        }
       ],
-      initData: [
-        {
-          name: '张三',
-          job: '产品经理',
-          maxEducation: '本科',
-          salary: '10k-15k',
-          favorite: false,
-        },
-        {
-          name: '李四',
-          job: '前端开发',
-          maxEducation: '硕士',
-          salary: '10k-20k',
-          favorite: false,
-        },
-      ],
+      resumeData: []
     }
   },
-  onLoad() {},
+  computed: {
+    ...mapState('appState', ['userInfo'])
+  },
+  mounted() {},
+  watch: {
+    initData: {
+      handler(val) {
+        this.resumeData = val
+      },
+      immediate: true,
+      deep: true
+    }
+  },
   methods: {
     result() {},
-    clickIcon(index) {
-      this.initData[index].favorite = !this.initData[index].favorite
-      if (this.initData[index].favorite) {
-        this.$refs.uToast.show({
-          message: '收藏成功！可到个人中心-我的收藏查看',
-          type: 'success',
+    clickIcon(item, index) {
+      if (item.isCollection == 0) {
+        collect({
+          resume_id: item.id.toString(),
+          company_id: this.userInfo.id.toString()
+        }).then(() => {
+          this.$refs.uToast.show({
+            message: '收藏成功！可到个人中心-我的收藏查看',
+            type: 'success'
+          })
         })
       } else {
-        this.$refs.uToast.show({
-          message: '取消收藏成功！',
-          type: 'success',
-        })
+        cancelCollect(item.id.toString(), this.userInfo.id.toString()).then(
+          () => {
+            this.$refs.uToast.show({
+              message: '取消收藏成功！',
+              type: 'success'
+            })
+          }
+        )
       }
     },
-    enterChat() {
-      this.$methods.chat.enterChat('33c3693b-dbb0-4bc9-99c6-fa77b9eb763f')
+    enterChat(item) {
+      this.$methods.chat.enterChat({
+        uuid: item.openid + item.worker_id,
+        name: item.name,
+        avatar: item.avatar
+      })
     },
     clickToDetails(item) {
       uni.navigateTo({
         url: `/pages/components/person-details/index?data=${JSON.stringify(
-          data
-        )}`,
+          item
+        )}`
       })
-    },
-  },
+    }
+  }
 }
 </script>
 
@@ -206,7 +231,6 @@ export default {
       font-size: 16px;
       font-weight: bold;
       color: $uni-text-color;
-      margin-bottom: 15px;
     }
     .expect {
       display: flex;

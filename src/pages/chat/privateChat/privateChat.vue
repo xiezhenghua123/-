@@ -19,10 +19,11 @@
           <view
             class="avatar"
             v-if="message.senderId != (currentUser && currentUser.uuid)"
+            @click="preview(friend.avatar)"
           >
             <image :src="friend.avatar"></image>
           </view>
-          <view class="avatar" v-else>
+          <view class="avatar" v-else @click="preview(currentUser.avatar)">
             <image :src="currentUser.avatar"></image>
           </view>
           <view class="content">
@@ -241,16 +242,14 @@ export default {
     this.more.show = false
     this.emoji.show = false
   },
-  onLoad(options) {
+  onLoad({ data }) {
     let imService = getApp().globalData.imService
-
     this.currentUser = imService.currentUser
     //聊天对象
-    let friendId = options.to
     //从服务器获取最新的好友信息
-    this.friend = imService.findFriendById(friendId)
-    console.log('onLoad friend - ', this.friend)
-    this.messages = imService.getPrivateMessages(friendId)
+    this.friend = JSON.parse(data)
+    console.log(this.friend)
+    this.messages = imService.getPrivateMessages(this.friend.uuid)
     //监听新消息
     imService.onNewPrivateMessageReceive = (friendId, message) => {
       if (friendId === this.friend.uuid) {
@@ -265,8 +264,9 @@ export default {
     // 录音监听器
     this.initRecorderListeners()
     //收到的消息设置为已读
+    console.log('messgae:', this.messages)
     if (this.messages.length !== 0) {
-      this.markPrivateMessageAsRead(friendId)
+      this.markPrivateMessageAsRead(this.friend.uuid)
     }
   },
   onPullDownRefresh(e) {
@@ -280,6 +280,11 @@ export default {
     }
   },
   methods: {
+    preview(url) {
+      uni.previewImage({
+        urls: [url]
+      })
+    },
     //渲染文本消息，如果包含表情，替换为图片
     //todo:本不需要该方法，可以在标签里完成，但小程序有兼容性问题，被迫这样实现
     renderTextMessage(message) {
@@ -338,6 +343,7 @@ export default {
       })
     },
     sendMessage(message) {
+      console.log(message)
       let toId = message.to.id
       let imService = getApp().globalData.imService
       let localHistory = imService.getPrivateMessages(toId)

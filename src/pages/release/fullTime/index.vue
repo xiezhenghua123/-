@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-29 12:15:25
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-28 16:08:21
+ * @LastEditTime: 2022-04-29 22:43:01
 -->
 <template>
   <view class="mt-10">
@@ -201,8 +201,9 @@ export default {
         }
         const service_charge = 0.01
         releaseJob({
-          company_id: this.userInfo.uuid.toString(),
-          type: 'fullTime',
+          openid: this.userInfo.openid.toString(),
+          order_type: 'fullTime',
+          user_type: '2',
           content: this.data.content,
           place: this.data.address,
           salary: JSON.stringify(this.data.payMent),

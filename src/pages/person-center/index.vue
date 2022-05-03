@@ -90,12 +90,15 @@ import confirm from '@/components/confirm/index.vue'
 import company from '@/components/confirm/company/index.vue'
 import student from '@/components/confirm/student/index.vue'
 import { mapState, mapActions } from 'vuex'
+import renderConversations from '@/pages/minix/renderConversations'
+
 export default {
   components: {
     confirm: confirm,
     student: student,
     company: company
   },
+  mixins: [renderConversations],
   data() {
     return {
       companyShow: false,
@@ -206,19 +209,36 @@ export default {
       const that = this
       wx.login({
         success({ code }) {
-          checkConfirm({ js_code: code, type: type }).then(data => {
+          checkConfirm({ js_code: code, type: type }).then(async data => {
             if (data.code != 0) {
               that.confirmAnother = true
+            } else if (data.data.user.status == 3) {
+              that.$refs.uToast.show({
+                message: `您的${
+                  type == 1 ? '学生' : '企业'
+                }身份已被取消，请重新重新认证`,
+                type: 'error'
+              })
+              await that.$methods.sleep(3000)
+              type == 1 ? (that.studentShow = true) : (that.companyShow = true)
             } else {
               uni.setStorageSync('identity', data.data.type)
               that.setIdentity({ key: data.data.type })
               that.setUserInfo({
                 openid: data.data.user.openid,
-                uuid: data.data.user.id,
+                uuid: data.data.user.openid + data.data.user.id,
+                id: data.data.user.id,
                 avatar: data.data.user.avatar,
                 name: data.data.user.name,
                 phone: data.data.user.phone
               })
+              that.$methods.chat.connect(that, that.userInfo, true)
+              that.goEasy.im.on(
+                that.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED,
+                content => {
+                  that.renderConversations(content)
+                }
+              )
               that.$refs.uToast.show({
                 message: '切换成功',
                 type: 'success'
@@ -229,9 +249,15 @@ export default {
       })
     },
     clickFeature(key) {
-      uni.navigateTo({
-        url: `/pages/${key}/index`
-      })
+      if (key == 'enterprise-information') {
+        uni.navigateTo({
+          url: `/pages/${key}/index?type=releaseOrder&id=${this.userInfo.id}`
+        })
+      } else {
+        uni.navigateTo({
+          url: `/pages/${key}/index`
+        })
+      }
     }
   }
 }

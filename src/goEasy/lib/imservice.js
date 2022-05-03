@@ -89,7 +89,7 @@ IMService.prototype.connect = function (currentUser) {
   this.currentUser = currentUser
   let userData = {
     name: this.currentUser.name,
-    avatar: this.currentUser.avatar,
+    avatar: this.currentUser.avatar
   }
   //初始化相关的监听器
   this.initialListeners()
@@ -112,9 +112,25 @@ IMService.prototype.connect = function (currentUser) {
     onProgress: function (attempts) {
       //连接或自动重连中
       console.log('GoEasy is connecting', attempts)
-    },
+    }
   })
   // this.subscribeGroupMessage(currentUser)
+}
+
+IMService.prototype.disconnect = function () {
+  this.goEasy.disconnect({
+    onSuccess: function () {
+      console.log('GoEasy disconnect successfully.')
+    },
+    onFailed: function (error) {
+      console.log(
+        'Failed to disconnect GoEasy, code:' +
+          error.code +
+          ',error:' +
+          error.content
+      )
+    }
+  })
 }
 
 IMService.prototype.subscribeGroupMessage = function () {
@@ -129,7 +145,7 @@ IMService.prototype.subscribeGroupMessage = function () {
     onFailed: function (error) {
       //订阅失败
       console.log('订阅群消息失败')
-    },
+    }
   })
 }
 

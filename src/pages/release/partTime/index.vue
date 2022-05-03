@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-29 12:15:50
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-28 15:29:10
+ * @LastEditTime: 2022-04-29 22:42:25
 -->
 <template>
   <view class="mt-10">
@@ -153,7 +153,7 @@ export default {
     this.$refs.form.setRules(this.rules)
   },
   computed: {
-    ...mapState('appState', ['userInfo'])
+    ...mapState('appState', ['userInfo', 'identity'])
   },
   methods: {
     selectEducation(data) {
@@ -173,8 +173,9 @@ export default {
           this.pay = (this.data.payMent * (1 + 0.001)).toFixed(2)
           const service_charge = (this.data.payMent * 0.001).toFixed(2)
           releaseJob({
-            company_id: this.userInfo.uuid.toString(),
-            type: 'partTime',
+            openid: this.userInfo.openid.toString(),
+            order_type: 'partTime',
+            user_type: this.identity == 'student' ? '1' : '2',
             content: this.data.content,
             place: this.data.address,
             salary: this.data.payMent,

@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-27 23:24:23
+ * @LastEditTime: 2022-05-03 18:16:45
 -->
 <template>
   <view>
@@ -22,6 +22,7 @@
 import { mapState } from 'vuex'
 import confirm from '@/components/confirm/index.vue'
 import { getJobList } from '@/api/getJobList.js'
+import { getBanList } from '@/api/commonApi.js'
 
 export default {
   components: {
@@ -44,7 +45,7 @@ export default {
   },
   onLoad() {
     if (this.isLogin) {
-      this.getList(true)
+      this.init()
     }
   },
   onReachBottom() {
@@ -58,20 +59,30 @@ export default {
       })
   },
   onPullDownRefresh() {
-    this.getList(true)
-      .then(() => {})
-      .catch(res => {
-        uni.stopPullDownRefresh()
-        this.$refs.uToast.show({
-          type: 'error',
-          message: '加载失败'
-        })
-      })
+    this.init()
+    uni.stopPullDownRefresh()
   },
   methods: {
+    init() {
+      this.getList(true)
+      getBanList(1)
+        .then(({ data }) => {
+          console.log(1)
+          const array = data.bannerList.map(item => {
+            return item.image
+          })
+          this.list1 = array
+        })
+        .catch(() => {
+          this.$refs.uToast.show({
+            type: 'error',
+            message: '加载失败'
+          })
+        })
+    },
     loginConfirm(status) {
       if (status) {
-        this.getList(true)
+        this.init()
       }
     },
     linkTap(obj) {
