@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-02 22:07:04
+ * @LastEditTime: 2022-05-09 22:22:43
 -->
 <template>
   <view class="mb-10">
@@ -147,27 +147,40 @@ export default {
     }
   },
   onLoad(options) {
-    let data = JSON.parse(options.data)
-    this.resumeData = {
-      basic: {
-        uuid: data.openid + data.worker_id,
-        name: data.name,
-        tel: data.phone,
-        age: data.age,
-        headPhoto: data.avatar,
-        maxEducation: data.education,
-        sex: data.sex
-      },
-      jobExpectations: {
-        job: data.position,
-        salary: data.salary,
-        position: data.city
-      },
-      educations: JSON.parse(data.education_experience),
-      internshipExperiences: JSON.parse(data.internship_experience),
-      projectExperiences: JSON.parse(data.project_experience),
-      selfEvaluation: data.self_assessment
+    let data
+    if (options.data == 'null') {
+      data = JSON.parse(options.init)
+      this.resumeData = {
+        basic: {
+          uuid: data.uuid,
+          name: data.name,
+          headPhoto: data.avatar
+        }
+      }
+    } else {
+      data = JSON.parse(options.data)
+      this.resumeData = {
+        basic: {
+          uuid: data.openid + data.worker_id,
+          name: data.name,
+          tel: data.phone,
+          age: data.age,
+          headPhoto: data.avatar,
+          maxEducation: data.education,
+          sex: data.sex
+        },
+        jobExpectations: {
+          job: data.position,
+          salary: data.salary,
+          position: data.city
+        },
+        educations: JSON.parse(data.education_experience),
+        internshipExperiences: JSON.parse(data.internship_experience),
+        projectExperiences: JSON.parse(data.project_experience),
+        selfEvaluation: data.self_assessment
+      }
     }
+
     uni.setNavigationBarTitle({
       title: this.resumeData.basic.name
     })

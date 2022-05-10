@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-20 21:23:45
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-02 16:40:01
+ * @LastEditTime: 2022-05-09 20:29:02
 -->
 <template>
   <view class="mb-10">
@@ -64,6 +64,9 @@
             <view class="disabled-input">
               {{ initData.legalPerson }}
             </view>
+          </u-form-item>
+          <u-form-item label="联系方式：" prop="phone" borderBottom required>
+            <u-input v-model="initData.phone" border="none"></u-input>
           </u-form-item>
           <u-form-item label="公司地址：" prop="address" borderBottom required>
             <u-input v-model="initData.address" border="none"></u-input>
@@ -133,6 +136,7 @@
 import minix from '../../minix/index.js'
 import { editCompanyData, getCompanyConfirmData } from '@/api/user.js'
 import { industrySort } from '@/data/industry.js'
+import { tel } from '@/data/rules.js'
 
 export default {
   mixins: [minix],
@@ -148,11 +152,13 @@ export default {
         legalPerson: '',
         address: '',
         scale: '',
+        phone: '',
         registeredCapital: '',
         establishedTime: '',
         introduction: ''
       },
       companyDataRules: {
+        phone: tel,
         registeredCapital: {
           required: true,
           message: '请输入注册资本',
@@ -229,9 +235,10 @@ export default {
     clickConfirm() {
       this.$refs.companyDataRef.validate().then(vaild => {
         if (vaild) {
-          editCompanyData(this.id, {
+          editCompanyData(this.initData.openid, {
             ...this.initData,
             type: 2,
+            status: Number(this.initData.status),
             legal_person: this.initData.legalPerson,
             company_size: this.initData.scale,
             registered_capital: this.initData.registeredCapital,

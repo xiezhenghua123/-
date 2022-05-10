@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-30 15:28:07
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-03 00:34:28
+ * @LastEditTime: 2022-05-07 16:34:09
 -->
 <template>
   <view class="ml-10 mr-10">
@@ -201,6 +201,8 @@ export default {
         work_order_id: item.id,
         worker_id: this.userInfo.id,
         publisher: item.company_name,
+        publisher_id: item.company_id,
+        publisher_type: item.user_type,
         recipient: this.userInfo.name
       }).then(() => {
         this.$refs.uToast.show({
@@ -220,15 +222,16 @@ export default {
         collect({
           work_order_id: item.id.toString(),
           worker_id: this.userInfo.id.toString()
-        }).then(() => {
+        }).then(({ data }) => {
           this.$refs.uToast.show({
             message: '收藏成功！可到个人中心-我的收藏查看',
             type: 'success'
           })
           this.$set(this.allData[index], 'isCollection', 1)
+          this.$set(this.allData[index], 'collectionId', data.collectionId)
         })
       } else {
-        cancelCollect(item.id.toString(), this.userInfo.id.toString()).then(
+        cancelCollect(item.id.toString(), item.collectionId.toString()).then(
           () => {
             this.$refs.uToast.show({
               message: '取消收藏成功！',

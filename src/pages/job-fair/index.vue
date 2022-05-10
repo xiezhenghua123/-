@@ -4,14 +4,20 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-03 18:16:45
+ * @LastEditTime: 2022-05-06 00:10:23
 -->
 <template>
   <view>
     <u-toast ref="uToast"></u-toast>
     <view v-if="isLogin && identity" class="box">
       <u-swiper :list="list1"></u-swiper>
-      <u-parse :content="html" :tagStyle="style" @linkTap="linkTap"></u-parse>
+      <u-parse
+        :content="html"
+        :tagStyle="style"
+        @linktap="linkTap"
+        :copyLink="false"
+        selectable
+      ></u-parse>
       <u-loadmore :status="status" />
     </view>
     <confirm v-else @isLogin="loginConfirm"></confirm>
@@ -36,11 +42,7 @@ export default {
         img: 'height: 55px;width: 55px;'
       },
       page: 1,
-      list1: [
-        'https://cdn.uviewui.com/uview/swiper/swiper1.png',
-        'https://cdn.uviewui.com/uview/swiper/swiper2.png',
-        'https://cdn.uviewui.com/uview/swiper/swiper3.png'
-      ]
+      list1: []
     }
   },
   onLoad() {
@@ -67,7 +69,6 @@ export default {
       this.getList(true)
       getBanList(1)
         .then(({ data }) => {
-          console.log(1)
           const array = data.bannerList.map(item => {
             return item.image
           })
@@ -85,8 +86,11 @@ export default {
         this.init()
       }
     },
-    linkTap(obj) {
-      console.log(obj)
+
+    linkTap(e) {
+      uni.navigateTo({
+        url: `/pages/job-fair/jobFair-details/index?src=${e.href}`
+      })
     },
     getList(first = false) {
       return new Promise((resolve, reject) => {

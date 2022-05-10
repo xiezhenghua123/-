@@ -4,10 +4,11 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-23 22:33:52
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-03 15:42:17
+ * @LastEditTime: 2022-05-08 23:19:07
 -->
 <template>
   <view>
+    <toast></toast>
     <view class="content-box size16">
       <view class="every">
         <view class="title">工作内容：</view>
@@ -79,6 +80,7 @@
 import { jobDetail } from '@/api/recruit.js'
 import { mapState } from 'vuex'
 import { addApplyJob } from '@/api/applyJob.js'
+import { successToast } from '@/components/toast/index.js'
 export default {
   data() {
     return {
@@ -106,12 +108,14 @@ export default {
           this.initData.user_type == '1'
             ? this.initData.worker_name
             : this.initData.company_name,
+        publisher_id:
+          this.initData.user_type == '1'
+            ? this.initData.worker_id
+            : this.initData.company_id,
+        publisher_type: this.initData.user_type,
         recipient: this.userInfo.name
       }).then(() => {
-        this.$refs.uToast.show({
-          message: '应聘成功！可到个人中心-订单管理查看',
-          type: 'success'
-        })
+        successToast('应聘成功！可到个人中心-订单管理查看')
       })
     },
     enterChat() {

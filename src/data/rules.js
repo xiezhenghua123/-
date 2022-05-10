@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-14 17:08:11
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-27 22:12:59
+ * @LastEditTime: 2022-05-06 14:17:26
  */
 const name = [
   {
@@ -60,14 +60,22 @@ const socialCode = [
 
 const schoolNumber = [
   {
-    require: true,
+    required: true,
     message: '请输入学号',
     trigger: ['blur', 'change']
   },
   {
-    type: 'number',
-    length: 12,
+    len: 12,
     message: '学号格式错误',
+    trigger: ['blur', 'change']
+  },
+  {
+    validator: (rule, value, callback) => {
+      if (value.length) {
+        return uni.$u.test.digits(value)
+      }
+    },
+    message: '学号必须为数字',
     trigger: ['blur', 'change']
   }
 ]

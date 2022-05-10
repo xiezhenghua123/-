@@ -103,7 +103,12 @@ export default {
       },
       companyFormRules: {
         tel: tel,
-        legalPerson: name,
+        name: {
+          type: 'string',
+          required: true,
+          message: '请正确填写企业名称',
+          trigger: 'blur'
+        },
         number: socialCode,
         industry: {
           type: 'string',
@@ -111,12 +116,16 @@ export default {
           message: '请选择行业',
           trigger: 'blur'
         },
-        name: {
-          type: 'string',
-          required: true,
-          message: '请正确填写法定代表人',
-          trigger: 'blur'
-        }
+        legalPerson: [
+          {
+            type: 'string',
+            required: true,
+            message: '请正确填写法定代表人',
+            trigger: 'blur'
+          },
+          name[1],
+          name[2]
+        ]
       }
     }
   },

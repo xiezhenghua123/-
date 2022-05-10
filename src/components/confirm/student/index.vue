@@ -55,7 +55,6 @@
             <u--input
               v-model="studentData.major"
               border="none"
-              type="number"
               disabled=""
             ></u--input>
             <u-icon slot="right" name="arrow-right"></u-icon>
@@ -106,8 +105,8 @@ export default {
       },
       studentFormRules: {
         tel: tel,
-        name: [...name],
-        number: [...schoolNumber],
+        name: name,
+        number: schoolNumber,
         college: {
           type: 'string',
           required: true,

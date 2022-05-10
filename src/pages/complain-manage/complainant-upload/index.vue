@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-03 16:07:55
+ * @LastEditTime: 2022-05-10 16:20:49
 -->
 <template>
   <view class="m-10">
@@ -23,10 +23,13 @@
     <view class="upload">
       <view class="title">材料附件上传(仅限图片)：</view>
       <u-upload
-        :fileList="fileList"
-        uploadIcon="plus"
-        @afterRead="afterRead"
+        :fileList="previewFile"
+        name="avatar"
+        previewFullImage
         @delete="deletePic"
+        @afterRead="afterRead"
+        accept="image"
+        uploadIcon="plus"
       >
       </u-upload>
     </view>
@@ -41,7 +44,7 @@
 <script>
 import { addComplain } from '@/api/complain.js'
 import { mapState } from 'vuex'
-import { successToast } from '@/components/toast/index.js'
+import { successToast, errorToast } from '@/components/toast/index.js'
 
 export default {
   data() {
@@ -51,7 +54,12 @@ export default {
     }
   },
   computed: {
-    ...mapState('appState', ['userInfo'])
+    ...mapState('appState', ['userInfo', 'identity']),
+    previewFile() {
+      return this.fileList.map(item => {
+        return { url: item }
+      })
+    }
   },
   onLoad({ orderId, companyId }) {
     this.orderId = orderId
@@ -59,20 +67,38 @@ export default {
   },
   methods: {
     submit() {
+      if (!this.value) {
+        errorToast('请输入投诉原因')
+        return
+      }
       addComplain({
-        reporter: this.userInfo.id,
+        reporter: this.userInfo.id.toString(),
         worker_order_id: this.orderId,
         company_id: this.companyId,
         content: this.value,
         img: JSON.stringify(this.fileList),
-        status: 0
+        status: '1',
+        type: this.identity == 'student' ? '1' : '2'
       }).then(() => {
         successToast('投诉成功！')
       })
     },
     afterRead(file, lists, name) {
-      this.fileList.push({ url: file.url })
-      console.log(file)
+      const that = this
+      uni.uploadFile({
+        url: 'https://workfriend.jsky31.cn/api/image',
+        filePath: file.file.url,
+        name: 'image',
+        header: {
+          'content-type': 'multipart/form-data'
+        },
+        success: function ({ data }) {
+          that.fileList.push(JSON.parse(data).data)
+        }
+      })
+    },
+    deletePic(file) {
+      this.fileList.splice(file.index, 1)
     }
   }
 }

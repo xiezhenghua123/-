@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-03 22:44:11
+ * @LastEditTime: 2022-05-09 22:49:03
 -->
 <template>
   <view>
@@ -57,9 +57,9 @@
 
 <script>
 import touchHover from '../../components/touch-hover/touch-hover.vue'
-import { getMyReleaseJob, delJob } from '@/api/recruit.js'
+import { getMyReleaseJob, delJob, getJobApplyPerson } from '@/api/recruit.js'
 import { mapState } from 'vuex'
-import { successToast } from '@/components/toast/index.js'
+import { successToast, errorToast } from '@/components/toast/index.js'
 export default {
   components: { touchHover },
   data() {
@@ -87,9 +87,9 @@ export default {
         this.initData = data
           .filter(item => {
             if (this.identity == 'student') {
-              return item.user_type == '1'
+              return item.user_type == '1' && item.status == 2
             } else {
-              return item.user_type == '2'
+              return item.user_type == '2' && item.status == 2
             }
           })
           .map(item => {
@@ -101,23 +101,60 @@ export default {
           })
       })
     },
-    del(item) {
-      delJob(item.id).then(() => {
-        let text
-        if (item.order_type == 'partTime') {
-          text = '职位下架成功！职位薪酬和服务费正在返还中'
-        } else {
-          text = '职位下架成功！服务费正在返还中'
-        }
-        successToast(text, {
-          loading: true,
-          type: 'loading',
-          complete: () => {
-            successToast('返还成功！')
-          }
+    async del(item) {
+      if (item.order_type == 'partTime') {
+        const data = await getJobApplyPerson(item.id)
+        const isGoing = data.data.some(item => {
+          return item.application_order_status == '0'
         })
-        this.getData()
-      })
+        const completed = data.data.some(item => {
+          return item.application_order_status == '1'
+        })
+        if (isGoing) {
+          errorToast('该职位有订单正在进行中，无法停止！')
+          return
+        }
+        if (completed) {
+          delJob(item.id, { ...item, status: 0 }).then(() => {
+            successToast('职位下架成功！')
+          })
+          this.getData()
+          return
+        }
+        delJob(item.id, { ...item, status: 0 }).then(() => {
+          successToast('职位下架成功！职位薪酬和服务费正在返还中', {
+            loading: true,
+            type: 'loading',
+            complete: () => {
+              successToast('返还成功！')
+              this.getData()
+            }
+          })
+        })
+      } else {
+        const data = await getJobApplyPerson(item.id)
+        const completed = data.data.some(item => {
+          return item.application_order_status == '1'
+        })
+        if (completed) {
+          delJob(item.id, { ...item, status: 0 }).then(() => {
+            successToast('职位下架成功！')
+            this.getData()
+          })
+          return
+        } else {
+          delJob(item.id, { ...item, status: 0 }).then(() => {
+            successToast('职位下架成功！服务费正在返还中', {
+              loading: true,
+              type: 'loading',
+              complete: () => {
+                successToast('返还成功！')
+                this.getData()
+              }
+            })
+          })
+        }
+      }
     },
     // 兼容小程序的空函数
     emptyF() {},

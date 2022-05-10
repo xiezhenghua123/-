@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-30 11:37:11
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-02 22:13:11
+ * @LastEditTime: 2022-05-07 12:11:32
  */
 import request from './request'
 
@@ -50,7 +50,7 @@ const collect = data => {
   return request('post', 'collection/resume', data)
 }
 
-const cancelCollect = (company_id, resumeId) => {
+const cancelCollect = (collectionId, resumeId) => {
   return request(
     'delete',
     'collection/resume/:id',
@@ -59,7 +59,7 @@ const cancelCollect = (company_id, resumeId) => {
     },
     {
       params: {
-        id: company_id
+        id: collectionId
       }
     }
   )

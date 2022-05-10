@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-23 15:02:59
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-03 22:43:34
+ * @LastEditTime: 2022-05-07 15:28:48
 -->
 <template>
   <view>
@@ -77,7 +77,7 @@ export default {
   },
   methods: {
     cancel(item) {
-      cancelCollect(item.id.toString(), this.userInfo.id.toString()).then(
+      cancelCollect(item.collectionId.toString(), item.id.toString()).then(
         () => {
           successToast('删除成功！')
           getCollect(this.userInfo.id).then(({ data }) => {

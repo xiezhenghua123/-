@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-27 10:45:08
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-03 18:12:38
+ * @LastEditTime: 2022-05-10 16:42:34
  */
 import request from './request'
 
@@ -14,21 +14,12 @@ const releaseJob = data => {
 }
 
 // 获取所有职位
-const allJob = (page, workerId, type) => {
-  return request(
-    'get',
-    'workOrder/list/:page',
-    {},
-    {
-      params: {
-        page: page
-      },
-      query: {
-        workerId: workerId,
-        type: type
-      }
+const allJob = (page, data) => {
+  return request('post', 'workOrder/list/:page', data, {
+    params: {
+      page: page
     }
-  )
+  })
 }
 
 // 获取职位详情
@@ -55,17 +46,12 @@ const editJobMssage = (id, data) => {
 }
 
 //职位下架
-const delJob = id => {
-  return request(
-    'delete',
-    'workOrder/:id',
-    {},
-    {
-      params: {
-        id: id
-      }
+const delJob = (id, data) => {
+  return request('put', 'workOrder/:id', data, {
+    params: {
+      id: id
     }
-  )
+  })
 }
 
 // 获取我的发布职位

@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-21 18:35:48
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-03 16:13:43
+ * @LastEditTime: 2022-05-10 16:21:08
 -->
 <template>
   <view>
@@ -60,10 +60,13 @@ export default {
     }
   },
   computed: {
-    ...mapState('appState', ['userInfo'])
+    ...mapState('appState', ['userInfo', 'identity'])
   },
   onLoad() {
-    getMyComplainList(this.userInfo.id).then(({ data }) => {
+    getMyComplainList(
+      this.userInfo.id.toString(),
+      this.identity == 'student' ? 1 : 2
+    ).then(({ data }) => {
       this.initData = data
     })
   },

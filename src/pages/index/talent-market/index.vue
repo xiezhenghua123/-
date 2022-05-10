@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-02 22:09:37
+ * @LastEditTime: 2022-05-07 15:10:14
 -->
 <template>
   <view>
@@ -176,15 +176,18 @@ export default {
         collect({
           resume_id: item.id.toString(),
           company_id: this.userInfo.id.toString()
-        }).then(() => {
+        }).then(({ data }) => {
           this.$refs.uToast.show({
             message: '收藏成功！可到个人中心-我的收藏查看',
             type: 'success'
           })
+          this.$set(this.resumeData[index], 'isCollection', 1)
+          this.$set(this.resumeData[index], 'collectionId', data.collectionId)
         })
       } else {
-        cancelCollect(item.id.toString(), this.userInfo.id.toString()).then(
+        cancelCollect(item.collectionId.toString(), item.id.toString()).then(
           () => {
+            this.$set(this.resumeData[index], 'isCollection', 0)
             this.$refs.uToast.show({
               message: '取消收藏成功！',
               type: 'success'

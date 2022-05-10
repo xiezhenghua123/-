@@ -107,6 +107,12 @@
       }
     },
     {
+      "path": "pages/job-fair/jobFair-details/index",
+      "style": {
+        "navigationBarTitleText": "宣讲会详情"
+      }
+    },
+    {
       "path": "pages/components/partTime-details/index",
       "style": {
         "navigationBarTitleText": "职位详情"

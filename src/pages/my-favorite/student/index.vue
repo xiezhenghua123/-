@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-23 15:03:05
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-03 22:43:52
+ * @LastEditTime: 2022-05-08 23:27:38
 -->
 <template>
   <view>
@@ -100,12 +100,11 @@ export default {
         work_order_id: item.id,
         worker_id: this.userInfo.id,
         publisher: item.user_type == '1' ? item.worker_name : item.company_name,
+        publisher_id: item.user_type == '1' ? item.worker_id : item.company_id,
+        publisher_type: item.user_type,
         recipient: this.userInfo.name
       }).then(() => {
-        this.$refs.uToast.show({
-          message: '应聘成功！可到个人中心-订单管理查看',
-          type: 'success'
-        })
+        successToast('应聘成功！可到个人中心-订单管理查看')
       })
     },
     getData() {
@@ -114,7 +113,7 @@ export default {
       })
     },
     cancelCollect(item) {
-      cancelCollect(item.id, this.userInfo.id).then(() => {
+      cancelCollect(item.id, item.collectionId).then(() => {
         successToast('删除成功！')
         this.getData()
       })

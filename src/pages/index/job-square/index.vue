@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-03 00:57:36
+ * @LastEditTime: 2022-05-08 14:49:40
 -->
 <template>
   <view>
@@ -66,7 +66,7 @@ export default {
     fullTimeData() {
       return this.initData
         .filter(item => {
-          return item.order_type == 'fullTime'
+          return item.order_type == 'fullTime' && item.status == 2
         })
         .map(item => {
           return {
@@ -79,7 +79,7 @@ export default {
     },
     partTimeData() {
       return this.initData.filter(item => {
-        return item.order_type == 'partTime'
+        return item.order_type == 'partTime' && item.status == 2
       })
     }
   },

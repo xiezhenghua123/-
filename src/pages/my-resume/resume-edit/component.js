@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-17 15:24:44
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-02 12:15:37
+ * @LastEditTime: 2022-05-07 15:38:14
  */
 import { name, tel } from 'data/rules.js'
 import data from '../data.js'
@@ -315,6 +315,7 @@ export default {
       await this.checkRules('projectExperience')
       if (this.isCreate) {
         createResume({
+          worker_id: this.userInfo.id,
           openid: this.userInfo.openid,
           avatar: this.basic.headPhoto,
           name: this.basic.name,
@@ -336,6 +337,7 @@ export default {
         })
       } else {
         editResume(this.resumeId, {
+          worker_id: this.userInfo.id,
           openid: this.userInfo.openid,
           avatar: this.basic.headPhoto,
           name: this.basic.name,

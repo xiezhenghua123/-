@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-25 23:09:33
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-01 17:19:42
+ * @LastEditTime: 2022-05-06 14:47:10
  */
 import request from './request/index'
 
@@ -14,6 +14,17 @@ const checkConfirm = data => {
 
 const authenticate = data => {
   return request('post', '/authenticate', data)
+}
+
+const update = (id, data) => {
+  return (
+    request('put', ':id/update', data),
+    {
+      params: {
+        id: id
+      }
+    }
+  )
 }
 
 const getStudentConfirmData = id => {
@@ -54,5 +65,6 @@ export {
   authenticate,
   getStudentConfirmData,
   getCompanyConfirmData,
-  editCompanyData
+  editCompanyData,
+  update
 }

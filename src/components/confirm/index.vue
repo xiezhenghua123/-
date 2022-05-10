@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-03 17:02:24
+ * @LastEditTime: 2022-05-06 14:59:29
 -->
 <template>
   <view>
@@ -46,7 +46,7 @@ import { mapState, mapActions } from 'vuex'
 import student from './student/index.vue'
 import company from './company/index.vue'
 import renderConversations from '@/pages/minix/renderConversations'
-import { checkConfirm, authenticate } from '@/api/user.js'
+import { checkConfirm, authenticate, update } from '@/api/user.js'
 import { successToast, errorToast } from '@/components/toast/index.js'
 import { getNotice, delNotice } from '@/api/notice.js'
 
@@ -72,7 +72,9 @@ export default {
       confirmShow: false,
       studentShow: false,
       userInfoData: {},
-      promptShow: false
+      promptShow: false,
+      //二次提交认证信息
+      confirmData: {}
     }
   },
   onReady() {},
@@ -86,7 +88,7 @@ export default {
       this.promptShow = false
       this.confirmShow = true
     },
-    statusUpdate({ confirmData, type }) {
+    async statusUpdate({ confirmData, type }) {
       let data = {}
       if (type == 1) {
         data = {
@@ -111,10 +113,17 @@ export default {
           code: confirmData.number
         }
       }
-      authenticate(data).then(data => {
-        this.confirmShow = false
-        successToast('提交成功，管理员将在1-2天内进行审核')
-      })
+      if (JSON.stringify(this.confirmData) != '{}') {
+        await update(this.confirmData.openid, {
+          ...this.confirmData,
+          ...data,
+          status: Number(this.confirmData.status)
+        })
+      } else {
+        await authenticate(data)
+      }
+      this.confirmShow = false
+      successToast('提交成功，管理员将在1-2天内进行审核')
     },
     remember(userInfo) {
       this.setLogin(true)
@@ -142,6 +151,12 @@ export default {
                     that.promptShow = true
                     that.$set(that.userInfoData, 'openid', data.data)
                   } else {
+                    that.$set(
+                      that.userInfoData,
+                      'openid',
+                      data.data.user.openid
+                    )
+                    that.confirmData = data.data.user
                     if (data.data.user.status == 2) {
                       getNotice(data.data.user.openid).then(
                         async ({ data }) => {

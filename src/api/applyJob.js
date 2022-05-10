@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-27 11:03:37
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-03 11:46:01
+ * @LastEditTime: 2022-05-08 15:21:43
  */
 import request from './request'
 
@@ -15,17 +15,12 @@ const addApplyJob = data => {
 
 //取消应聘
 
-const cancelApply = id => {
-  return request(
-    'delete',
-    'applicationOrder/:id',
-    {},
-    {
-      params: {
-        id: id
-      }
+const cancelApply = (id, status) => {
+  return request('put', 'applicationOrder/:id', status, {
+    params: {
+      id: id
     }
-  )
+  })
 }
 
 // 获取我的应聘订单列表

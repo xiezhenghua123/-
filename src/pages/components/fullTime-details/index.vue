@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-23 22:33:52
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-03 15:41:24
+ * @LastEditTime: 2022-05-08 23:20:43
 -->
 <template>
   <view>
@@ -47,16 +47,16 @@
     </view>
     <view class="job-button size16 m-10" v-if="key === 'myFavorite'">
       <view class="apply">
-        <u-button text="我要应聘" type="primary" size="large"></u-button>
-      </view>
-
-      <view class="relation" @click="enterChat">
         <u-button
-          text="联系企业"
+          text="我要应聘"
           type="primary"
           size="large"
           @click="apply"
         ></u-button>
+      </view>
+
+      <view class="relation" @click="enterChat">
+        <u-button text="联系企业" type="primary" size="large"></u-button>
       </view>
     </view>
     <view class="job-button size16 m-10" v-if="key === 'applyOrder'">
@@ -78,6 +78,8 @@
 import { jobDetail } from '@/api/recruit.js'
 import { mapState } from 'vuex'
 import { addApplyJob } from '@/api/applyJob.js'
+import { successToast } from '@/components/toast/index.js'
+
 export default {
   data() {
     return {
@@ -107,12 +109,14 @@ export default {
         work_order_id: this.initData.id,
         worker_id: this.userInfo.id,
         publisher: this.initData.company_name,
+        publisher_id:
+          this.initData.user_type == '1'
+            ? this.initData.worker_id
+            : this.initData.company_id,
+        publisher_type: this.initData.user_type,
         recipient: this.userInfo.name
       }).then(() => {
-        this.$refs.uToast.show({
-          message: '应聘成功！可到个人中心-订单管理查看',
-          type: 'success'
-        })
+        successToast('应聘成功！可到个人中心-订单管理查看')
       })
     },
     enterChat() {
