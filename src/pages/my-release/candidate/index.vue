@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-24 21:19:20
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-10 11:53:55
+ * @LastEditTime: 2022-05-13 20:38:14
 -->
 <template>
   <view>
@@ -22,7 +22,7 @@
           <view class="box-right">
             <!-- <view class="education">{{ item.education }}</view> -->
             <view v-if="item.work_order_type == 'partTime'" class="flex">
-              <view v-if="item.application_order_status == 2" class="button">
+              <view v-if="item.application_order_status == 2" class="flex">
                 <view
                   class="accept mr-10"
                   @click.stop="clickAccept(item, index)"
@@ -116,6 +116,8 @@ import { getJobApplyPerson } from '@/api/recruit.js'
 import { getMyResume } from '@/api/resume.js'
 import { cancelApply } from '@/api/applyJob.js'
 import { successToast } from '@/components/toast/index.js'
+import { mapState } from 'vuex'
+
 export default {
   data() {
     return {
@@ -132,6 +134,7 @@ export default {
     })
   },
   computed: {
+    ...mapState('appState', ['userInfo', 'identity']),
     isAgain() {
       return this.initData.some(item => {
         return (
@@ -144,7 +147,16 @@ export default {
   methods: {
     clickToComplainant(item) {
       uni.navigateTo({
-        url: `/pages/complain-manage/complainant-upload/index?orderId=${item.work_order_id}&companyId=${item.worker_id}`
+        url: `/pages/complain-manage/complainant-upload/index?data=${JSON.stringify(
+          {
+            work_order_id: item.work_order_id,
+            toId: item.worker_id.toString(),
+            toName: item.worker_name,
+            toType: '1',
+            work: item.content,
+            toOpenid: item.openid
+          }
+        )}`
       })
     },
     // 应聘状态文字

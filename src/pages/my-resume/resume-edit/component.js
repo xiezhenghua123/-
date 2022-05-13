@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-17 15:24:44
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-07 15:38:14
+ * @LastEditTime: 2022-05-13 16:24:31
  */
 import { name, tel } from 'data/rules.js'
 import data from '../data.js'
@@ -218,7 +218,7 @@ export default {
   },
   onLoad() {
     getMyResume(this.userInfo.openid).then(({ data }) => {
-      if (data) {
+      if (data.length) {
         this.resumeId = data.id
         this.basic = {
           headPhoto: data.avatar,

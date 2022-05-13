@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-23 22:33:52
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-08 23:19:07
+ * @LastEditTime: 2022-05-13 16:05:51
 -->
 <template>
   <view>
@@ -80,7 +80,7 @@
 import { jobDetail } from '@/api/recruit.js'
 import { mapState } from 'vuex'
 import { addApplyJob } from '@/api/applyJob.js'
-import { successToast } from '@/components/toast/index.js'
+import { successToast, errorToast } from '@/components/toast/index.js'
 export default {
   data() {
     return {
@@ -101,6 +101,12 @@ export default {
   },
   methods: {
     apply() {
+      if (this.userInfo.credit_score < 80) {
+        errorToast({
+          message: '您的信用分低于80分，暂不能应聘职位！'
+        })
+        return
+      }
       addApplyJob({
         work_order_id: this.initData.id,
         worker_id: this.userInfo.id,
@@ -137,13 +143,16 @@ export default {
     clickToPerson() {},
     clickToComplainant() {
       uni.navigateTo({
-        url: `/pages/complain-manage/complainant-upload/index?orderId=${
-          this.initData.id
-        }&companyId=${
-          this.user_type == 1
-            ? this.initData.worker_id
-            : this.initData.company_id
-        }`
+        url: `/pages/complain-manage/complainant-upload/index?data=${JSON.stringify(
+          {
+            work_order_id: this.initData.id.toString(),
+            toId: this.initData.company_id.toString(),
+            toName: this.initData.company_name,
+            toType: this.initData.user_type,
+            work: this.initData.content,
+            toOpenid: this.initData.openid
+          }
+        )}`
       })
     },
     clickToDetails() {

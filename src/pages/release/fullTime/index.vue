@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-29 12:15:25
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-29 22:43:01
+ * @LastEditTime: 2022-05-11 17:21:53
 -->
 <template>
   <view class="mt-10">
@@ -151,6 +151,13 @@ export default {
             },
             message: '最高薪酬不能低于最低薪酬',
             trigger: ['change', 'blur']
+          },
+          {
+            validator: (rule, value, callback) => {
+              return value.max <= 999
+            },
+            message: '最高薪酬过大',
+            trigger: ['change', 'blur']
           }
         ]
       },
@@ -199,6 +206,13 @@ export default {
         if (!data) {
           return false
         }
+        if (this.userInfo.credit_score < 80) {
+          this.$refs.uToast.show({
+            message: '您的信用分低于80分，暂不能发布职位！',
+            type: 'error'
+          })
+          return
+        }
         const service_charge = 0.01
         releaseJob({
           openid: this.userInfo.openid.toString(),
@@ -206,11 +220,12 @@ export default {
           user_type: '2',
           content: this.data.content,
           place: this.data.address,
-          salary: JSON.stringify(this.data.payMent),
+          salary: this.data.payMent,
           education: this.data.education,
           description: this.data.details,
-          service_charge: service_charge.toString(),
-          dateline: this.data.deadLine
+          service_charge: Number(service_charge),
+          dateline: this.data.deadLine,
+          status: 0
         }).then(() => {
           this.$refs.uToast.show({
             loading: true,

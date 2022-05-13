@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-30 15:28:07
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-07 16:34:09
+ * @LastEditTime: 2022-05-12 19:03:58
 -->
 <template>
   <view class="ml-10 mr-10">
@@ -90,27 +90,28 @@ export default {
         {
           title: '学历要求',
           key: 'education',
+          isMutiple: true,
           defaultSelectedIndex: 0,
           detailList: [
             {
               title: '不限',
-              value: 'all'
+              value: ''
             },
             {
               title: '本科',
-              value: 'undergraduate'
+              value: '本科'
             },
             {
               title: '硕士',
-              value: 'master'
+              value: '硕士'
             },
             {
               title: '博士',
-              value: 'doctor'
+              value: '博士'
             },
             {
               title: '博士后',
-              value: 'postdoctor'
+              value: '博士后'
             }
           ]
         },
@@ -122,62 +123,27 @@ export default {
           detailList: [
             {
               title: '不限',
-              value: 'all'
+              value: ''
             },
             {
               title: '3k以下',
-              value: '3k'
+              value: { min: 1, max: 3 }
             },
             {
               title: '3k-5k',
-              value: '3k-5k'
+              value: { min: 3, max: 5 }
             },
             {
               title: '5k-10k',
-              value: '5k-10k'
+              value: { min: 5, max: 10 }
             },
             {
               title: '10k-20k',
-              value: '10-20k'
+              value: { min: 10, max: 20 }
             },
             {
               title: '20k以上',
-              value: '20k'
-            }
-          ]
-        },
-        {
-          title: '公司规模',
-          key: 'scale',
-          defaultSelectedIndex: 0,
-          detailList: [
-            {
-              title: '不限',
-              value: 'all'
-            },
-            {
-              title: '0-20人',
-              value: '20'
-            },
-            {
-              title: '20-99人',
-              value: '20-99'
-            },
-            {
-              title: '100-499人',
-              value: '100-499'
-            },
-            {
-              title: '500-999人',
-              value: '500-999'
-            },
-            {
-              title: '1000-9999人',
-              value: '1000-9999'
-            },
-            {
-              title: '10000人以上',
-              value: '10000'
+              value: { min: 20, max: 999 }
             }
           ]
         }
@@ -187,9 +153,7 @@ export default {
   watch: {
     initData: {
       handler(val) {
-        if (val.length) {
-          this.allData = val
-        }
+        this.allData = [...val]
       },
       immediate: true,
       deep: true
@@ -197,6 +161,13 @@ export default {
   },
   methods: {
     apply(item) {
+      if (this.userInfo.credit_score < 80) {
+        this.$refs.uToast.show({
+          message: '您的信用分低于80分，暂不能应聘职位！',
+          type: 'error'
+        })
+        return
+      }
       addApplyJob({
         work_order_id: item.id,
         worker_id: this.userInfo.id,
@@ -211,7 +182,9 @@ export default {
         })
       })
     },
-    result() {},
+    result(val) {
+      this.$emit('filter', { ...val, type: 'fullTime' })
+    },
     clickToDetails(item) {
       uni.navigateTo({
         url: `/pages/components/fullTime-details/index?id=${item.id}&key=myFavorite`

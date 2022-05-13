@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-23 15:03:05
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-08 23:27:38
+ * @LastEditTime: 2022-05-12 18:44:34
 -->
 <template>
   <view>
@@ -70,7 +70,7 @@
 import touchHover from '../../../components/touch-hover/touch-hover.vue'
 import { getCollection, cancelCollect } from '@/api/recruit.js'
 import { mapState } from 'vuex'
-import { successToast } from '@/components/toast/index'
+import { successToast, errorToast } from '@/components/toast/index'
 import { addApplyJob } from '@/api/applyJob.js'
 export default {
   components: { touchHover },
@@ -96,6 +96,12 @@ export default {
   },
   methods: {
     apply(item) {
+      if (this.userInfo.credit_score < 80) {
+        errorToast({
+          message: '您的信用分低于80分，暂不能应聘职位！'
+        })
+        return
+      }
       addApplyJob({
         work_order_id: item.id,
         worker_id: this.userInfo.id,
@@ -109,7 +115,9 @@ export default {
     },
     getData() {
       getCollection(this.userInfo.id).then(({ data }) => {
-        this.initData = data
+        this.initData = data.filter(item => {
+          return item.status == 2
+        })
       })
     },
     cancelCollect(item) {

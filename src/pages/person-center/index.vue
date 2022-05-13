@@ -9,7 +9,7 @@
           <view class="flex">
             <view class="message_identity">{{ getIdentity() }}</view>
             <view class="credit-points-box flex ml-10" v-if="identity">
-              信用分：<span>80分</span
+              信用分：<span>{{ userInfo.credit_score }}分</span
               ><i
                 class="iconfont icon-help"
                 @click.stop="toolTip = !toolTip"
@@ -230,7 +230,8 @@ export default {
                 id: data.data.user.id,
                 avatar: data.data.user.avatar,
                 name: data.data.user.name,
-                phone: data.data.user.phone
+                phone: data.data.user.phone,
+                credit_score: data.data.user.credit_score
               })
               that.$methods.chat.connect(that, that.userInfo, true)
               that.goEasy.im.on(

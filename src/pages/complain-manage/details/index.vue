@@ -4,25 +4,29 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-22 16:59:01
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-25 13:27:00
+ * @LastEditTime: 2022-05-11 16:53:38
 -->
 <template>
   <view class="content-box size16">
     <view class="every">
       <text>投诉方：</text>
-      <text class="font600">{{ initData.complainant }}</text>
+      <text class="font600">{{ initData.fromName }}</text>
     </view>
     <view class="every">
       <text>被投诉方：</text>
-      <text class="font600">{{ initData.beComplainant }}</text>
+      <text class="font600">{{ initData.toName }}</text>
     </view>
     <view class="every">
       <text>涉及岗位（工作内容）：</text>
-      <text class="font600">{{ initData.content }}</text>
+      <text class="font600">{{ initData.work }}</text>
     </view>
     <view class="every flex-column">
       <text>投诉原因：</text>
-      <u--text :text="initData.reason" wordWrap="anyWhere" margin="5"></u--text>
+      <u--text
+        :text="initData.content"
+        wordWrap="anyWhere"
+        margin="5"
+      ></u--text>
     </view>
     <view class="every flex-column">
       <text>惩罚措施：</text>
@@ -36,7 +40,7 @@
     </view>
     <view class="every">
       <text>投诉时间：</text>
-      <text>{{ initData.time }}</text>
+      <text>{{ timeFormat(initData.created_at) }}</text>
     </view>
   </view>
 </template>
@@ -47,15 +51,17 @@ export default {
 
   data() {
     return {
-      initData: {},
-      type: ''
+      initData: {}
     }
   },
-  onLoad(options) {
-    this.initData = JSON.parse(options.object)
-    this.type = options.type
+  onLoad({ data }) {
+    this.initData = JSON.parse(data)
   },
-  methods: {}
+  methods: {
+    timeFormat(time) {
+      return time.replace(/T/g, ' ').replace(/\.[\d]{6}Z/g, '')
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

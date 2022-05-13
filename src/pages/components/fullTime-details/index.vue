@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-23 22:33:52
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-08 23:20:43
+ * @LastEditTime: 2022-05-13 16:04:25
 -->
 <template>
   <view>
@@ -79,6 +79,7 @@ import { jobDetail } from '@/api/recruit.js'
 import { mapState } from 'vuex'
 import { addApplyJob } from '@/api/applyJob.js'
 import { successToast } from '@/components/toast/index.js'
+import { errorToast } from '../../../components/toast'
 
 export default {
   data() {
@@ -95,16 +96,24 @@ export default {
     this.id = options.id
     jobDetail(this.id).then(({ data }) => {
       this.initData = {
-        ...data,
-        salary: `${JSON.parse(data.salary).min}k-${
-          JSON.parse(data.salary).max
-        }k`
+        ...data
       }
+      this.$set(
+        this.initData,
+        'salary',
+        `${JSON.parse(data.salary).min}k-${JSON.parse(data.salary).max}k`
+      )
     })
     this.key = options.key
   },
   methods: {
     apply() {
+      if (this.userInfo.credit_score < 80) {
+        errorToast({
+          message: '您的信用分低于80分，暂不能应聘职位！'
+        })
+        return
+      }
       addApplyJob({
         work_order_id: this.initData.id,
         worker_id: this.userInfo.id,
@@ -136,7 +145,16 @@ export default {
     clickToPerson() {},
     clickToComplainant() {
       uni.navigateTo({
-        url: `/pages/complain-manage/complainant-upload/index?orderId=${this.initData.id}&companyId=${this.initData.company_id}`
+        url: `/pages/complain-manage/complainant-upload/index?data=${JSON.stringify(
+          {
+            work_order_id: this.initData.id.toString(),
+            toId: this.initData.company_id.toString(),
+            toName: this.initData.company_name,
+            toType: this.initData.user_type,
+            work: this.initData.content,
+            toOpenid: this.initData.openid
+          }
+        )}`
       })
     }
   }

@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-07 15:10:14
+ * @LastEditTime: 2022-05-10 22:51:12
 -->
 <template>
   <view>
@@ -57,6 +57,7 @@
           </view>
         </view>
       </view>
+      <u-loadmore :status="status" @loadmore="getMore" v-if="loadmoreShow" />
     </view>
     <u-empty v-else></u-empty>
   </view>
@@ -65,51 +66,11 @@
 <script>
 import { collect, cancelCollect } from '@/api/resume.js'
 import { mapState } from 'vuex'
-
+import { getResumeList } from '@/api/resume.js'
 export default {
-  props: {
-    initData: {
-      type: Array,
-      default() {
-        return []
-      }
-    }
-  },
   data() {
     return {
       menuList: [
-        {
-          title: '期望薪资',
-          key: 'salary',
-          defaultSelectedIndex: 0,
-          detailList: [
-            {
-              title: '不限',
-              value: 'all'
-            },
-            {
-              title: '0-3k',
-              value: '0-3k'
-            },
-            {
-              title: '3k-5k',
-              value: '3k-5k'
-            },
-            {
-              title: '5k-10k',
-              value: '5k-10k'
-            },
-            {
-              title: '10k-20k',
-              value: '10k-20k'
-            },
-            {
-              title: '20k以上',
-              value: '20k以上'
-            }
-          ]
-        },
-
         {
           title: '性别',
           key: 'sex',
@@ -117,15 +78,15 @@ export default {
           detailList: [
             {
               title: '不限',
-              value: 'all'
+              value: ''
             },
             {
               title: '男',
-              value: 'man'
+              value: '男'
             },
             {
               title: '女',
-              value: 'women'
+              value: '女'
             }
           ]
         },
@@ -136,41 +97,97 @@ export default {
           detailList: [
             {
               title: '不限',
-              value: 'all'
+              value: ''
             },
             {
               title: '18-23岁',
-              value: '18-25'
+              value: { min: 18, max: 23 }
             },
             {
               title: '24-35岁',
-              value: '24-35'
+              value: { min: 24, max: 35 }
             },
             {
               title: '35岁以上',
-              value: '35岁以上'
+              value: { min: 35, max: 99 }
             }
           ]
         }
       ],
-      resumeData: []
+      resumeData: [],
+      resumePage: 1,
+      filter: {
+        age: '',
+        sex: ''
+      },
+      status: 'loadmore'
     }
   },
   computed: {
     ...mapState('appState', ['userInfo'])
   },
-  mounted() {},
-  watch: {
-    initData: {
-      handler(val) {
-        this.resumeData = val
-      },
-      immediate: true,
-      deep: true
-    }
+  mounted() {
+    this.init()
+    uni.$on('reachBottom', type => {
+      if (type) {
+        this.getMore()
+      }
+    })
+    uni.$on('pullDownRefresh', type => {
+      if (type) {
+        this.init()
+      }
+    })
   },
+
   methods: {
-    result() {},
+    getMore() {
+      this.status = 'loading'
+      this.getResumeData(++this.resumePage, this.filter).then(data => {
+        if (data.length) {
+          this.resumeData.push(...data)
+          this.status = 'loadmore'
+        } else {
+          this.status = 'nomore'
+        }
+      })
+    },
+    getResumeData(page, filter) {
+      return new Promise(async (res, rej) => {
+        try {
+          let data = (
+            await getResumeList(page, {
+              ...filter,
+              companyId: this.userInfo.id
+            })
+          ).data.resumeList
+          res(data)
+        } catch (e) {
+          rej(e)
+        }
+      })
+    },
+    async init() {
+      this.resumePage = 1
+      this.resumeData = await this.getResumeData(1, { sex: '', age: '' })
+    },
+    async result({ sex, age }) {
+      if (!sex.length || (sex.length == 1 && sex[0] == '')) {
+        sex = ''
+      } else {
+        if (sex[0] == '') {
+          sex = [...sex.slice(1, sex.length)]
+        } else {
+          sex = [...sex]
+        }
+      }
+      if (!age.length && Array.isArray(age)) {
+        age = ''
+      }
+      this.filter = { age: age, sex: sex }
+      this.resumePage = 1
+      this.resumeData = await this.getResumeData(this.resumePage, this.filter)
+    },
     clickIcon(item, index) {
       if (item.isCollection == 0) {
         collect({

@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-10 16:20:49
+ * @LastEditTime: 2022-05-13 16:06:32
 -->
 <template>
   <view class="m-10">
@@ -50,7 +50,8 @@ export default {
   data() {
     return {
       value: '',
-      fileList: []
+      fileList: [],
+      toData: {} //被投诉人信息
     }
   },
   computed: {
@@ -61,9 +62,8 @@ export default {
       })
     }
   },
-  onLoad({ orderId, companyId }) {
-    this.orderId = orderId
-    this.companyId = companyId
+  onLoad({ data }) {
+    this.toData = JSON.parse(data)
   },
   methods: {
     submit() {
@@ -72,13 +72,15 @@ export default {
         return
       }
       addComplain({
-        reporter: this.userInfo.id.toString(),
-        worker_order_id: this.orderId,
-        company_id: this.companyId,
         content: this.value,
+        measure: '无',
+        fromId: this.userInfo.id.toString(),
+        formOpenid: this.userInfo.openid,
+        fromName: this.userInfo.name,
+        fromType: this.identity == 'student' ? '1' : '2',
+        ...this.toData,
         img: JSON.stringify(this.fileList),
-        status: '1',
-        type: this.identity == 'student' ? '1' : '2'
+        status: '0'
       }).then(() => {
         successToast('投诉成功！')
       })

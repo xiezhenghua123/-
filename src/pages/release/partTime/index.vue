@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-29 12:15:50
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-29 22:42:25
+ * @LastEditTime: 2022-05-11 17:22:06
 -->
 <template>
   <view class="mt-10">
@@ -170,6 +170,13 @@ export default {
           if (!data) {
             return false
           }
+          if (this.userInfo.credit_score < 80) {
+            this.$refs.uToast.show({
+              message: '您的信用分低于80分，暂不能发布职位！',
+              type: 'error'
+            })
+            return
+          }
           this.pay = (this.data.payMent * (1 + 0.001)).toFixed(2)
           const service_charge = (this.data.payMent * 0.001).toFixed(2)
           releaseJob({
@@ -178,11 +185,12 @@ export default {
             user_type: this.identity == 'student' ? '1' : '2',
             content: this.data.content,
             place: this.data.address,
-            salary: this.data.payMent,
+            salary: Number(this.data.payMent),
             education: this.data.education,
             description: this.data.details,
-            service_charge: service_charge,
-            dateline: this.data.deadLine
+            service_charge: Number(service_charge),
+            dateline: this.data.deadLine,
+            status: 0
           })
         })
         .then(() => {

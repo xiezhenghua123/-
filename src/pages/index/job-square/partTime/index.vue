@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-30 15:28:22
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-07 16:34:18
+ * @LastEditTime: 2022-05-11 17:22:57
 -->
 <template>
   <view class="ml-10 mr-10">
@@ -88,27 +88,28 @@ export default {
         {
           title: '学历要求',
           key: 'education',
+          isMutiple: true,
           defaultSelectedIndex: 0,
           detailList: [
             {
               title: '不限',
-              value: 'all'
+              value: ''
             },
             {
               title: '本科',
-              value: 'undergraduate'
+              value: '本科'
             },
             {
               title: '硕士',
-              value: 'master'
+              value: '硕士'
             },
             {
               title: '博士',
-              value: 'doctor'
+              value: '博士'
             },
             {
               title: '博士后',
-              value: 'postdoctor'
+              value: '博士后'
             }
           ]
         },
@@ -120,23 +121,23 @@ export default {
           detailList: [
             {
               title: '不限',
-              value: 'all'
+              value: ''
             },
             {
               title: '0-9元',
-              value: 'ten'
+              value: { min: 0, max: 9 }
             },
             {
               title: '10-49元',
-              value: 'fiften'
+              value: { min: 10, max: 49 }
             },
             {
               title: '50-99元',
-              value: 'hundred'
+              value: { min: 50, max: 99 }
             },
             {
               title: '100元以上',
-              value: 'hundredMore'
+              value: { min: 99, max: Number.MAX_VALUE }
             }
           ]
         }
@@ -146,9 +147,7 @@ export default {
   watch: {
     initData: {
       handler(val) {
-        if (val.length) {
-          this.allData = val
-        }
+        this.allData = [...val]
       },
       immediate: true,
       deep: true
@@ -159,6 +158,13 @@ export default {
   },
   methods: {
     apply(item) {
+      if (this.userInfo.credit_score < 80) {
+        this.$refs.uToast.show({
+          message: '您的信用分低于80分，暂不能应聘职位！',
+          type: 'error'
+        })
+        return
+      }
       addApplyJob({
         work_order_id: item.id,
         worker_id: this.userInfo.id,
@@ -198,7 +204,9 @@ export default {
         )
       }
     },
-    result(data) {},
+    result(val) {
+      this.$emit('filter', { ...val, type: 'partTime' })
+    },
     clickToDetails(item) {
       uni.navigateTo({
         url: `/pages/components/partTime-details/index?id=${item.id}&key=myFavorite`

@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-30 11:37:11
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-07 12:11:32
+ * @LastEditTime: 2022-05-10 21:32:05
  */
 import request from './request'
 
@@ -33,17 +33,12 @@ const createResume = data => {
   return request('post', 'resume/add', data)
 }
 
-const getResumeList = (page, companyId) => {
-  return request(
-    'get',
-    'resume/list/:page',
-    { companyId: companyId },
-    {
-      params: {
-        page: page
-      }
+const getResumeList = (page, data) => {
+  return request('post', 'resume/list/:page', data, {
+    params: {
+      page: page
     }
-  )
+  })
 }
 
 const collect = data => {

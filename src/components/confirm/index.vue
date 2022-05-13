@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-06 14:59:29
+ * @LastEditTime: 2022-05-12 19:29:40
 -->
 <template>
   <view>
@@ -90,6 +90,7 @@ export default {
     },
     async statusUpdate({ confirmData, type }) {
       let data = {}
+      uni.setStorageSync('identity', type)
       if (type == 1) {
         data = {
           type: type,
@@ -113,6 +114,7 @@ export default {
           code: confirmData.number
         }
       }
+      console.log(this.confirmData)
       if (JSON.stringify(this.confirmData) != '{}') {
         await update(this.confirmData.openid, {
           ...this.confirmData,
@@ -193,6 +195,11 @@ export default {
                         that.userInfoData,
                         'avatar',
                         data.data.user.avatar
+                      )
+                      that.$set(
+                        that.userInfoData,
+                        'credit_score',
+                        data.data.user.credit_score
                       )
                       that.$set(
                         that.userInfoData,
