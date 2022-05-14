@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-21 18:35:48
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-13 16:17:39
+ * @LastEditTime: 2022-05-14 17:39:54
 -->
 <template>
   <view>
@@ -14,11 +14,10 @@
         v-for="(item, index) in initData"
         :key="index"
         class="container m-10"
-        @click="clickToDetails(item, index)"
         ><u-swipe-action>
-          <div @click.stop="cancel(item)">
-            <u-swipe-action-item :options="options">
-              <view class="box">
+          <div>
+            <u-swipe-action-item :options="options" @click="cancel(item)">
+              <view class="box" @click="clickToDetails(item, index)">
                 <view class="box-left">
                   <text class="name">{{ item.toName }}</text>
                   <text class="status" :class="[getColor(item.status)]">{{
@@ -87,7 +86,7 @@ export default {
     },
     clickToDetails(item) {
       uni.navigateTo({
-        url: `/pages/complain-manage/details/index?data=${JSON.stringify(item)}`
+        url: `/pages/complain-manage/details/index?id=${item.id}`
       })
     }
   }

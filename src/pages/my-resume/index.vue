@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-30 21:31:23
+ * @LastEditTime: 2022-05-14 15:05:25
 -->
 <template>
   <view class="mb-10">
@@ -144,6 +144,8 @@ export default {
   onLoad() {
     getMyResume(this.userInfo.openid).then(({ data }) => {
       if (data) {
+        data = data[0]
+        console.log(data)
         this.resumeData = {
           basic: {
             headPhoto: data.avatar,

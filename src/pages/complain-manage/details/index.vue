@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-22 16:59:01
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-11 16:53:38
+ * @LastEditTime: 2022-05-14 17:39:35
 -->
 <template>
   <view class="content-box size16">
@@ -46,6 +46,7 @@
 </template>
 <script>
 import minix from '../minix/index.js'
+import { getDetailById } from '@/api/complain.js'
 export default {
   mixins: [minix],
 
@@ -54,8 +55,10 @@ export default {
       initData: {}
     }
   },
-  onLoad({ data }) {
-    this.initData = JSON.parse(data)
+  onLoad({ id }) {
+    getDetailById(id).then(({ data }) => {
+      this.initData = data
+    })
   },
   methods: {
     timeFormat(time) {

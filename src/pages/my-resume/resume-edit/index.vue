@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-13 18:51:08
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-02 12:13:30
+ * @LastEditTime: 2022-05-14 15:04:20
 -->
 <template>
   <view class="mb-10">
@@ -378,7 +378,7 @@
       </view>
     </view>
     <view class="content-box size16">
-      <view class="headline"> 自我评价 </view>
+      <view class="headline"> 自我评价(必填) </view>
       <view class="u-form selfEvaluation">
         <u--textarea
           v-model="selfEvaluation"

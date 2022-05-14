@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-05-03 15:56:18
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-11 16:58:15
+ * @LastEditTime: 2022-05-14 18:08:56
  */
 import request from './request'
 
@@ -36,4 +36,17 @@ const getMyComplainList = (id, type) => {
   )
 }
 
-export { addComplain, getMyComplainList, cancelComplain }
+const getDetailById = id => {
+  return request(
+    'get',
+    '/appeal/:id',
+    {},
+    {
+      params: {
+        id: id
+      }
+    }
+  )
+}
+
+export { addComplain, getMyComplainList, cancelComplain, getDetailById }

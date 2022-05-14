@@ -1,6 +1,10 @@
 <template>
   <scroll-view class="conversations" scroll-y="true">
-    <view v-if="conversations.length != 0">
+    <view v-if="conversations.length != 0 || complainData.length">
+      <view class="notice-item" v-if="complainData.length" @click="toNotice">
+        投诉通知
+        <view class="number">{{ complainData.length }}</view>
+      </view>
       <view v-for="(conversation, key) in conversations" :key="key">
         <u-swipe-action>
           <u-swipe-action-item
@@ -83,11 +87,13 @@
 </template>
 
 <script>
-import IMService from '@/goEasy/lib/imservice'
+import { getNotice } from '@/api/notice.js'
+import { mapState } from 'vuex'
 export default {
   name: 'contacts',
   data() {
     return {
+      complainData: [],
       options: [
         {
           text: '置顶聊天',
@@ -124,6 +130,9 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState('appState', ['userInfo', 'identity'])
+  },
   mounted() {
     //监听会话列表变化
     let self = this
@@ -148,6 +157,28 @@ export default {
     })
   },
   methods: {
+    toNotice() {
+      uni.navigateTo({
+        url: `/pages/complainNotice/index?data=${JSON.stringify(
+          this.complainData
+        )}`
+      })
+    },
+    async getComplainNoticeData() {
+      const noticeData = await getNotice(this.userInfo.openid)
+      const userType = this.identity == 'student' ? '1' : '2'
+      const complainData = noticeData.data.filter(item => {
+        const content = JSON.parse(item.content)
+        return (
+          content.type == 'complain' &&
+          content.userType == userType &&
+          item.status == 2
+        )
+      })
+      return new Promise((res, rej) => {
+        res(complainData)
+      })
+    },
     clickSwipe({ conversation, index, name }) {
       this.action.conversation = conversation
       if (index === 0) {
@@ -238,14 +269,14 @@ export default {
         })
       }
     },
-    renderConversations(content) {
+    async renderConversations(content) {
       this.conversations = content.conversations || []
-      console.log(this.conversations)
+      this.complainData = await this.getComplainNoticeData()
       let unreadTotal = content.unreadTotal
-      this.setUnreadAmount(unreadTotal)
+      this.setUnreadAmount(unreadTotal, this.complainData.length)
     },
-    setUnreadAmount(unreadTotal) {
-      this.unreadTotal = unreadTotal
+    setUnreadAmount(unreadTotal, noticeTotal) {
+      this.unreadTotal = unreadTotal + noticeTotal
       if (this.unreadTotal > 0) {
         uni.setTabBarBadge({
           index: 3,
@@ -275,6 +306,26 @@ export default {
 <style lang="scss" scoped>
 page {
   height: 100%;
+}
+.notice-item {
+  height: 100rpx;
+  display: flex;
+  align-items: center;
+  padding-left: 64rpx;
+  justify-content: space-between;
+  border-bottom: 1px solid #efefef;
+  .number {
+    padding: 6rpx;
+    background-color: #ee593c;
+    color: #ffffff;
+    font-size: 24rpx;
+    line-height: 28rpx;
+    border-radius: 24rpx;
+    min-width: 24rpx;
+    min-height: 24rpx;
+    text-align: center;
+    margin-right: 40rpx;
+  }
 }
 .conversations {
   width: 750rpx;

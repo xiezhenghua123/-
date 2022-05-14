@@ -101,6 +101,12 @@
       }
     },
     {
+      "path": "pages/complainNotice/index",
+      "style": {
+        "navigationBarTitleText": "投诉通知"
+      }
+    },
+    {
       "path": "pages/components/fullTime-details/index",
       "style": {
         "navigationBarTitleText": "职位详情"

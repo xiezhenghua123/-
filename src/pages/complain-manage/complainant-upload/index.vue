@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-13 16:06:32
+ * @LastEditTime: 2022-05-14 14:48:29
 -->
 <template>
   <view class="m-10">
@@ -75,7 +75,7 @@ export default {
         content: this.value,
         measure: '无',
         fromId: this.userInfo.id.toString(),
-        formOpenid: this.userInfo.openid,
+        fromOpenid: this.userInfo.openid,
         fromName: this.userInfo.name,
         fromType: this.identity == 'student' ? '1' : '2',
         ...this.toData,
