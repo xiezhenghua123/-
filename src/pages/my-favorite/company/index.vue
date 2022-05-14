@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-23 15:02:59
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-07 15:28:48
+ * @LastEditTime: 2022-05-14 19:00:25
 -->
 <template>
   <view>
@@ -72,6 +72,7 @@ export default {
   },
   mounted() {
     getCollect(this.userInfo.id).then(({ data }) => {
+      console.log(data)
       this.initData = data
     })
   },
