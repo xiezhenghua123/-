@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-09 22:54:07
+ * @LastEditTime: 2022-05-14 18:38:05
 -->
 <template>
   <view>
@@ -139,8 +139,10 @@ export default {
     },
     // 全职薪资
     fullSalary(salary) {
-      const data = JSON.parse(salary)
-      return `${data.min}k-${data.max}k`
+      if (salary) {
+        const data = JSON.parse(salary)
+        return `${data.min}k-${data.max}k`
+      }
     },
     // 应聘状态文字
     getStatusText(status, type) {

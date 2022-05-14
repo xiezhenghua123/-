@@ -27,7 +27,7 @@ const student = [
   // },
   {
     icon: 'icon-wodejianli',
-    name: '我的简历',
+    name: '个人简历',
     iconColor: '#13227a',
     key: 'my-resume'
   },
