@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-23 22:33:52
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-13 16:04:25
+ * @LastEditTime: 2022-05-15 10:21:03
 -->
 <template>
   <view>
@@ -96,13 +96,11 @@ export default {
     this.id = options.id
     jobDetail(this.id).then(({ data }) => {
       this.initData = {
-        ...data
+        ...data,
+        salary: `${JSON.parse(data.salary).min}k-${
+          JSON.parse(data.salary).max
+        }k`
       }
-      this.$set(
-        this.initData,
-        'salary',
-        `${JSON.parse(data.salary).min}k-${JSON.parse(data.salary).max}k`
-      )
     })
     this.key = options.key
   },

@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-23 22:33:52
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-13 16:05:51
+ * @LastEditTime: 2022-05-15 10:19:54
 -->
 <template>
   <view>
@@ -36,7 +36,7 @@
       </view>
       <view class="every">
         <view class="title">薪酬：</view>
-        <view class="content">{{ initData.salary }}</view>
+        <view class="content">{{ initData.salary }}元</view>
       </view>
       <view class="every">
         <view class="title">招聘截止时间：</view>

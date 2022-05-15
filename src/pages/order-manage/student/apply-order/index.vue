@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-14 18:38:05
+ * @LastEditTime: 2022-05-15 10:36:52
 -->
 <template>
   <view>
@@ -185,7 +185,7 @@ export default {
       }
     },
     clickToDetails(item) {
-      if (item.type === '全职') {
+      if (item.work_order_type === 'fullTime') {
         uni.navigateTo({
           url: `/pages/components/fullTime-details/index?id=${item.work_order_id}&key=applyOrder`
         })

@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-24 21:19:20
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-13 20:38:14
+ * @LastEditTime: 2022-05-15 10:29:12
 -->
 <template>
   <view>
@@ -195,7 +195,7 @@ export default {
       const data = await getMyResume(item.openid)
       uni.navigateTo({
         url: `/pages/components/person-details/index?data=${JSON.stringify(
-          data.data
+          data.data[0]
         )}&init=${JSON.stringify({
           uuid: item.openid + item.worker_id,
           name: item.worker_name,

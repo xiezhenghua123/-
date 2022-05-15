@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-03-11 22:35:51
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-09 22:22:43
+ * @LastEditTime: 2022-05-15 10:31:52
 -->
 <template>
   <view class="mb-10">
@@ -148,7 +148,7 @@ export default {
   },
   onLoad(options) {
     let data
-    if (options.data == 'null') {
+    if (options.data == 'null' || options.data == 'undefined') {
       data = JSON.parse(options.init)
       this.resumeData = {
         basic: {

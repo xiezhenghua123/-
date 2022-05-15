@@ -1,10 +1,12 @@
 <template>
   <scroll-view class="conversations" scroll-y="true">
-    <view v-if="conversations.length != 0 || complainData.length">
-      <view class="notice-item" v-if="complainData.length" @click="toNotice">
-        投诉通知
-        <view class="number">{{ complainData.length }}</view>
-      </view>
+    <view class="notice-item" @click="toNotice">
+      投诉通知
+      <view class="number" v-if="complainUnreadData.length">{{
+        complainUnreadData.length
+      }}</view>
+    </view>
+    <view v-if="conversations.length != 0">
       <view v-for="(conversation, key) in conversations" :key="key">
         <u-swipe-action>
           <u-swipe-action-item
@@ -93,7 +95,6 @@ export default {
   name: 'contacts',
   data() {
     return {
-      complainData: [],
       options: [
         {
           text: '置顶聊天',
@@ -127,7 +128,8 @@ export default {
       action: {
         conversation: null,
         show: false
-      }
+      },
+      complainUnreadData: []
     }
   },
   computed: {
@@ -167,7 +169,7 @@ export default {
     async getComplainNoticeData() {
       const noticeData = await getNotice(this.userInfo.openid)
       const userType = this.identity == 'student' ? '1' : '2'
-      const complainData = noticeData.data.filter(item => {
+      const complainUnreadData = noticeData.data.filter(item => {
         const content = JSON.parse(item.content)
         return (
           content.type == 'complain' &&
@@ -176,7 +178,7 @@ export default {
         )
       })
       return new Promise((res, rej) => {
-        res(complainData)
+        res(complainUnreadData)
       })
     },
     clickSwipe({ conversation, index, name }) {
@@ -271,9 +273,9 @@ export default {
     },
     async renderConversations(content) {
       this.conversations = content.conversations || []
-      this.complainData = await this.getComplainNoticeData()
+      this.complainUnreadData = await this.getComplainNoticeData()
       let unreadTotal = content.unreadTotal
-      this.setUnreadAmount(unreadTotal, this.complainData.length)
+      this.setUnreadAmount(unreadTotal, this.complainUnreadData.length)
     },
     setUnreadAmount(unreadTotal, noticeTotal) {
       this.unreadTotal = unreadTotal + noticeTotal
